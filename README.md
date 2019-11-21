@@ -1,5 +1,5 @@
 # 68K-Game
-Project for Estructura de Computadores II in which we have to program a program with a GUI, in this case a videogame.
+Project for Estructura de Computadores II in which we have to program an application with a GUI, in this case a videogame.
 
 ## Basic description:
 Our proposition for the final project consist of a platforming game inspired by the classics, with its expected mechanics, but with a small twist: you are the platforms.
