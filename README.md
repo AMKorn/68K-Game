@@ -1,14 +1,14 @@
 # 68K-Game
 Project for Estructura de Computadores II in which we have to program a program with a GUI, in this case a videogame.
 
-## Basic description
+## Basic description:
 Our proposition for the final project consist of a platforming game inspired by the classics, with its expected mechanics, but with a small twist: you are the platforms.
 
 That means, apart from the movement controls, the player counts with the hability of making "copies" of themselves, static on space, which they can use to jump to and reach higher places.
 
 Furthermore, enemies and mechanics to deal with them can be added.
 
-## Controles:
+## Controls:
 *	←	: Move left
 *	→	: Move right
 *	↑	: Jump
