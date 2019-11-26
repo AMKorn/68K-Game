@@ -89,6 +89,13 @@ SCRUPD
 ; MODIFIES - NONE
 ; -----------------------------------------------------------------------------
             ; TO DO: UPDATE DOUBLE BUFFER AND CLEAR HIDDEN BUFFER
+            ; Updates double buffer
+            MOVE.B  #94,D0
+            TRAP    #15
+            ; Clear hidden buffer
+            MOVE.B  #11,D0
+            MOVE.W  #$FF00,D1
+            TRAP    #15
             RTE
 
 ; =============================================================================
@@ -118,7 +125,49 @@ KBDREAD
 ; MODIFIES - NONE
 ; -----------------------------------------------------------------------------
             ; TO DO: UPDATE KBDVAL AND KBDEDGE
+            MOVEM.L D0-D4/A0,-(A7)
+            MOVE.B  #19,D0
+            MOVE.L  #KBDLEFT<<24+KBDUP<<16+KBDRIGHT<<8+KBDDOWN,D1
+            TRAP    #15
+            MOVE.B  #31,D2
+            MOVE.W  #4-1,D3
+            LEA.L   .KBDMSK,A0
+.LOOP1      BTST.L  D2,D1
+            BEQ     .CLR1
+            MOVE.B  (A0)+,D4
+            OR.B    D4,KBDVAL
+            BRA     .DONE1
+.CLR1       MOVE.B  (A0)+,D4
+            NOT.B   D4
+            AND.B   D4,KBDVAL
+            
+.DONE1      SUBQ.B  #8,D2
+            DBRA    D3,.LOOP1
+
+            MOVE.B  #19,D0
+            MOVE.L  #KBDFIRE1<<24+KBDFIRE2<<16+KBDFIRE3<<8+KBDPAUSE,D1
+            TRAP    #15
+            MOVE.B  #31,D2
+            MOVE.W  #4-1,D3
+            *LEA.L   .KBDMSK,A0
+.LOOP2      BTST.L  D2,D1
+            BEQ     .CLR2
+            MOVE.B  (A0)+,D4
+            OR.B    D4,KBDVAL
+            BRA     .DONE2
+.CLR2       MOVE.B  (A0)+,D4
+            NOT.B   D4
+            AND.B   D4,KBDVAL
+            
+.DONE2      SUBQ.B  #8,D2
+            DBRA    D3,.LOOP2
+
+            MOVEM.L (A7)+,D0-D4/A0
             RTE
+
+.KBDMSK     DC.B    KBDMSKLF,KBDMSKUP,KBDMSKRT,KBDMSKDN
+            DC.B    KBDMSKF1,KBDMSKF2,KBDMSKF3,KBDMSKPS
+.KBDN       EQU     8
 
 ; =============================================================================
 ; DYNAMIC MEMORY MANAGEMENT (SYSTEM CODE)
@@ -244,6 +293,22 @@ DMMFREE
             CLR.W   (A0)
             MOVEM.L (A7)+,D0/A0
             RTS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
