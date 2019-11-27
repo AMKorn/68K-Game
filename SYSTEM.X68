@@ -125,7 +125,9 @@ KBDREAD
 ; MODIFIES - NONE
 ; -----------------------------------------------------------------------------
             ; TO DO: UPDATE KBDVAL AND KBDEDGE
-            MOVEM.L D0-D4/A0,-(A7)
+            MOVEM.L D0-D5/A0,-(A7)
+            MOVE.B  KBDVAL,D5               ; D5 has the old kbdval
+            
             MOVE.B  #19,D0
             MOVE.L  #KBDLEFT<<24+KBDUP<<16+KBDRIGHT<<8+KBDDOWN,D1
             TRAP    #15
@@ -161,8 +163,12 @@ KBDREAD
             
 .DONE2      SUBQ.B  #8,D2
             DBRA    D3,.LOOP2
-
-            MOVEM.L (A7)+,D0-D4/A0
+            
+            NOT.B   D5
+            AND.B   KBDVAL,D5
+            MOVE.B  D5,KBDEDGE
+            
+            MOVEM.L (A7)+,D0-D5/A0
             RTE
 
 .KBDMSK     DC.B    KBDMSKLF,KBDMSKUP,KBDMSKRT,KBDMSKDN
@@ -293,6 +299,7 @@ DMMFREE
             CLR.W   (A0)
             MOVEM.L (A7)+,D0/A0
             RTS
+
 
 
 
