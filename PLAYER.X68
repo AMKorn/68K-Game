@@ -9,54 +9,72 @@ PLRINIT
 ; OUTPUT    - None
 ; MODIFIES  - None
 ; -----------------------------------------------------------------------------
-            MOVE.W  #50,PLRPOSX                ; Just to test
-            MOVE.W  #50,PLRPOSY
+            MOVE.W  #500,PLRPOSX                ; Just to test
+            MOVE.W  #250,PLRPOSY
+            
             RTS
             
 ; -----------------------------------------------------------------------------
 PLRUPD
 ; Updates the player location
-; INPUT     - None, reads KBDVAL
+; INPUT     - None, reads KBDVAL and KBDEDGE
 ; -----------------------------------------------------------------------------
-            MOVEM.L D0-D2,-(A7)
+            MOVEM.L D0-D4,-(A7)
             MOVE.B  KBDVAL,D0
-            MOVE.W  PLRPOSX,D1
-            MOVE.W  PLRPOSY,D2
+            MOVE.B  KBDEDGE,D1
+            MOVE.W  PLRPOSX,D2
+            MOVE.W  PLRPOSY,D3
+            
+            ; ---- Horizontal movement ----------------------------------------
             BTST.L  #KBDBITLF,D0
             BEQ     .NOLF
-            SUB.W   #PLRSPDX,D1
+            SUB.W   #PLRSPDX,D2
             
-.NOLF       BTST.L  #KBDBITUP,D0
-            BEQ     .NOUP
-            SUB.W   #PLRSPDY,D2
+.NOLF       BTST.L  #KBDBITRT,D0
+            BEQ     .X_OOB
+            ADD.W   #PLRSPDX,D2
             
-.NOUP       BTST.L  #KBDBITRT,D0
-            BEQ     .NORT
-            ADD.W   #PLRSPDX,D1
-            
-.NORT       BTST.L  #KBDBITDN,D0
-            BEQ     .NODN
-            ADD.W   #PLRSPDY,D2
-.NODN
-            CMP.W   #0,D1                   ; Checks if OOB (Out-of-Bounds)
-            BGT     .NOTOOB1
-            MOVE.W  #0,D1
-            BRA     .Y_OOB
-.NOTOOB1    CMP.W   #(SCRWIDTH-PLRDIM),D1
-            BLT     .Y_OOB
-            MOVE.W  #(SCRWIDTH-PLRDIM),D1
+.X_OOB      CMP.W   #0,D2                   ; Checks if OOB (Out-of-Bounds)
+            BGT     .NOTOOB1                ; on the X-axis
+            MOVE.W  #0,D2
+            BRA     .VERT
+.NOTOOB1    CMP.W   #(SCRWIDTH-PLRDIM),D2
+            BLT     .VERT
+            MOVE.W  #(SCRWIDTH-PLRDIM),D2
 
-.Y_OOB      CMP.W   #PLRDIM,D2
+            ; --- Vertical movement -------------------------------------------
+
+.VERT       ;MOVE.W  PLRJMP,D4
+            BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
+            BEQ     .NOJUMP
+            ;CMP.B   #0,D4                   ; Checks if player is jumping
+            ;BNE     .NOJUMP
+            SUB.W   #3*PLRSPDY,D3
+            ;MOVE.W  #$FFFF,D4
+            
+.NOJUMP     ;SUBQ.W  #1,D4
+            ;BEQ     .GO_DOWN                ; Checks if player is jumping
+            ;BTST.L  #KBDVAL,D1              ; Checks if UP is pressed
+            ;BEQ     .GO_DOWN
+            ;SUB.W   #PLRSPDY,D3
+            ;BRA     .Y_OOB
+.GO_DOWN    ;MOVE.W  #0,D4
+            ADD.W   #PLRSPDY,D3             ; Falling
+
+            ; ---------------------
+            
+.Y_OOB      CMP.W   #PLRDIM,D3              ; Checks if OOB on Y-axis
             BGT     .NOTOOB2
-            MOVE.W  #PLRDIM,D2
+            MOVE.W  #PLRDIM,D3
             BRA     .END
-.NOTOOB2    CMP.W   #SCRHEIGH,D2
+.NOTOOB2    CMP.W   #SCRHEIGH,D3
             BLT     .END
-            MOVE.W  #SCRHEIGH,D2
-.END
-            MOVE.W  D1,PLRPOSX
-            MOVE.W  D2,PLRPOSY
-            MOVEM.L (A7)+,D0-D2
+            MOVE.W  #SCRHEIGH,D3
+            
+.END        MOVE.W  D2,PLRPOSX
+            MOVE.W  D3,PLRPOSY
+            MOVE.W  D4,PLRJMP
+            MOVEM.L (A7)+,D0-D4
             RTS
 
 ; -----------------------------------------------------------------------------
@@ -78,6 +96,7 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 

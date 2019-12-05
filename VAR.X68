@@ -2,14 +2,21 @@
 ; GAME VARS
 ; =============================================================================
 
+; - General variables ---------------------------------------------------------
+
+;PLRSPDY     DS.B    1
+            DS.W    0
+
 ; - Player related vars -------------------------------------------------------
 
 PLRPOSX     DS.W    1
 PLRPOSY     DS.W    1
+PLRJMP      DS.W    1
 PLRLVS      DS.B    1                       ; Global variable: only init once
             DS.W    0
             
 ; -----------------------------------------------------------------------------
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

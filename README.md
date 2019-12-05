@@ -18,12 +18,14 @@ Furthermore, enemies and mechanics to deal with them can be added.
 *	P / [Esc] : Pause the level
 
 ## Implemented:
-* Player character and movement to all directions
+* Player character and movement from right to left
+* Player fall
 * Window border collisions
 
 ## TO-DO
 * Implement platforms
-* Implement gravity
+* Add jumping hability
+* Implement gravity acceleration
 * Addable platforms
 * Enemies
 
