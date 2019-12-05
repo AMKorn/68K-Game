@@ -14,7 +14,7 @@ Furthermore, enemies and mechanics to deal with them can be added.
 *	↑	: Jump
 *	↓	: Place copy/platform
 *	[Shift] : Place "bomb"
-*	[Espacio] : Delete the placed platforms / reset the level in case of error.
+*	[Spacebar] : Delete the placed platforms / reset the level in case of error.
 *	P / [Esc] : Pause the level
 
 ## Implemented:
