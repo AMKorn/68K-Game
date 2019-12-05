@@ -1,14 +1,14 @@
 ; =============================================================================
-; GAME VARS
+; GAME CONSTANTS
 ; =============================================================================
 
-; - Player related vars -------------------------------------------------------
+; - Player related constants --------------------------------------------------
 
-PLRPOSX     DS.W    1
-PLRPOSY     DS.W    1
-PLRLVS      DS.B    1                       ; Global variable: only init once
-            DS.W    0
-            
+PLRDIM      EQU     40
+PLRCLR      EQU     $0000FF00               ; Totally green
+PLRSPDX     EQU     20
+PLRSPDY     EQU     20
+
 ; -----------------------------------------------------------------------------
 *~Font name~Courier New~
 *~Font size~10~

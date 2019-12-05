@@ -1,4 +1,10 @@
 ; =============================================================================
+; TITLE: Final Project for ECII - Mandatory party
+; AUTHORS: Korn, Andreas Manuel & Vega García, Sergio
+; HANDING DATE: 03.12.19
+; =============================================================================
+
+; =============================================================================
 ; SYSTEM MANAGEMENT (SYSTEM CODE)
 ; =============================================================================
 
@@ -88,7 +94,6 @@ SCRUPD
 ; OUTPUT   - NONE
 ; MODIFIES - NONE
 ; -----------------------------------------------------------------------------
-            ; TO DO: UPDATE DOUBLE BUFFER AND CLEAR HIDDEN BUFFER
             ; Updates double buffer
             MOVE.B  #94,D0
             TRAP    #15
@@ -124,10 +129,10 @@ KBDREAD
 ; OUTPUT   - (KBDVAL) AND (KBDEDGE)
 ; MODIFIES - NONE
 ; -----------------------------------------------------------------------------
-            ; TO DO: UPDATE KBDVAL AND KBDEDGE
             MOVEM.L D0-D5/A0,-(A7)
-            MOVE.B  KBDVAL,D5               ; D5 has the old kbdval
+            MOVE.B  KBDVAL,D5               ; D5 has the old KBDVAL
             
+            ; Read the first 4 keys
             MOVE.B  #19,D0
             MOVE.L  #KBDLEFT<<24+KBDUP<<16+KBDRIGHT<<8+KBDDOWN,D1
             TRAP    #15
@@ -146,12 +151,13 @@ KBDREAD
 .DONE1      SUBQ.B  #8,D2
             DBRA    D3,.LOOP1
 
+            ; Read the last 4 keys
             MOVE.B  #19,D0
             MOVE.L  #KBDFIRE1<<24+KBDFIRE2<<16+KBDFIRE3<<8+KBDPAUSE,D1
             TRAP    #15
             MOVE.B  #31,D2
             MOVE.W  #4-1,D3
-            *LEA.L   .KBDMSK,A0
+
 .LOOP2      BTST.L  D2,D1
             BEQ     .CLR2
             MOVE.B  (A0)+,D4
@@ -164,6 +170,7 @@ KBDREAD
 .DONE2      SUBQ.B  #8,D2
             DBRA    D3,.LOOP2
             
+            ; Update KBDEDGE using the KBDVAL saved previously in D5
             NOT.B   D5
             AND.B   KBDVAL,D5
             MOVE.B  D5,KBDEDGE
@@ -299,6 +306,7 @@ DMMFREE
             CLR.W   (A0)
             MOVEM.L (A7)+,D0/A0
             RTS
+
 
 
 

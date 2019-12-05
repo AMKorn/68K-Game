@@ -17,6 +17,15 @@ Furthermore, enemies and mechanics to deal with them can be added.
 *	[Espacio] : Delete the placed platforms / reset the level in case of error.
 *	P / [Esc] : Pause the level
 
+## Implemented:
+* Player character and movement to all directions (in the future, the player will fall, but I have no implemented yet platforms and collisions so if I add gravity the player will fall indefinitely)
+
+## TO-DO
+* Implement platforms
+* Implement gravity
+* Addable platforms
+* Enemies
+
 ## Descripción básica:
 Nuestra propuesta para la práctica final consiste en un juego de plataformas inspirado en los clásicos, con las mecánicas esperadas en un juego del género, pero con un pequeño elemento inesperado: tú eres las plataformas.
 
@@ -32,11 +41,3 @@ Además, se le pueden añadir también enemigos y mecánicas para lidiar con ell
 *	[Shift]	Colocar “bomba”
 *	[Espacio] 	Eliminar las plataformas colocadas / reset del nivel en caso de error.
 *	P / [Esc]	Pausar el nivel
-
-## TO-DO
-### Compulsory part:
-* BDREAD (SYSTEM.X68) - Read from keyboard
-* SCRUPD (SYSTEM.X68) - Update screen w/ double buffer
-
-### Optional part:
-Everything
