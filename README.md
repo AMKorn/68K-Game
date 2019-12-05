@@ -24,7 +24,7 @@ Furthermore, enemies and mechanics to deal with them can be added.
 
 ## TO-DO
 * Implement platforms
-* Add jumping hability
+* Add jumping ability
 * Implement gravity acceleration
 * Addable platforms
 * Enemies
