@@ -23,6 +23,7 @@ START       JSR     SYSINIT
 ; --- UPDATE ------------------------------------------------------------------
 
 .LOOP       TRAP    #KBDTRAP                ; READ KEYBOARD
+            JSR     PLRUPD
             ; TO DO: CALL GAME UPDATE CODE HERE
 
 ; --- WAIT SYNCH --------------------------------------------------------------
@@ -44,6 +45,7 @@ START       JSR     SYSINIT
             INCLUDE "SYSVAR.X68"
             INCLUDE "VAR.X68"
             END    START
+
 
 
 *~Font name~Courier New~

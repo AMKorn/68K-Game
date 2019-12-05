@@ -2,7 +2,7 @@
 Project for Estructura de Computadores II in which we have to program an application with a GUI, in this case a videogame.
 
 ## Basic description:
-Our proposition for the final project consist of a platforming game inspired by the classics, with its expected mechanics, but with a small twist: you are the platforms.
+Our proposition for the final project consists of a platforming game inspired by the classics, with its expected mechanics, but with a small twist: you are the platforms.
 
 That means, apart from the movement controls, the player counts with the hability of making "copies" of themselves, static on space, which they can use to jump to and reach higher places.
 

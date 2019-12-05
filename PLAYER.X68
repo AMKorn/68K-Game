@@ -18,24 +18,43 @@ PLRUPD
 ; Updates the player location
 ; INPUT     - None, reads KBDVAL
 ; -----------------------------------------------------------------------------
-            MOVEM.L D0,-(A7)
+            MOVEM.L D0-D2,-(A7)
             MOVE.B  KBDVAL,D0
-            BTST.B  #KBDBITLF,KBDVAL
-            BEQ     .NOLEFT
-            SUB.W   #PLRSPDX,PLRPOSX
-.NOLEFT     BTST.B  #KBDBITUP,KBDVAL
-            BEQ     .NOUP
-            SUB.W   #PLRSPDY,PLRPOSY
-.NOUP       BTST.B  #KBDBITRT,KBDVAL
-            BEQ     .NORT
-            ADD.W   #PLRSPDX,PLRPOSX
-.NORT       BTST.B  #KBDBITDN,KBDVAL
-            BEQ     .NODN
-            ADD.W   #PLRSPDY,PLRPOSY
-.NODN
-            MOVEM.L (A7)+,D0
-            RTS
+            MOVE.W  PLRPOSX,D1
+            MOVE.W  PLRPOSY,D2
+            BTST.L  #KBDBITLF,D0
+            BEQ     .CONT1
+            CMP.W   #(0+PLRSPDX),D1
+            BGT     .MOVELF
+            MOVE.W  #0,D1
+            BRA     .CONT1
+.MOVELF     SUB.W   #PLRSPDX,D1
             
+.CONT1      BTST.L  #KBDBITUP,D0
+            BEQ     .CONT2
+            CMP.W   #(PLRDIM+PLRSPDX),D2
+            BGT     .MOVEUP
+            MOVE.W  #(PLRDIM),D2
+            BRA     .CONT2
+.MOVEUP     SUB.W   #PLRSPDY,D2
+            
+.CONT2      BTST.L  #KBDBITRT,D0
+            BEQ     .CONT3
+            CMP.W   #(SCRWIDTH-PLRDIM),D1
+            BEQ     .CONT3
+            ADD.W   #PLRSPDX,D1
+            
+.CONT3      BTST.L  #KBDBITDN,D0
+            BEQ     .END
+            CMP.W   #(SCRHEIGH-PLRDIM),D2
+            BEQ     .END
+            ADD.W   #PLRSPDY,D2
+.END
+            MOVE.W  D1,PLRPOSX
+            MOVE.W  D2,PLRPOSY
+            MOVEM.L (A7)+,D0-D2
+            RTS
+
 ; -----------------------------------------------------------------------------
 PLRPLOT
 ; Plots the player
@@ -55,6 +74,10 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
+
+
+
 
 
 *~Font name~Courier New~
