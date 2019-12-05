@@ -18,7 +18,8 @@ Furthermore, enemies and mechanics to deal with them can be added.
 *	P / [Esc] : Pause the level
 
 ## Implemented:
-* Player character and movement to all directions (in the future, the player will fall, but I have no implemented yet platforms and collisions so if I add gravity the player will fall indefinitely)
+* Player character and movement to all directions
+* Window border collisions
 
 ## TO-DO
 * Implement platforms

@@ -23,32 +23,36 @@ PLRUPD
             MOVE.W  PLRPOSX,D1
             MOVE.W  PLRPOSY,D2
             BTST.L  #KBDBITLF,D0
-            BEQ     .CONT1
-            CMP.W   #(0+PLRSPDX),D1
-            BGT     .MOVELF
-            MOVE.W  #0,D1
-            BRA     .CONT1
-.MOVELF     SUB.W   #PLRSPDX,D1
+            BEQ     .NOLF
+            SUB.W   #PLRSPDX,D1
             
-.CONT1      BTST.L  #KBDBITUP,D0
-            BEQ     .CONT2
-            CMP.W   #(PLRDIM+PLRSPDX),D2
-            BGT     .MOVEUP
-            MOVE.W  #(PLRDIM),D2
-            BRA     .CONT2
-.MOVEUP     SUB.W   #PLRSPDY,D2
+.NOLF       BTST.L  #KBDBITUP,D0
+            BEQ     .NOUP
+            SUB.W   #PLRSPDY,D2
             
-.CONT2      BTST.L  #KBDBITRT,D0
-            BEQ     .CONT3
-            CMP.W   #(SCRWIDTH-PLRDIM),D1
-            BEQ     .CONT3
+.NOUP       BTST.L  #KBDBITRT,D0
+            BEQ     .NORT
             ADD.W   #PLRSPDX,D1
             
-.CONT3      BTST.L  #KBDBITDN,D0
-            BEQ     .END
-            CMP.W   #(SCRHEIGH-PLRDIM),D2
-            BEQ     .END
+.NORT       BTST.L  #KBDBITDN,D0
+            BEQ     .NODN
             ADD.W   #PLRSPDY,D2
+.NODN
+            CMP.W   #0,D1                   ; Checks if OOB (Out-of-Bounds)
+            BGT     .NOTOOB1
+            MOVE.W  #0,D1
+            BRA     .Y_OOB
+.NOTOOB1    CMP.W   #(SCRWIDTH-PLRDIM),D1
+            BLT     .Y_OOB
+            MOVE.W  #(SCRWIDTH-PLRDIM),D1
+
+.Y_OOB      CMP.W   #PLRDIM,D2
+            BGT     .NOTOOB2
+            MOVE.W  #PLRDIM,D2
+            BRA     .END
+.NOTOOB2    CMP.W   #SCRHEIGH,D2
+            BLT     .END
+            MOVE.W  #SCRHEIGH,D2
 .END
             MOVE.W  D1,PLRPOSX
             MOVE.W  D2,PLRPOSY
@@ -74,6 +78,7 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
