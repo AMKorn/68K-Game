@@ -23,10 +23,11 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Window border collisions
 * Gravity acceleration
 * Jump, for the moment with infinite double jumps.
-* Added platform plot
+* Added platforms
+* Added collisions with platforms on the Y-axis
 
 ## TO-DO
-* Implement platforms collision
+* Implement platforms collision on X-axis
 * Limit player jump ability
 * Addable platforms
 * Enemies
