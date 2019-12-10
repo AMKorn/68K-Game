@@ -12,11 +12,13 @@
             INCLUDE "SYSTEM.X68"            ; SYSTEM CODE
             INCLUDE "CONST.X68"             ; GAME CONSTANTS
             INCLUDE "PLAYER.X68"            ; PLAYER CODE
+            INCLUDE "MAPS.X68"              ; MAPS CODE
             ; TO DO: PUT YOUR GAME-RELATED INCLUDES HERE
 
 ; --- INITIALIZE --------------------------------------------------------------
 
 START       JSR     SYSINIT
+            MOVE.L  #(500<<8+250),D1
             JSR     PLRINIT
             ; TO DO: CALL GAME INITIALIZATION CODE HERE
 
@@ -35,6 +37,8 @@ START       JSR     SYSINIT
 ; --- PLOT --------------------------------------------------------------------
 
             ; TO DO: CALL GAME PLOT CODE HERE
+            LEA.L   MAPINFO1,A1
+            JSR     MAPPLOT
             JSR     PLRPLOT
             TRAP    #SCRTRAP                ; SHOW GRAPHICS
             BRA     .LOOP

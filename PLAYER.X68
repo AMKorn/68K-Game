@@ -5,12 +5,16 @@
 ; -----------------------------------------------------------------------------
 PLRINIT
 ; INITIALIZES THE PLAYER
-; INPUT     - None
+; INPUT     - D1.L: The player position, with 2 most significant Bytes being
+;             on X axis and least significant in Y axis
 ; OUTPUT    - None
-; MODIFIES  - None
+; MODIFIES  - D1.L
 ; -----------------------------------------------------------------------------
-            MOVE.W  #500,PLRPOSX                ; Just to test
-            MOVE.W  #250,PLRPOSY
+            MOVE.W  D1,PLRPOSY
+            LSR.L   #8,D1
+            MOVE.W  D1,PLRPOSX
+            ;MOVE.W  #500,PLRPOSX                ; Just to test
+            ;MOVE.W  #250,PLRPOSY
             
             RTS
             
@@ -47,10 +51,10 @@ PLRUPD
 
 .VERT       BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
-            MOVE.W  #-5*GRAVITY,D4
+            MOVE.W  #IMPULSE,D4
             
-.NOEDGE     ;BTST.L  #KBDBITUP,D0
-            ;BNE     .NOJUMP
+.NOEDGE     ;BTST.L  #KBDBITUP,D0           ; Uncomment this section
+            ;BNE     .NOJUMP                ; to have gradual jump
             ADD.W   #GRAVITY,D4
             
 .NOJUMP     ADD.W   D4,D3                   ; Fall (PLRPOSY+PLRSPDY)
@@ -90,6 +94,8 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
+
 
 
 
