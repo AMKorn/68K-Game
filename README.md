@@ -26,6 +26,7 @@ Furthermore, enemies and mechanics to deal with them can be added.
 
 ## TO-DO
 * Implement platforms
+* Limit player jump ability
 * Addable platforms
 * Enemies
 
