@@ -21,11 +21,11 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Player character and movement from right to left
 * Player fall
 * Window border collisions
+* Gravity acceleration
+* Jump, for the moment with infinite double jumps.
 
 ## TO-DO
 * Implement platforms
-* Add jumping ability
-* Implement gravity acceleration
 * Addable platforms
 * Enemies
 

@@ -24,6 +24,7 @@ PLRUPD
             MOVE.B  KBDEDGE,D1
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
+            MOVE.W  PLRSPDY,D4
             
             ; ---- Horizontal movement ----------------------------------------
             BTST.L  #KBDBITLF,D0
@@ -44,22 +45,15 @@ PLRUPD
 
             ; --- Vertical movement -------------------------------------------
 
-.VERT       ;MOVE.W  PLRJMP,D4
-            BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
-            BEQ     .NOJUMP
-            ;CMP.B   #0,D4                   ; Checks if player is jumping
-            ;BNE     .NOJUMP
-            SUB.W   #3*PLRSPDY,D3
-            ;MOVE.W  #$FFFF,D4
+.VERT       BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
+            BEQ     .NOEDGE
+            MOVE.W  #-5*GRAVITY,D4
             
-.NOJUMP     ;SUBQ.W  #1,D4
-            ;BEQ     .GO_DOWN                ; Checks if player is jumping
-            ;BTST.L  #KBDVAL,D1              ; Checks if UP is pressed
-            ;BEQ     .GO_DOWN
-            ;SUB.W   #PLRSPDY,D3
-            ;BRA     .Y_OOB
-.GO_DOWN    ;MOVE.W  #0,D4
-            ADD.W   #PLRSPDY,D3             ; Falling
+.NOEDGE     ;BTST.L  #KBDBITUP,D0
+            ;BNE     .NOJUMP
+            ADD.W   #GRAVITY,D4
+            
+.NOJUMP     ADD.W   D4,D3                   ; Fall (PLRPOSY+PLRSPDY)
 
             ; ---------------------
             
@@ -73,7 +67,7 @@ PLRUPD
             
 .END        MOVE.W  D2,PLRPOSX
             MOVE.W  D3,PLRPOSY
-            MOVE.W  D4,PLRJMP
+            MOVE.W  D4,PLRSPDY
             MOVEM.L (A7)+,D0-D4
             RTS
 
@@ -96,6 +90,7 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 

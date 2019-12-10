@@ -2,14 +2,19 @@
 ; GAME CONSTANTS
 ; =============================================================================
 
+; - General constants ---------------------------------------------------------
+
+GRAVITY     EQU     10
+
 ; - Player related constants --------------------------------------------------
 
 PLRDIM      EQU     40
 PLRCLR      EQU     $0000FF00               ; Totally green
 PLRSPDX     EQU     20
-PLRSPDY     EQU     20
+;PLRSPDY     EQU     20
 
 ; -----------------------------------------------------------------------------
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~
