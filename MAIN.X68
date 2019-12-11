@@ -7,7 +7,8 @@
             ORG     $1000
 
 ; --- CODE INCLUDES -----------------------------------------------------------
-
+            
+            INCLUDE "UTILS.X68"             ; MACROS
             INCLUDE "SYSCONST.X68"          ; SYSTEM CONSTANTS
             INCLUDE "SYSTEM.X68"            ; SYSTEM CODE
             INCLUDE "CONST.X68"             ; GAME CONSTANTS
@@ -50,6 +51,7 @@ START       JSR     SYSINIT
             INCLUDE "SYSVAR.X68"
             INCLUDE "VAR.X68"
             END    START
+
 
 
 

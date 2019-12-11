@@ -18,12 +18,13 @@ GRIDHGT     EQU     SCRHEIGH/YGRIDS
 
 ; - Player related constants --------------------------------------------------
 
-PLRDIM      EQU     40
+PLRDIM      EQU     39
 PLRCLR      EQU     $0000FF00               ; Totally green
-PLRSPDX     EQU     20
+PLRSPDX     EQU     10
 MAXSPD      EQU     GRIDHGT
 
 ; -----------------------------------------------------------------------------
+
 
 
 *~Font name~Courier New~

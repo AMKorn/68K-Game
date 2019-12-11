@@ -70,15 +70,7 @@ PLRUPD
             
             ; -- Lower Left Corner (posX,posY) --
             
-            MOVE.W  D2,D0                   ; posX -> D0
-            DIVS    #GRIDWTH,D0             ; D0 now has X grid of the player
-            AND.L   #$FFFF,D0               ; We don't care about the residue
-            LSL.W   #8,D0                   ; D0.W now has XX00
-            CLR.L   D1
-            MOVE.W  D3,D1                   ; posY -> D1
-            DIVS    #GRIDHGT,D1             ; D1 now has Y grid of the player
-            AND.L   #$FFFF,D1
-            MOVE.B  D1,D0                   ; D0 now has XXYY of player
+            GETCELL 2,0,3,0,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1                   ; If lower left cell is ground
             BNE     .LRCORNER
@@ -91,15 +83,7 @@ PLRUPD
             
             ; -- Lower Rigth Corner (posX+plrDim,posY) --
             
-.LRCORNER   MOVE.W  D2,D0
-            ADD.W   #PLRDIM,D0              ; posX+plrDim -> D0
-            DIVS    #GRIDWTH,D0
-            AND.L   #$FFFF,D0
-            LSL.W   #8,D0
-            CLR.L   D1
-            MOVE.W  D3,D1                   ; posY -> D1
-            DIVS    #GRIDHGT,D1
-            MOVE.B  D1,D0
+.LRCORNER   GETCELL 2,PLRDIM,3,0,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BNE     .ULCORNER
@@ -112,15 +96,7 @@ PLRUPD
             
             ; -- Upper Left Corner (posX,posY-plrDim) --
             
-.ULCORNER   MOVE.W  D2,D0                   ; posX -> D0
-            DIVS    #GRIDWTH,D0
-            AND.L   #$FFFF,D0
-            LSL.L   #8,D0
-            CLR.L   D1
-            MOVE.W  D3,D1
-            SUB.W   #PLRDIM,D1              ; posY-plrDim -> D1
-            DIVS    #GRIDHGT,D1
-            MOVE.B  D1,D0
+.ULCORNER   GETCELL 2,0,3,-PLRDIM,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BNE     .URCORNER
@@ -133,16 +109,7 @@ PLRUPD
             
             ; -- Upper Right Corner (posX+plrDim,posY-plrDim) --
             
-.URCORNER   MOVE.W  D2,D0                   
-            ADD.W   #PLRDIM,D0              ; posX+plrDim -> D0
-            DIVS    #GRIDWTH,D0
-            AND.L   #$FFFF,D0
-            LSL.L   #8,D0
-            CLR.L   D1
-            MOVE.W  D3,D1
-            SUB.W   #PLRDIM,D1              ; posY-plrDim -> D1
-            DIVS    #GRIDHGT,D1
-            MOVE.B  D1,D0
+.URCORNER   GETCELL 2,PLRDIM,3,-PLRDIM,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BNE     .Y_OOB
@@ -187,6 +154,7 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
