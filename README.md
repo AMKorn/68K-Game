@@ -27,10 +27,10 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Added collisions with platforms on both axes
 
 ## TO-DO
-* Re-implement vertical collisions the same way I did horizontal collisions
 * Limit player jump ability
 * Addable platforms
 * Enemies
+* Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
 ## Descripción básica:
 Nuestra propuesta para la práctica final consiste en un juego de plataformas inspirado en los clásicos, con las mecánicas esperadas en un juego del género, pero con un pequeño elemento inesperado: tú eres las plataformas.

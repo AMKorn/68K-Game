@@ -91,7 +91,20 @@ PLRUPD
 
             BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
+
+            
+            GETCELL 2,0,3,-PLRDIM,0
+            SUBQ.W  #1,D0
+            JSR     GETGRIDVAL
+            CMP     #1,D1
+            BEQ     .NOEDGE
+            GETCELL 2,PLRDIM,3,-PLRDIM,0
+            SUBQ.W  #1,D0
+            JSR     GETGRIDVAL
+            CMP     #1,D1
+            BEQ     .NOEDGE
             MOVE.W  #IMPULSE,D4
+            
             BRA     .NOGRAV
             
 .NOEDGE     ;BTST.L  #KBDBITUP,D0           **   Uncomment this section   **
@@ -103,6 +116,11 @@ PLRUPD
 .NOGRAV     ADD.W   D4,D3                   ; Fall (PLRPOSY+PLRSPDY)
 
             ; --- Collisions --------------------------------------------------
+            
+            * I know this is awful, but just in case it stays like this in the
+            * final version, I tried replicating the same as what I did with the
+            * horizontal collisions and it went terribly wrong. I'll try to fix
+            * it if I can but it is not a priority.
             
             ; -- Lower Left Corner (posX,posY) --
             
@@ -191,6 +209,7 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
