@@ -22,14 +22,16 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Player fall
 * Window border collisions
 * Gravity acceleration
-* Jump, for the moment with infinite double jumps.
+* Jump.
 * Added platforms
 * Added collisions with platforms on both axes
 
 ## TO-DO
-* Limit player jump ability
 * Addable platforms
 * Enemies
+* Levels
+* Sistema de vidas
+* Main menu, pause, game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
 ## Descripción básica:

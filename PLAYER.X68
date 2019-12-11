@@ -92,19 +92,28 @@ PLRUPD
             BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
 
-            
             GETCELL 2,0,3,-PLRDIM,0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
-            CMP     #1,D1
+            CMP.B   #1,D1
             BEQ     .NOEDGE
             GETCELL 2,PLRDIM,3,-PLRDIM,0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
-            CMP     #1,D1
+            CMP.B   #1,D1
             BEQ     .NOEDGE
-            MOVE.W  #IMPULSE,D4
             
+            GETCELL 2,0,3,0,0
+            ADDQ.W  #1,D0
+            JSR     GETGRIDVAL
+            CMP.B   #1,D1
+            BEQ     .JUMP
+            GETCELL 2,PLRDIM,3,0,0
+            ADDQ.W  #1,D0
+            JSR     GETGRIDVAL
+            CMP.B   #1,D1
+            BNE     .NOEDGE
+.JUMP       MOVE.W  #IMPULSE,D4
             BRA     .NOGRAV
             
 .NOEDGE     ;BTST.L  #KBDBITUP,D0           **   Uncomment this section   **
