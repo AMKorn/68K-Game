@@ -24,7 +24,7 @@ PLRUPD
 ; Updates the player location
 ; INPUT     - None, reads KBDVAL and KBDEDGE
 ; -----------------------------------------------------------------------------
-            MOVEM.L D0-D4,-(A7)
+            MOVEM.L D0-D4/A0,-(A7)
             MOVE.B  KBDVAL,D0
             MOVE.B  KBDEDGE,D1
             MOVE.W  PLRPOSX,D2
@@ -37,11 +37,45 @@ PLRUPD
             SUB.W   #PLRSPDX,D2
             
 .NOLF       BTST.L  #KBDBITRT,D0
-            BEQ     .X_OOB
+            BEQ     .H_COLL
             ADD.W   #PLRSPDX,D2
             
-            ; --- Horizontal collisions - To be moved down --------------------
-
+            ; --- Horizontal collisions ---------------------------------------
+            
+.H_COLL     LEA.L   MAPINFO1,A0
+            
+            ; -- Left Collisions (posX) --
+            
+            GETCELL 2,0,3,0,0               ; get the cell of lower left corner
+            JSR     GETGRIDVAL              ; from the character
+            CMP.B   #1,D1
+            BEQ     .L_COLL
+            GETCELL 2,0,3,-PLRDIM,0         ; get the cell of upper left corner
+            JSR     GETGRIDVAL
+            CMP.B   #1,D1
+            BNE     .RGTCOLL
+.L_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
+            ADDQ.W  #1,D0                   ; we move to the right cell 
+            MULU.W  #GRIDWTH,D0
+            MOVE    D0,D2
+            BRA     .X_OOB
+            
+            ; -- Right Collisions (posX+plrDim) --
+.RGTCOLL    GETCELL 2,PLRDIM,3,0,0
+            JSR     GETGRIDVAL
+            CMP.B   #1,D1
+            BEQ     .R_COLL
+            GETCELL 2,PLRDIM,3,-PLRDIM,0
+            JSR     GETGRIDVAL
+            CMP.B   #1,D1
+            BNE     .X_OOB
+.R_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
+            SUBQ.W  #1,D0                   ; we move to the left cell
+            MULU    #GRIDWTH,D0
+            MOVE    D0,D2
+            
+            ; -- Horizontal Out-Of-Bounds --
+            
 .X_OOB      CMP.W   #0,D2                   ; Checks if OOB (Out-of-Bounds)
             BGT     .NOTOOB1                ; on the X-axis
             MOVE.W  #0,D2
@@ -52,12 +86,16 @@ PLRUPD
 
             ; --- Vertical movement -------------------------------------------
 
-.VERT       BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
+.VERT       MOVE.B  KBDVAL,D0
+            MOVE.B  KBDEDGE,D1
+
+            BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
             MOVE.W  #IMPULSE,D4
+            BRA     .NOGRAV
             
-.NOEDGE     ;BTST.L  #KBDBITUP,D0           ; Uncomment this section
-            ;BNE     .NOJUMP                ; to have gradual jump
+.NOEDGE     ;BTST.L  #KBDBITUP,D0           **   Uncomment this section   **
+            ;BNE     .NOGRAV                ** to have buggy gradual jump **
             CMP.W   #MAXSPD,D4
             BEQ     .NOGRAV
             ADD.W   #GRAVITY,D4
@@ -65,8 +103,6 @@ PLRUPD
 .NOGRAV     ADD.W   D4,D3                   ; Fall (PLRPOSY+PLRSPDY)
 
             ; --- Collisions --------------------------------------------------
-            
-            LEA.L   MAPINFO1,A0
             
             ; -- Lower Left Corner (posX,posY) --
             
@@ -120,6 +156,7 @@ PLRUPD
             ADD.W   #PLRDIM,D3
             CLR.W   D4
 
+            ; -- Vertical Out-Of-Bounds --
             
 .Y_OOB      CMP.W   #PLRDIM,D3              ; Checks if OOB on Y-axis
             BGT     .NOTOOB2

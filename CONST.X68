@@ -5,7 +5,7 @@
 ; - General constants ---------------------------------------------------------
 
 GRAVITY     EQU     10                      ; Gravity pushes down when >0
-IMPULSE     EQU     -5*GRAVITY
+IMPULSE     EQU     -4*GRAVITY
 BLACK       EQU     $00000000
 WHITE       EQU     $00FFFFFF
 

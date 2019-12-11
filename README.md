@@ -24,10 +24,10 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Gravity acceleration
 * Jump, for the moment with infinite double jumps.
 * Added platforms
-* Added collisions with platforms on the Y-axis
+* Added collisions with platforms on both axes
 
 ## TO-DO
-* Implement platforms collision on X-axis
+* Re-implement vertical collisions the same way I did horizontal collisions
 * Limit player jump ability
 * Addable platforms
 * Enemies
