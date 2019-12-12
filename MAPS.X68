@@ -4,7 +4,7 @@
 ; =============================================================================
 
 MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-            DC.B    1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
@@ -15,6 +15,7 @@ MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+START1      DC.B    1*GRIDWTH,1*GRIDHGT     ; X,Y coordinates of player start
             DS.W    0                       ; Better safe than sorry
        
 ; -----------------------------------------------------------------------------
@@ -32,17 +33,17 @@ MAPINIT
 .YLOOP
             MOVE.W  #0,D3
 .XLOOP      
-            CMP.B   #2,(A0)
-            BNE     .NEXT
-            MOVE.B  D3,D1
-            MULU    #GRIDWTH,D1
-            LSL.L   #8,D1
-            LSL.L   #8,D1
-            MOVE.B  D2,D0
-            MULU.W  #GRIDHGT,D0
-            ADD.B   #PLRDIM,D0
-            MOVE.W  D0,D1
-            JSR     PLRINIT
+*            CMP.B   #2,(A0)
+*            BNE     .NEXT
+*            MOVE.B  D3,D1
+*            MULU    #GRIDWTH,D1
+*            LSL.L   #8,D1
+*            LSL.L   #8,D1
+*            MOVE.B  D2,D0
+*            MULU.W  #GRIDHGT,D0
+*            ADD.B   #PLRDIM,D0
+*            MOVE.W  D0,D1
+*            JSR     PLRINIT
 
 .NEXT       
             ADDQ.L  #1,A0
@@ -53,6 +54,10 @@ MAPINIT
             ADDQ.B  #1,D2
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
+            
+            MOVE.W  (A0),D1
+            JSR     PLRINIT
+            
             MOVEM.L (A7)+,D0-D3/A0
             RTS            
 
@@ -67,9 +72,15 @@ MAPUPD
             MOVEM.L D0-D3/A0,-(A7)
             
             MOVE.B  KBDEDGE,D0
-            BTST.L  #KBDBITF1,D0
-            BEQ     .END
+            BTST.L  #KBDBITDN,D0
+            BEQ     .CONT
+            ADD.L   #XGRIDS*YGRIDS,A0
+            MOVE.W  (A0),D1
+            JSR     PLRINIT
+            BRA     .END
             
+.CONT       BTST.L  #KBDBITF1,D0
+            BEQ     .END
             
             MOVE.W  #0,D2
 .YLOOP
@@ -89,6 +100,8 @@ MAPUPD
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
 
+            MOVE.W  (A0),D1
+            JSR     PLRINIT
             
 .END        MOVEM.L (A7)+,D0-D3/A0
             RTS

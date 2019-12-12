@@ -262,9 +262,11 @@ PLRPLOT
 ; Plots the player
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D4,-(A7)
-            MOVE.L  #PLRCLR,D1
+            MOVE.L  #BLACK,D1
             MOVE.B  #80,D0
-            MOVE.B  #81,D0                  ; Set pen and fill color the same
+            TRAP    #15                     ; Set pen color black
+            MOVE.L  #PLRCLR,D1
+            MOVE.B  #81,D0                  ; Set color green
             TRAP    #15
             MOVE.B  #87,D0
             MOVE.W  PLRPOSX,D1              ; Left X is the player posX
