@@ -4,7 +4,7 @@
 ; =============================================================================
 
 MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+            DC.B    1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
@@ -12,11 +12,50 @@ MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+            DC.B    1,0,0,0,0,0,3,3,3,0,0,0,0,0,0,1
+            DC.B    1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DS.W    0                       ; Just in case
        
+; -----------------------------------------------------------------------------
+MAPINIT
+; Initializes the map, and places the player in it.
+; Input     - A0: The pointer to the matrix with the level info
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVEM.L D0-D3/A0,-(A7)
+            
+            CLR.L   D1
+            CLR.L   D0
+            MOVE.W  #0,D2
+.YLOOP
+            MOVE.W  #0,D3
+.XLOOP      
+            CMP.B   #2,(A0)
+            BNE     .NEXT
+            MOVE.B  D3,D1
+            MULU    #GRIDWTH,D1
+            LSL.L   #8,D1
+            LSL.L   #8,D1
+            MOVE.B  D2,D0
+            MULU.W  #GRIDHGT,D0
+            ADD.B   #PLRDIM,D0
+            MOVE.W  D0,D1
+            JSR     PLRINIT
+
+.NEXT       
+            ADDQ.L  #1,A0
+            ADDQ.B  #1,D3
+            CMP.B   #XGRIDS,D3
+            BNE     .XLOOP
+            
+            ADDQ.B  #1,D2
+            CMP.B   #YGRIDS,D2
+            BNE     .YLOOP
+            MOVEM.L (A7)+,D0-D3/A0
+            RTS            
+
 ; -----------------------------------------------------------------------------     
 MAPPLOT
 ; Plots a map given its matrix of information.
@@ -46,9 +85,12 @@ MAPPLOT
             MOVE.W  #0,D6                   ; D6 = X index of grid
 .XLOOP            
             CMP.B   #1,(A0)                 ; There is ground
-            BNE     .NEXT
+            
+            BNE     .NEXT1
             MOVE.B  #81,D0
             MOVE.L  #BLACK,D1
+            TRAP    #15
+            MOVE.B  #80,D0
             TRAP    #15
             
             ; Paint the black squares
@@ -64,7 +106,27 @@ MAPPLOT
             MOVE.B  #87,D0
             TRAP    #15
 
-.NEXT
+.NEXT1      CMP.B   #3,(A0)
+            BNE     .NEXT2
+            
+            MOVE.B  #81,D0
+            MOVE.L  #CLONE,D1
+            TRAP    #15
+           
+            ; Paint the red squares
+            MOVE.W  D6,D1
+            MULS.W  #GRIDWTH,D1
+            MOVE.W  D1,D3
+            ADD.W   #GRIDWTH,D3
+            
+            MOVE.W  D5,D2
+            MULS.W  #GRIDHGT,D2
+            MOVE.W  D2,D4
+            ADD.W   #GRIDHGT,D4
+            MOVE.B  #87,D0
+            TRAP    #15
+            
+.NEXT2
             ADDQ.L  #1,A0
             ADDQ.B  #1,D6
             CMP.B   #XGRIDS,D6
@@ -97,9 +159,10 @@ GETGRIDVAL
             MOVE.B  (A0),D1
             MOVEM.L (A7)+,D0/A0
             RTS
+           
             
 
-            
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

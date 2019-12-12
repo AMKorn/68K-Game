@@ -31,7 +31,17 @@ PLRUPD
             MOVE.W  PLRPOSY,D3
             MOVE.W  PLRSPDY,D4
             
-            ; ---- Horizontal movement ----------------------------------------
+            ; --- Platform placement ------------------------------------------
+            
+*            BTST.L  #KBDBITDN,D1
+*            BNE     .NOPLAT
+*            GETCELL 2,0,3,0,0
+*            
+*
+*.NOPLAT
+            
+            ; --- Horizontal movement -----------------------------------------
+            
             BTST.L  #KBDBITLF,D0
             BEQ     .NOLF
             SUB.W   #PLRSPDX,D2
@@ -50,10 +60,16 @@ PLRUPD
             JSR     GETGRIDVAL              ; from the character
             CMP.B   #1,D1
             BEQ     .L_COLL
+            CMP.B   #3,D1
+            BEQ     .L_COLL
+            
             GETCELL 2,0,3,-PLRDIM,0         ; get the cell of upper left corner
             JSR     GETGRIDVAL
             CMP.B   #1,D1
+            BEQ     .L_COLL
+            CMP.B   #3,D1
             BNE     .RGTCOLL
+            
 .L_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
             ADDQ.W  #1,D0                   ; we move to the right cell 
             MULU.W  #GRIDWTH,D0
@@ -61,14 +77,21 @@ PLRUPD
             BRA     .X_OOB
             
             ; -- Right Collisions (posX+plrDim) --
+            
 .RGTCOLL    GETCELL 2,PLRDIM,3,0,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BEQ     .R_COLL
+            CMP.B   #3,D1
+            BEQ     .R_COLL
+            
             GETCELL 2,PLRDIM,3,-PLRDIM,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
+            BEQ     .R_COLL
+            CMP.B   #3,D1
             BNE     .X_OOB
+            
 .R_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
             SUBQ.W  #1,D0                   ; we move to the left cell
             MULU    #GRIDWTH,D0
@@ -92,26 +115,40 @@ PLRUPD
             BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
 
+            ; -- Is there a block up? --
+
             GETCELL 2,0,3,-PLRDIM,0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BEQ     .NOEDGE
+            CMP.B   #3,D1
+            BEQ     .NOEDGE
+            
             GETCELL 2,PLRDIM,3,-PLRDIM,0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BEQ     .NOEDGE
+            CMP.B   #3,D1
+            BEQ     .NOEDGE
+            
+            ; -- Is the player on ground? --
             
             GETCELL 2,0,3,0,0
             ADDQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BEQ     .JUMP
+            CMP.B   #3,D1
+            BEQ     .JUMP
+            
             GETCELL 2,PLRDIM,3,0,0
             ADDQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
+            BEQ     .JUMP
+            CMP.B   #3,D1
             BNE     .NOEDGE
 .JUMP       MOVE.W  #IMPULSE,D4
             BRA     .NOGRAV
@@ -135,22 +172,29 @@ PLRUPD
             
             GETCELL 2,0,3,0,0
             JSR     GETGRIDVAL
+*            CMPMU.B D1,1,3,NE,.LRCORNER
             CMP.B   #1,D1                   ; If lower left cell is ground
+            BEQ     .CONTLL
+            CMP.B   #3,D1
             BNE     .LRCORNER
-            CLR.W   D3
+.CONTLL     CLR.W   D3
             MOVE.B  D0,D3
             SUBQ.B  #1,D3
             MULU.W  #GRIDHGT,D3
             ADD.W   #PLRDIM,D3
             CLR.W   D4
+            BRA     .ULCORNER
             
             ; -- Lower Rigth Corner (posX+plrDim,posY) --
             
 .LRCORNER   GETCELL 2,PLRDIM,3,0,0
             JSR     GETGRIDVAL
+*            CMPMU.B D1,1,3,NE,.ULCORNER
             CMP.B   #1,D1
+            BEQ     .CONTLR
+            CMP.B   #3,D1
             BNE     .ULCORNER
-            CLR.W   D3
+.CONTLR     CLR.W   D3
             MOVE.B  D0,D3
             SUBQ.W  #1,D3
             MULU.W  #GRIDHGT,D3
@@ -162,21 +206,26 @@ PLRUPD
 .ULCORNER   GETCELL 2,0,3,-PLRDIM,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
+            BEQ     .CONTUL
+            CMP.B   #3,D1
             BNE     .URCORNER
-            CLR.W   D3
+.CONTUL     CLR.W   D3
             MOVE.B  D0,D3
             ADDQ.W  #1,D3
             MULU    #GRIDHGT,D3
             ADD.W   #PLRDIM,D3
             CLR.W   D4
+            BRA     .Y_OOB
             
             ; -- Upper Right Corner (posX+plrDim,posY-plrDim) --
             
 .URCORNER   GETCELL 2,PLRDIM,3,-PLRDIM,0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
+            BEQ     .CONTUR
+            CMP.B   #3,D1
             BNE     .Y_OOB
-            CLR.W   D3
+.CONTUR     CLR.W   D3
             MOVE.B  D0,D3
             ADDQ.W  #1,D3
             MULU    #GRIDHGT,D3
@@ -196,7 +245,7 @@ PLRUPD
 .END        MOVE.W  D2,PLRPOSX
             MOVE.W  D3,PLRPOSY
             MOVE.W  D4,PLRSPDY
-            MOVEM.L (A7)+,D0-D4
+            MOVEM.L (A7)+,D0-D4/A0
             RTS
 
 ; -----------------------------------------------------------------------------
@@ -218,6 +267,8 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
+
 
 
 

@@ -8,6 +8,7 @@ GRAVITY     EQU     10                      ; Gravity pushes down when >0
 IMPULSE     EQU     -4*GRAVITY
 BLACK       EQU     $00000000
 WHITE       EQU     $00FFFFFF
+CLONE       EQU     $0000EE00
 
 ; - Maps related constants ----------------------------------------------------
 
@@ -24,6 +25,9 @@ PLRSPDX     EQU     10
 MAXSPD      EQU     GRIDHGT
 
 ; -----------------------------------------------------------------------------
+
+
+
 
 
 
