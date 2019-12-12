@@ -12,8 +12,8 @@ MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,3,3,3,0,0,0,0,0,0,1
-            DC.B    1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+            DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
+            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DS.W    0                       ; Just in case
        
@@ -160,7 +160,28 @@ GETGRIDVAL
             MOVEM.L (A7)+,D0/A0
             RTS
            
+; -----------------------------------------------------------------------------
+SETGRIDVAL
+; Function to set the value of a specified cell in the level.
+; Input     - D0.W : The X and Y value of the cell in format XXYY
+;           - D1.B : The value of the cell
+;           - A0.L : The pointer to the matrix with the level info
+; Output    - None
+; Modifies  - The value of the cell specified in D0.W
+; -----------------------------------------------------------------------------
+            MOVEM.L D0-D2/A0,-(A7)
             
+            CLR.L   D2
+            MOVE.B  D0,D2
+            LSL     #4,D2
+            ADDA.L  D2,A0
+            
+            LSR     #8,D0
+            ADDA.L  D0,A0
+            
+            MOVE.B  D1,(A0)
+            MOVEM.L (A7)+,D0-D2/A0
+            RTS
 
 
 *~Font name~Courier New~

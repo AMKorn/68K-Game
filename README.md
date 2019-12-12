@@ -24,10 +24,10 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Gravity acceleration
 * Jump.
 * Added platforms
-* Added collisions with platforms on both axes
+* Push down to place a platform on your location.
 
 ## TO-DO
-* Addable platforms
+* Reset button to destroy all placed platforms.
 * Enemies
 * Levels
 * Sistema de vidas

@@ -21,8 +21,11 @@ PLRINIT
             
 ; -----------------------------------------------------------------------------
 PLRUPD
-; Updates the player location
-; INPUT     - None, reads KBDVAL and KBDEDGE
+; Updates the player location, calculates collisions and adds platforms if
+; DOWN is pressed.
+; Input     - None, reads KBDVAL and KBDEDGE
+; Output    - None
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D4/A0,-(A7)
             MOVE.B  KBDVAL,D0
@@ -30,15 +33,21 @@ PLRUPD
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             MOVE.W  PLRSPDY,D4
+            LEA.L   MAPINFO1,A0
             
             ; --- Platform placement ------------------------------------------
             
-*            BTST.L  #KBDBITDN,D1
-*            BNE     .NOPLAT
-*            GETCELL 2,0,3,0,0
-*            
-*
-*.NOPLAT
+            BTST.L  #KBDBITDN,D1
+            BEQ     .NOPLAT
+            MOVE.W  D0,-(A7)
+            MOVE.B  D1,-(A7)
+            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            MOVE.B  #3,D1
+            JSR     SETGRIDVAL
+            MOVE.B  (A7)+,D1
+            MOVE.W  (A7)+,D0
+
+.NOPLAT
             
             ; --- Horizontal movement -----------------------------------------
             
@@ -52,7 +61,7 @@ PLRUPD
             
             ; --- Horizontal collisions ---------------------------------------
             
-.H_COLL     LEA.L   MAPINFO1,A0
+.H_COLL     
             
             ; -- Left Collisions (posX) --
             
