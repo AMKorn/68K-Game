@@ -21,10 +21,8 @@
 ; This is easily utilized with the subroutine PLRINIT by MOVE.L STARTN,D1
 ; =============================================================================
 
-CURRLVL     DS.B    1
-            DS.W    0
-
-LEVEL0      DC.L    0
+LEVEL0      DC.L    0                       ; Just so I don't have to start
+                                            ; counting the levels on 0. 
 LEVEL1      DC.L    MAPINFO1
 LEVEL2      DC.L    MAPINFO2
 

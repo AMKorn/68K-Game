@@ -49,8 +49,7 @@ MAPINIT
 ; -----------------------------------------------------------------------------
 MAPUPD
 ; Updates the map.
-; Input     - A0: The pointer to the matrix with the level info.
-;           - Reads KBDEDGE
+; Input     - None, reads CURRLVL and KBDEDGE
 ; Output    - None
 ; Modifies  - The information in the level matrix.
 ; -----------------------------------------------------------------------------
@@ -103,7 +102,7 @@ MAPUPD
 ; -----------------------------------------------------------------------------     
 MAPPLOT
 ; Plots a map given its matrix of information.
-; Input     - A0: The pointer to the matrix with the level info
+; Input     - None, reads CURRLVL
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------

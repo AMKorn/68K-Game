@@ -4,8 +4,8 @@
 
 ; - General variables ---------------------------------------------------------
 
-;PLRSPDY     DS.B    1
-;            DS.W    0
+CURRLVL     DS.B    1
+            DS.W    0
 
 ; - Player related vars -------------------------------------------------------
 
@@ -16,6 +16,7 @@ PLRLVS      DS.B    1                       ; Global variable: only init once
             DS.W    0
             
 ; -----------------------------------------------------------------------------
+
 
 
 *~Font name~Courier New~
