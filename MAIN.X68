@@ -8,7 +8,7 @@
 
 ; --- CODE INCLUDES -----------------------------------------------------------
             
-            INCLUDE "UTILS.X68"             ; MACROS
+            INCLUDE "UTILS.X68"             ; UTILITIES
             INCLUDE "SYSCONST.X68"          ; SYSTEM CONSTANTS
             INCLUDE "SYSTEM.X68"            ; SYSTEM CODE
             INCLUDE "CONST.X68"             ; GAME CONSTANTS

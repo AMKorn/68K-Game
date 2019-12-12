@@ -163,7 +163,7 @@ MAPPLOT
             MOVE.L  #CLONE,D1
             TRAP    #15
            
-            ; Paint the red squares
+            ; Paint the green squares
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1
             MOVE.W  D1,D3
@@ -175,8 +175,31 @@ MAPPLOT
             ADD.W   #GRIDHGT,D4
             MOVE.B  #87,D0
             TRAP    #15
+
+.NEXT2            
+            CMP.B   #2,(A0)
+            BNE     .NEXT3
             
-.NEXT2
+            MOVE.B  #81,D0
+            MOVE.L  #$00FF85F5,D1
+            TRAP    #15
+            
+            ; Paint the portal
+            
+            MOVE.W  D6,D1
+            MULS.W  #GRIDWTH,D1
+            MOVE.W  D1,D3
+            ADD.W   #GRIDWTH,D3
+            
+            MOVE.W  D5,D2
+            MULS.W  #GRIDHGT,D2
+            MOVE.W  D2,D4
+            ADD.W   #GRIDHGT,D4
+            MOVE.B  #88,D0
+            TRAP    #15
+
+            
+.NEXT3
             ADDQ.L  #1,A0
             ADDQ.B  #1,D6
             CMP.B   #XGRIDS,D6
