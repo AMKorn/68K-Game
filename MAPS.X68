@@ -15,7 +15,7 @@ MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-            DS.W    0                       ; Just in case
+            DS.W    0                       ; Better safe than sorry
        
 ; -----------------------------------------------------------------------------
 MAPINIT
@@ -55,6 +55,43 @@ MAPINIT
             BNE     .YLOOP
             MOVEM.L (A7)+,D0-D3/A0
             RTS            
+
+; -----------------------------------------------------------------------------
+MAPUPD
+; Updates the map.
+; Input     - A0: The pointer to the matrix with the level info.
+;           - Reads KBDEDGE
+; Output    - None
+; Modifies  - The information in the level matrix.
+; -----------------------------------------------------------------------------
+            MOVEM.L D0-D3/A0,-(A7)
+            
+            MOVE.B  KBDEDGE,D0
+            BTST.L  #KBDBITF1,D0
+            BEQ     .END
+            
+            
+            MOVE.W  #0,D2
+.YLOOP
+            MOVE.W  #0,D3
+.XLOOP      
+            CMP.B   #3,(A0)
+            BNE     .NEXT
+            MOVE.B  #0,(A0)
+
+.NEXT       
+            ADDQ.L  #1,A0
+            ADDQ.B  #1,D3
+            CMP.B   #XGRIDS,D3
+            BNE     .XLOOP
+            
+            ADDQ.B  #1,D2
+            CMP.B   #YGRIDS,D2
+            BNE     .YLOOP
+
+            
+.END        MOVEM.L (A7)+,D0-D3/A0
+            RTS
 
 ; -----------------------------------------------------------------------------     
 MAPPLOT

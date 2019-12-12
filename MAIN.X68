@@ -30,6 +30,7 @@ START       JSR     SYSINIT
 
 .LOOP       TRAP    #KBDTRAP                ; READ KEYBOARD
             JSR     PLRUPD
+            JSR     MAPUPD
             ; TO DO: CALL GAME UPDATE CODE HERE
 
 ; --- WAIT SYNCH --------------------------------------------------------------

@@ -25,9 +25,10 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Jump.
 * Added platforms
 * Push down to place a platform on your location.
+* Press space to destroy all the placed platforms.
 
 ## TO-DO
-* Reset button to destroy all placed platforms.
+* Relocate player when placing platforms and deleting them
 * Enemies
 * Levels
 * Sistema de vidas
