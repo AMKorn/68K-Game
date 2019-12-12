@@ -23,17 +23,26 @@ PLRINIT
 PLRUPD
 ; Updates the player location, calculates collisions and adds platforms if
 ; DOWN is pressed.
-; Input     - None, reads KBDVAL and KBDEDGE
+; Input     - None, reads KBDVAL, KBDEDGE and CURRLVL
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D4/A0,-(A7)
+            
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0
+            
+            CLR.L   D1
+            
             MOVE.B  KBDVAL,D0
             MOVE.B  KBDEDGE,D1
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             MOVE.W  PLRSPDY,D4
-            LEA.L   MAPINFO1,A0
             
             ; --- Platform placement ------------------------------------------
             

@@ -24,7 +24,7 @@ GETCELL     MACRO
             MOVE.B  D\3,D\5
             MOVEM.L (A7)+,D\1/D\3
             ENDM
-
+            
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

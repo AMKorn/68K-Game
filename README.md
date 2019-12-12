@@ -26,12 +26,12 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Added platforms
 * Push down to place a platform on your location.
 * Press space to destroy all the placed platforms.
+* Added levels base so adding further levels is easier.
 
 ## TO-DO
-* Relocate player when placing platforms and deleting them
+* Level progression.
 * Enemies
-* Levels
-* Sistema de vidas
+* Lives system
 * Main menu, pause, game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 

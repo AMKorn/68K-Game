@@ -1,31 +1,24 @@
 ; =============================================================================
 ; MAPS
-; Every map is divided in a 16x12 grid with each cell's information
+; This file includes the subroutines which are needed to initialize, update
+; and plot the maps. Each level's information is stored in MAPINFO.X68.
 ; =============================================================================
 
-MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-            DC.B    1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
-            DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-START1      DC.W    1*GRIDWTH,1*GRIDHGT+PLRDIM     ; X,Y coordinates of player start
-            DS.W    0                       ; Better safe than sorry
-       
 ; -----------------------------------------------------------------------------
 MAPINIT
 ; Initializes the map, and places the player in it.
-; Input     - A0: The pointer to the matrix with the level info
+; Input     - None, reads CURRLVL
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D3/A0,-(A7)
+            
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0
             
             CLR.L   D1
             CLR.L   D0
@@ -33,17 +26,9 @@ MAPINIT
 .YLOOP
             MOVE.W  #0,D3
 .XLOOP      
-*            CMP.B   #2,(A0)
-*            BNE     .NEXT
-*            MOVE.B  D3,D1
-*            MULU    #GRIDWTH,D1
-*            LSL.L   #8,D1
-*            LSL.L   #8,D1
-*            MOVE.B  D2,D0
-*            MULU.W  #GRIDHGT,D0
-*            ADD.B   #PLRDIM,D0
-*            MOVE.W  D0,D1
-*            JSR     PLRINIT
+            ; For the moment this for-loop is completely useless (apart from
+            ; moving A0 to the STARTN location) but it will have its uses when
+            ; more things (such as enemies) are introduced.
 
 .NEXT       
             ADDQ.L  #1,A0
@@ -70,6 +55,15 @@ MAPUPD
 ; Modifies  - The information in the level matrix.
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D3/A0,-(A7)
+            
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0
+            
+            CLR.L   D1
             
             MOVE.B  KBDEDGE,D0
             BTST.L  #KBDBITDN,D0
@@ -114,6 +108,13 @@ MAPPLOT
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D6/A0,-(A7)
+            
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0
             
             ; - Paint the whole screen white first ----------------------------
             
@@ -179,7 +180,7 @@ MAPPLOT
 .NEXT2            
             CMP.B   #2,(A0)
             BNE     .NEXT3
-            
+                        
             MOVE.B  #81,D0
             MOVE.L  #$00FF85F5,D1
             TRAP    #15
@@ -196,6 +197,12 @@ MAPPLOT
             MOVE.W  D2,D4
             ADD.W   #GRIDHGT,D4
             MOVE.B  #88,D0
+            TRAP    #15
+            
+            ADD.W   #5,D1
+            SUB.W   #5,D3
+            ADD.W   #5,D2
+            SUB.W   #5,D4
             TRAP    #15
 
             
@@ -255,6 +262,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

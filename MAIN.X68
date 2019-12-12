@@ -22,7 +22,8 @@ START       JSR     SYSINIT
             ;MOVE.L  #(500<<16+250),D1
             ;MOVE.L  #(2*GRIDWTH<<16+GRIDHGT+PLRDIM),D1
             ;JSR     PLRINIT
-            LEA.L   MAPINFO1,A0
+            ;LEA.L   MAPINFO1,A0
+            MOVE.B  #2,CURRLVL
             JSR     MAPINIT
             ; TO DO: CALL GAME INITIALIZATION CODE HERE
 
@@ -42,7 +43,7 @@ START       JSR     SYSINIT
 ; --- PLOT --------------------------------------------------------------------
 
             ; TO DO: CALL GAME PLOT CODE HERE
-            LEA.L   MAPINFO1,A0
+            ;LEA.L   MAPINFO1,A0
             JSR     MAPPLOT
             JSR     PLRPLOT
             TRAP    #SCRTRAP                ; SHOW GRAPHICS
@@ -53,6 +54,7 @@ START       JSR     SYSINIT
 
             INCLUDE "SYSVAR.X68"
             INCLUDE "VAR.X68"
+            INCLUDE "MAPINFO.X68"
             END    START
 
 
