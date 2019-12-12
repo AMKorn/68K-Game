@@ -25,22 +25,6 @@ GETCELL     MACRO
             MOVEM.L (A7)+,D\1/D\3
             ENDM
 
-; -----------------------------------------------------------------------------
-CMPMU       MACRO
-; Macro to facilitate the comparison of the same value multiple times.
-; Input     - \1 : Register to compare values \2 and \3 with
-;           - #\2 : First value to compare D\1 with
-;           - #\3 : Second value to compare D\1 with
-;           - B\4 : The Bcc with wich to operate
-;           - \5 : The tag to jump to if D\1 is one of the values
-; Output    - None
-; Modifies  - None
-; -----------------------------------------------------------------------------
-            CMP.\0  #\2,\1
-            B\4     \5
-            CMP.\0  #\3,\1
-            B\4     \5
-            ENDM
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~
