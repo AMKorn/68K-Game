@@ -4,7 +4,7 @@
 ; =============================================================================
 
 MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+            DC.B    1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
@@ -15,7 +15,7 @@ MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-START1      DC.B    1*GRIDWTH,1*GRIDHGT     ; X,Y coordinates of player start
+START1      DC.W    1*GRIDWTH,1*GRIDHGT+PLRDIM     ; X,Y coordinates of player start
             DS.W    0                       ; Better safe than sorry
        
 ; -----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ MAPINIT
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
             
-            MOVE.W  (A0),D1
+            MOVE.L  (A0),D1
             JSR     PLRINIT
             
             MOVEM.L (A7)+,D0-D3/A0
@@ -75,7 +75,7 @@ MAPUPD
             BTST.L  #KBDBITDN,D0
             BEQ     .CONT
             ADD.L   #XGRIDS*YGRIDS,A0
-            MOVE.W  (A0),D1
+            MOVE.L  (A0),D1
             JSR     PLRINIT
             BRA     .END
             
@@ -100,7 +100,7 @@ MAPUPD
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
 
-            MOVE.W  (A0),D1
+            MOVE.L  (A0),D1
             JSR     PLRINIT
             
 .END        MOVEM.L (A7)+,D0-D3/A0
@@ -232,6 +232,8 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
+
 
 
 *~Font name~Courier New~

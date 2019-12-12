@@ -1,9 +1,9 @@
 ; =============================================================================
 ; TITLE    : EXAMPLE GAME
-; AUTHOR   :
-; CREATION :
+; AUTHOR   : Korn, Andreas Manuel & Vega García, Sergio
+; CREATION : 
 ; =============================================================================
-            OPT         MEX
+
             ORG     $1000
 
 ; --- CODE INCLUDES -----------------------------------------------------------
@@ -54,6 +54,7 @@ START       JSR     SYSINIT
             INCLUDE "SYSVAR.X68"
             INCLUDE "VAR.X68"
             END    START
+
 
 
 

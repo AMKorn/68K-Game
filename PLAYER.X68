@@ -1,5 +1,5 @@
 *===============================================================================
-* PLAYER - Is an agent
+* PLAYER
 *===============================================================================
 
 ; -----------------------------------------------------------------------------
@@ -42,8 +42,14 @@ PLRUPD
             MOVE.W  D0,-(A7)
             MOVE.B  D1,-(A7)
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            JSR     GETGRIDVAL
+            CMP.B   #1,D1
+            BEQ     .NOPLATREG
+            CMP.B   #2,D1
+            BEQ     .NOPLATREG
             MOVE.B  #3,D1
             JSR     SETGRIDVAL
+.NOPLATREG
             MOVE.B  (A7)+,D1
             MOVE.W  (A7)+,D0
 
@@ -278,6 +284,7 @@ PLRPLOT
             TRAP    #15
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
