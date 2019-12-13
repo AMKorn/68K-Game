@@ -14,18 +14,19 @@
             INCLUDE "CONST.X68"             ; GAME CONSTANTS
             INCLUDE "PLAYER.X68"            ; PLAYER CODE
             INCLUDE "MAPS.X68"              ; MAPS SUBROUTINES
+            INCLUDE "STATEMNGR.X68"
 
 ; --- INITIALIZE --------------------------------------------------------------
 
 START       JSR     SYSINIT
-            MOVE.B  #2,CURRLVL
-            JSR     MAPINIT
+            JSR     STATEINIT
+*            MOVE.B  #1,CURRLVL
+*            JSR     MAPINIT
 
 ; --- UPDATE ------------------------------------------------------------------
 
 .LOOP       TRAP    #KBDTRAP                ; READ KEYBOARD
-            JSR     PLRUPD
-            JSR     MAPUPD
+            JSR     STATEUPD
 
 ; --- WAIT SYNCH --------------------------------------------------------------
 

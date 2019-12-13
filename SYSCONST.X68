@@ -85,6 +85,7 @@ WHITE       EQU     $00FFFFFF
 L_GREEN     EQU     $0088FF88
 PINK        EQU     $00FF85F5
 GREEN       EQU     $0000FF00
+AQUA        EQU     $00FFFF00
 
 
 *~Font name~Courier New~

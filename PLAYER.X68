@@ -54,7 +54,7 @@ PLRUPD
             MOVE.B  KBDVAL,D0
             MOVE.B  KBDEDGE,D1
             
-            BTST.L  #KBDBITDN,D1
+            BTST.L  #KBDBITF1,D1
             BEQ     .NOPLAT
             MOVE.W  D0,-(A7)
             MOVE.B  D1,-(A7)

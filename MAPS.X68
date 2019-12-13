@@ -1,5 +1,5 @@
 ; =============================================================================
-; MAPS
+; MAPS MANAGER
 ; This file includes the subroutines which are needed to initialize, update
 ; and plot the maps. Each level's information is stored in MAPINFO.X68.
 ; =============================================================================
@@ -65,14 +65,14 @@ MAPUPD
             CLR.L   D1
             
             MOVE.B  KBDEDGE,D0
-            BTST.L  #KBDBITDN,D0
+            BTST.L  #KBDBITF1,D0
             BEQ     .CONT
             ADD.L   #XGRIDS*YGRIDS,A0
             MOVE.L  (A0),D1
             JSR     PLRINIT
             BRA     .END
             
-.CONT       BTST.L  #KBDBITF1,D0
+.CONT       BTST.L  #KBDBITDN,D0
             BEQ     .END
             
             MOVE.W  #0,D2
@@ -155,7 +155,7 @@ MAPPLOT
             ADD.W   #GRIDHGT,D4
             MOVE.B  #87,D0
             TRAP    #15
-
+            
 .NEXT1      CMP.B   #3,(A0)
             BNE     .NEXT2
             
@@ -251,7 +251,32 @@ MAPPLOT
             TRAP    #15
 
             
-.NEXT3
+.NEXT3      CMP.B   #4,(A0)
+            BNE     .NEXT4
+            
+            MOVE.B  #81,D0
+            MOVE.L  #AQUA,D1
+            TRAP    #15
+            
+            MOVE.W  D6,D1
+            MULS.W  #GRIDWTH,D1
+            MOVE.W  D1,D3
+            ADD.W   #GRIDWTH,D3
+            
+            MOVE.W  D5,D2
+            MULS.W  #GRIDHGT,D2
+            MOVE.W  D2,D4
+            ADD.W   #GRIDHGT,D4
+            MOVE.B  #88,D0
+            TRAP    #15
+            
+            ADD.W   #5,D1
+            SUB.W   #5,D3
+            ADD.W   #5,D2
+            SUB.W   #5,D4
+            TRAP    #15
+            
+.NEXT4            
             ADDQ.L  #1,A0
             ADDQ.B  #1,D6
             CMP.B   #XGRIDS,D6
@@ -307,6 +332,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

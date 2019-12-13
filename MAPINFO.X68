@@ -2,6 +2,8 @@
 ; MAP INFO
 ; This file includes all the information regarding each of the levels of the
 ; game. The first part of this file has the pointers of each of the matrixes.
+; They are correlative, so the numeration is useless and what matters is the
+; placement.
 ; Each map is formed by a 16x12 matrix with the corresponding values of each
 ; cell it represents.
 ; Values:   - 1 : Ground cell
@@ -14,12 +16,17 @@
 ;                 when initialized, insted this value is only used during the
 ;                 update.
 ;           - 4 : End of level.
-; Each level must also be accompanied with its correspondent level information,
-; which for now consists of only the player location start (marked with STARTN)
+; Each level must also be accompanied with its correspondant level information,
+; which for now consists of only the player location start (marked with STARTn)
 ; For ease of understanding, it is specified as 
-;           STARTN = (Xcell)*GRIDWTH,(Ycell)*GRIDHGT+PLRDIM
-; This is easily utilized with the subroutine PLRINIT by MOVE.L STARTN,D1
+;           STARTn = (Xcell)*GRIDWTH,(Ycell)*GRIDHGT+PLRDIM
+; This is easily utilized with the subroutine PLRINIT by MOVE.L STARTn,D1
 ; =============================================================================
+
+NLVLS       EQU     2                       ; Number of levels. Should only
+                                            ; be modified when adding or
+                                            ; deleting levels, as the game
+                                            ; WILL break otherwise.
 
 LEVEL0      DC.L    0                       ; Just so I don't have to start
                                             ; counting the levels on 0. 
