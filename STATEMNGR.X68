@@ -9,6 +9,13 @@ STATEINIT
 ; Output    - None
 ; Modifies  - CURRSTA
 ; -----------------------------------------------------------------------------
+            LEA.L   MUSMENU,A1
+            MOVE.B  #71,D0
+            TRAP    #15
+            MOVE.B  D1,SONG
+            MOVE.B  #76,D0
+            MOVE.L  #1,D2
+            TRAP    #15
             MOVE.B  #MAINMENU,CURRSTA
             MOVE.B  #MENUPLAY,PLRPOSY
             ;MOVE.B  #1,CURRLVL
@@ -59,6 +66,7 @@ STATEPLOT
             
 .END        MOVE.L  (A7)+,D1
             RTS
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

@@ -50,6 +50,10 @@ MENUUPD
             BRA     .END
 .QUIT       CMP.B   #MENUQUIT,D1
             BNE     .END
+            MOVE.B  #76,D0
+            MOVE.B  SONG,D1
+            MOVE.L  #2,D2
+            TRAP    #15
             SIMHALT
             
 .END        MOVEM.L (A7)+,D0-D1
@@ -88,6 +92,8 @@ MENUPLOT
             MOVEM.L (A7)+,D0-D3/A1
             RTS
            
+
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

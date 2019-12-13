@@ -18,7 +18,9 @@ CREDITS     DC.B    'Skeleton:',10,13
             DC.B    'Antoni Burguera',10,13,10,13
             DC.B    'Coding and Game Design:',10,13
             DC.B    'Andreas Manuel Korn',10,13
-            DC.B    'Sergio Vega García',10,13
+            DC.B    'Sergio Vega García',10,13,10,13
+            DC.B    'Music:',10,13
+            DC.B    'HeatleyBros',0
             
 ; - Player related vars -------------------------------------------------------
 
@@ -29,7 +31,13 @@ PLRLVS      DS.B    1
 DIR         DS.B    1
             DS.W    0
             
+; - Music and Sound -----------------------------------------------------------
+
+SONG        DS.B    1
+MUSMENU     DC.B    'Music\MainMenu.wav',0
+            
 ; -----------------------------------------------------------------------------
+
 
 
 
