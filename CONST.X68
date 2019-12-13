@@ -11,7 +11,13 @@ WINSTATE    EQU     3
 FAILSTATE   EQU     4                       ; Might not be needed depending
                                             ; on how I implement failure
 
-; - Game mechanics constants --------------------------------------------------
+; - Menu constants ------------------------------------------------------------
+
+MENUPLAY    EQU     0
+MENUCREDS   EQU     1
+MENUQUIT    EQU     2
+
+; - Game constants ------------------------------------------------------------
 
 GRAVITY     EQU     5                       ; Gravity pushes down when >0
 IMPULSE     EQU     -6*GRAVITY
@@ -32,6 +38,7 @@ LEFT        EQU     $00
 RIGHT       EQU     $FF
 
 ; -----------------------------------------------------------------------------
+
 
 
 

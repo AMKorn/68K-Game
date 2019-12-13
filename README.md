@@ -19,20 +19,16 @@ Furthermore, enemies and mechanics to deal with them can be added.
 
 ## Implemented:
 * Player character and movement from right to left
-* Player fall
-* Window border collisions
-* Gravity acceleration
-* Jump.
-* Added platforms
-* Push down to place a platform on your location.
-* Press space to destroy all the placed platforms.
+* Jump & fall
+* Collisions & platforms
+* Push down to place a platform on your location and space to destroy all the placed platforms.
 * Added levels base so adding further levels is easier.
-* Level progression (goal yet unmarked)
+* Level progression
 
 ## TO-DOç
 * Enemies
 * Lives system
-* Main menu, pause, game over and win screens
+* Pause, game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
 ## Descripción básica:

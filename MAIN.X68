@@ -15,6 +15,7 @@
             INCLUDE "PLAYER.X68"            ; PLAYER CODE
             INCLUDE "MAPS.X68"              ; MAPS SUBROUTINES
             INCLUDE "STATEMNGR.X68"
+            INCLUDE "MENU.X68"
 
 ; --- INITIALIZE --------------------------------------------------------------
 
@@ -36,8 +37,7 @@ START       JSR     SYSINIT
 
 ; --- PLOT --------------------------------------------------------------------
 
-            JSR     MAPPLOT
-            JSR     PLRPLOT
+            JSR     STATEPLOT
             TRAP    #SCRTRAP                ; SHOW GRAPHICS
             BRA     .LOOP
             SIMHALT

@@ -9,28 +9,55 @@ STATEINIT
 ; Output    - None
 ; Modifies  - CURRSTA
 ; -----------------------------------------------------------------------------
-            MOVE.B  #PLAYING,CURRSTA
-            MOVE.B  #1,CURRLVL
-            JSR     MAPINIT
+            MOVE.B  #MAINMENU,CURRSTA
+            MOVE.B  #MENUPLAY,PLRPOSY
+            ;MOVE.B  #1,CURRLVL
+            ;JSR     MAPINIT
             RTS
             
 ; -----------------------------------------------------------------------------
 STATEUPD
 ; Updates the state of the game.
-; Input     - None, reads KBDEDGE
+; Input     - None, reads KBDEDGE and CURRSTA
 ; Output    - None.
 ; Modifies  - CURRSTA
 ; -----------------------------------------------------------------------------
-            MOVE.B  D1,-(A7)
+            MOVE.L  D1,-(A7)
             
+            CLR.L   D1
             MOVE.B  CURRSTA,D1
             CMP.B   #MAINMENU,D1
             BNE     .PLAYING
             
+            JSR     MENUUPD
+            BRA     .END
+            
 .PLAYING    JSR     PLRUPD
             JSR     MAPUPD
             
-            MOVE.B  (A7)+,D1
+.END
+            MOVE.L  (A7)+,D1
+            RTS
+            
+; -----------------------------------------------------------------------------
+STATEPLOT
+; Input     - None, reads CURRSTA
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVE.L  D1,-(A7)
+            
+            CLR.L   D1
+            MOVE.B  CURRSTA,D1
+            CMP.B   #MAINMENU,D1
+            BNE     .PLAYING
+            JSR     MENUPLOT
+            BRA     .END
+            
+.PLAYING    JSR     MAPPLOT
+            JSR     PLRPLOT
+            
+.END        MOVE.L  (A7)+,D1
             RTS
 *~Font name~Courier New~
 *~Font size~10~
