@@ -12,10 +12,13 @@ CURRLVL     DS.B    1
 PLRPOSX     DS.W    1
 PLRPOSY     DS.W    1
 PLRSPDY     DC.W    0
-PLRLVS      DS.B    1                       ; Global variable: only init once
+PLRLVS      DS.B    1
+DIR         DS.B    1
             DS.W    0
             
 ; -----------------------------------------------------------------------------
+
+
 
 
 

@@ -36,15 +36,23 @@ PLRUPD
             ADD.L   D1,A0
             MOVE.L  (A0),A0
             
-            CLR.L   D1
-            
-            MOVE.B  KBDVAL,D0
-            MOVE.B  KBDEDGE,D1
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             MOVE.W  PLRSPDY,D4
             
+            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            JSR     GETGRIDVAL
+            CMP.B   #4,D1
+            BNE     .PLAT
+            MOVE.B  CURRLVL,D1
+            ADD.B   #1,D1
+            MOVE.B  D1,CURRLVL
+            BRA     .END
+            
             ; --- Platform placement ------------------------------------------
+.PLAT       
+            MOVE.B  KBDVAL,D0
+            MOVE.B  KBDEDGE,D1
             
             BTST.L  #KBDBITDN,D1
             BEQ     .NOPLAT
@@ -58,8 +66,8 @@ PLRUPD
             BEQ     .NOPLATREG
             MOVE.B  #3,D1
             JSR     SETGRIDVAL
-.NOPLATREG
-            MOVE.B  (A7)+,D1
+.NOPLATREG                                  ; No platform placed but registers
+            MOVE.B  (A7)+,D1                ; must be restored.
             MOVE.W  (A7)+,D0
 
 .NOPLAT
@@ -69,10 +77,12 @@ PLRUPD
             BTST.L  #KBDBITLF,D0
             BEQ     .NOLF
             SUB.W   #PLRSPDX,D2
+            MOVE.B  #LEFT,DIR
             
 .NOLF       BTST.L  #KBDBITRT,D0
             BEQ     .H_COLL
             ADD.W   #PLRSPDX,D2
+            MOVE.B  #RIGHT,DIR
             
             ; --- Horizontal collisions ---------------------------------------
             
@@ -280,7 +290,7 @@ PLRPLOT
             MOVE.L  #BLACK,D1
             MOVE.B  #80,D0
             TRAP    #15                     ; Set pen color black
-            MOVE.L  #PLRCLR,D1
+            MOVE.L  #GREEN,D1
             MOVE.B  #81,D0                  ; Set color green
             TRAP    #15
             MOVE.B  #87,D0
@@ -291,8 +301,48 @@ PLRPLOT
             ADD.W   #PLRDIM,D3              ; Right X
             MOVE.W  PLRPOSY,D4              ; Lower Y
             TRAP    #15
+            
+            ; Draw the eyes
+            MOVE.L  #BLACK,D1
+            MOVE.B  #81,D0
+            TRAP    #15
+            
+            MOVE.B  DIR,D0
+            CMP.B   #LEFT,D0
+            BEQ     .LOOK_LEFT
+            
+            MOVE.B  #88,D0
+            MOVE.W  PLRPOSX,D1
+            ADD.W   #15,D1
+            MOVE.W  D1,D3
+            ADD.W   #11,D3
+            ADDQ.W  #5,D2
+            MOVE.W  D2,D4
+            ADD.W   #16,D4
+            TRAP    #15
+            
+            ADD.W   #14,D1
+            ADD.W   #14,D3
+            TRAP    #15
+            BRA     .END
+            
+.LOOK_LEFT  MOVE.B  #88,D0
+            SUB.W   #15,D3
+            MOVE.W  D3,D1
+            SUB.W   #11,D1
+            ADDQ.W  #5,D2
+            MOVE.W  D2,D4
+            ADD.W   #16,D4
+            TRAP    #15
+            
+            SUB.W   #14,D1
+            SUB.W   #14,D3
+            TRAP    #15
+.END
             MOVEM.L (A7)+,D0-D4
             RTS
+
+
 
 
 

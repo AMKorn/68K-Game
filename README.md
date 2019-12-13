@@ -27,9 +27,9 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Push down to place a platform on your location.
 * Press space to destroy all the placed platforms.
 * Added levels base so adding further levels is easier.
+* Level progression (goal yet unmarked)
 
-## TO-DO
-* Level progression.
+## TO-DOç
 * Enemies
 * Lives system
 * Main menu, pause, game over and win screens

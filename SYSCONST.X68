@@ -80,7 +80,11 @@ DMMSYSID    EQU     0                       ; SYSTEM OWNER ID (MUST BE 0)
 
 ; --- COLORS ------------------------------------------------------------------
 
-
+BLACK       EQU     $00000000
+WHITE       EQU     $00FFFFFF
+L_GREEN     EQU     $0088FF88
+PINK        EQU     $00FF85F5
+GREEN       EQU     $0000FF00
 
 
 *~Font name~Courier New~

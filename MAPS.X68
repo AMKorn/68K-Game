@@ -44,7 +44,7 @@ MAPINIT
             JSR     PLRINIT
             
             MOVEM.L (A7)+,D0-D3/A0
-            RTS            
+            RTS
 
 ; -----------------------------------------------------------------------------
 MAPUPD
@@ -160,7 +160,7 @@ MAPPLOT
             BNE     .NEXT2
             
             MOVE.B  #81,D0
-            MOVE.L  #CLONE,D1
+            MOVE.L  #L_GREEN,D1
             TRAP    #15
            
             ; Paint the green squares
@@ -175,13 +175,59 @@ MAPPLOT
             ADD.W   #GRIDHGT,D4
             MOVE.B  #87,D0
             TRAP    #15
+            
+            ; Draw the eyes
+            MOVE.L  #BLACK,D1
+            MOVE.B  #81,D0
+            TRAP    #15
+            
+            MOVE.B  #84,D0
+            MOVE.W  D6,D1
+            MULS.W  #GRIDWTH,D1
+            ADD.W   #15,D1
+            MOVE.W  D1,D3
+            ADD.W   #11,D3
+            ADDQ.W  #5,D2
+            MOVE.W  D2,D4
+            ADD.W   #16,D4
+            TRAP    #15
+*            ADDQ.W  #1,D1
+*            ADDQ.W  #1,D3
+*            TRAP    #15
+                        
+            SWAP    D2
+            MOVE.W  D4,D2
+            SWAP    D2
+            MOVE.W  D2,D4
+            SWAP    D2
+            TRAP    #15
+*            ADDQ.W  #1,D1
+*            ADDQ.W  #1,D3
+*            TRAP    #15
+            
+            ADD.W   #14,D1
+            ADD.W   #14,D3
+            TRAP    #15
+*            ADDQ.W  #1,D1
+*            ADDQ.W  #1,D3
+*            TRAP    #15
+            
+            SWAP    D2
+            MOVE.W  D4,D2
+            SWAP    D2
+            MOVE.W  D2,D4
+            SWAP    D2
+            TRAP    #15
+*            ADDQ.W  #1,D1
+*            ADDQ.W  #1,D3
+*            TRAP    #15
 
 .NEXT2            
             CMP.B   #2,(A0)
             BNE     .NEXT3
                         
             MOVE.B  #81,D0
-            MOVE.L  #$00FF85F5,D1
+            MOVE.L  #PINK,D1
             TRAP    #15
             
             ; Paint the portal
@@ -261,6 +307,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

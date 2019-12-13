@@ -4,11 +4,8 @@
 
 ; - General constants ---------------------------------------------------------
 
-GRAVITY     EQU     10                      ; Gravity pushes down when >0
-IMPULSE     EQU     -4*GRAVITY
-BLACK       EQU     $00000000
-WHITE       EQU     $00FFFFFF
-CLONE       EQU     $0088FF88
+GRAVITY     EQU     5                       ; Gravity pushes down when >0
+IMPULSE     EQU     -6*GRAVITY
 
 ; - Maps related constants ----------------------------------------------------
 
@@ -20,11 +17,15 @@ GRIDHGT     EQU     SCRHEIGH/YGRIDS
 ; - Player related constants --------------------------------------------------
 
 PLRDIM      EQU     39
-PLRCLR      EQU     $0000FF00               ; Totally green
 PLRSPDX     EQU     10
 MAXSPD      EQU     GRIDHGT
+LEFT        EQU     $00
+RIGHT       EQU     $FF
 
 ; -----------------------------------------------------------------------------
+
+
+
 
 
 
