@@ -14,7 +14,7 @@ FAILSTATE   EQU     4                       ; Might not be needed depending
 ; - Menu constants ------------------------------------------------------------
 
 MENUPLAY    EQU     0
-MENUCREDS   EQU     1
+MENUMUTE    EQU     1
 MENUQUIT    EQU     2
 
 ; - Game constants ------------------------------------------------------------
@@ -38,6 +38,7 @@ LEFT        EQU     $00
 RIGHT       EQU     $FF
 
 ; -----------------------------------------------------------------------------
+
 
 
 

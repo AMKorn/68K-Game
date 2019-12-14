@@ -11,7 +11,7 @@ CURRSTA     DS.B    1
 ; - Menu strings --------------------------------------------------------------
 
 STRSTART    DC.B    'START',0
-STRCREDS    DC.B    'CREDITS',0
+STRMUTE     DC.B    'MUTE',0
 STRQUIT     DC.B    'QUIT',0
 ASTERISK    DC.B    '*',0
 CREDITS     DC.B    'Skeleton:',10,13
@@ -37,6 +37,7 @@ SONG        DS.B    1
 MUSMENU     DC.B    'Music\MainMenu.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

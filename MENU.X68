@@ -39,15 +39,14 @@ MENUUPD
             BRA     .END
             
 .ACTIVATE   CMP.W   #MENUPLAY,D1
-            BNE     .CREDS
+            BNE     .MUTE
             MOVE.B  #1,CURRLVL
             MOVE.B  #PLAYING,CURRSTA
             JSR     MAPINIT
             BRA     .END
-.CREDS      CMP.W   #MENUCREDS,D1
+.MUTE       CMP.W   #MENUMUTE,D1
             BNE     .QUIT
-            ; TODO CREDITS
-            BRA     .END
+            JSR     MUTEUNMUTE
 .QUIT       CMP.B   #MENUQUIT,D1
             BNE     .END
             MOVE.B  #76,D0
@@ -74,7 +73,7 @@ MENUPLOT
             TRAP    #15
             
             ADD.W   #20,D2
-            LEA.L   STRCREDS,A1
+            LEA.L   STRMUTE,A1
             TRAP    #15
             
             ADD.W   #20,D2
@@ -91,7 +90,40 @@ MENUPLOT
             
             MOVEM.L (A7)+,D0-D3/A1
             RTS
-           
+          
+; ----------------------------------------------------------------------------- 
+MUTEUNMUTE
+; Toggles the sound state to muted or unmuted depending on the previous state.
+; Input     - None
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVEM.L D0-D2,-(A7)
+            
+            CMP.B   #0,.MUTED
+            BNE     .UNMUTE
+            MOVE.B  #76,D0
+            MOVE.B  SONG,D1
+            MOVE.L  #2,D2
+            TRAP    #15
+            NOT.B   .MUTED
+            BRA     .END
+            
+.UNMUTE     ;LEA.L   MUSMENU,A1
+            ;MOVE.B  #71,D0
+            ;TRAP    #15
+            ;MOVE.B  D1,SONG
+            MOVE.B  SONG,D1
+            MOVE.B  #76,D0
+            MOVE.L  #1,D2
+            TRAP    #15
+            NOT     .MUTED
+.END            
+            MOVEM.L (A7)+,D0-D2
+            RTS
+            
+.MUTED      DC.B    0
+            DS.W    0
 
 
 *~Font name~Courier New~

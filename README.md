@@ -9,13 +9,13 @@ That means, apart from the movement controls, the player counts with the habilit
 Furthermore, enemies and mechanics to deal with them can be added.
 
 ## Controls:
-*	←	: Move left
-*	→	: Move right
-*	↑	: Jump
-*	↓	: Place copy/platform
-*	[Shift] : Place "bomb"
-*	[Spacebar] : Delete the placed platforms / reset the level in case of error.
-*	P / [Esc] : Pause the level
+*	←		Move left
+*	→		Move right
+*	↑		Jump
+*	↓ 		Delete the placed platforms / reset the level in case of error.
+*	[Spacebar] 	Place copy/platform
+*	[Shift] 	Place "bomb"
+*	P / [Esc] 	Pause the level
 
 ## Implemented:
 * Player character and movement from right to left
@@ -26,8 +26,9 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Level progression
 * Added song by HeatleyBros (https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA)
 
-## TO-DOç
+## TO-DO
 * Enemies
+* Bombs or, maybe, crushing platforms to deal with enemies.
 * Lives system
 * Pause, game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
@@ -43,7 +44,7 @@ Además, se le pueden añadir también enemigos y mecánicas para lidiar con ell
 *	←		Moverse a la izquierda
 *	→		Moverse a la derecha
 *	↑		Salto
-*	↓		Posicionar copia/plataforma
-*	[Shift]	Colocar “bomba”
-*	[Espacio] 	Eliminar las plataformas colocadas / reset del nivel en caso de error.
+*	↓		Eliminar las plataformas colocadas / reset del nivel en caso de error.
+*	[Shift]		Colocar “bomba”
+*	[Espacio] 	Posicionar copia/plataforma
 *	P / [Esc]	Pausar el nivel
