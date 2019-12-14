@@ -94,6 +94,7 @@ SCRUPD
 ; OUTPUT   - NONE
 ; MODIFIES - NONE
 ; -----------------------------------------------------------------------------
+            MOVEM.L D0-D1,-(A7)
             ; Updates double buffer
             MOVE.B  #94,D0
             TRAP    #15
@@ -101,6 +102,7 @@ SCRUPD
             MOVE.B  #11,D0
             MOVE.W  #$FF00,D1
             TRAP    #15
+            MOVEM.L (A7)+,D0-D1
             RTE
 
 ; =============================================================================
@@ -306,6 +308,7 @@ DMMFREE
             CLR.W   (A0)
             MOVEM.L (A7)+,D0/A0
             RTS
+
 
 
 

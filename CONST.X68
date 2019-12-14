@@ -4,7 +4,7 @@
 
 ; - General constants ---------------------------------------------------------
 
-MAINMENU    EQU     0
+MAINMENU    EQU     0                       
 PLAYING     EQU     1
 PAUSED      EQU     2
 WINSTATE    EQU     3
@@ -13,6 +13,7 @@ FAILSTATE   EQU     4                       ; Might not be needed depending
 
 ; - Menu constants ------------------------------------------------------------
 
+; The three options in the main menu
 MENUPLAY    EQU     0
 MENUMUTE    EQU     1
 MENUQUIT    EQU     2
@@ -31,13 +32,18 @@ GRIDHGT     EQU     SCRHEIGH/YGRIDS
 
 ; - Player related constants --------------------------------------------------
 
-PLRDIM      EQU     39
+PLRDIM      EQU     GRIDWTH-1               ; Due to the collisions
+                                            ; implementation, changing this
+                                            ; value independently of the grids
+                                            ; dimensions will cause weird
+                                            ; behaviour.
 PLRSPDX     EQU     10
 MAXSPD      EQU     GRIDHGT
 LEFT        EQU     $00
 RIGHT       EQU     $FF
 
 ; -----------------------------------------------------------------------------
+
 
 
 
