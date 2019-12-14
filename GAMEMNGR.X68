@@ -3,7 +3,7 @@
 ; =============================================================================
 
 ; -----------------------------------------------------------------------------
-STATEINIT
+GAMEINIT
 ; Initializes the game by setting the state as MAIN MENU
 ; Input     - None
 ; Output    - None
@@ -23,7 +23,7 @@ STATEINIT
             RTS
             
 ; -----------------------------------------------------------------------------
-STATEUPD
+GAMEUPD
 ; Updates the state of the game.
 ; Input     - None, reads KBDEDGE and CURRSTA
 ; Output    - None.
@@ -47,7 +47,7 @@ STATEUPD
             RTS
             
 ; -----------------------------------------------------------------------------
-STATEPLOT
+GAMEPLOT
 ; Input     - None, reads CURRSTA
 ; Output    - None
 ; Modifies  - None
@@ -66,6 +66,7 @@ STATEPLOT
             
 .END        MOVE.L  (A7)+,D1
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~10~

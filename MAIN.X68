@@ -14,20 +14,18 @@
             INCLUDE "CONST.X68"             ; GAME CONSTANTS
             INCLUDE "PLAYER.X68"            ; PLAYER CODE
             INCLUDE "MAPS.X68"              ; MAPS SUBROUTINES
-            INCLUDE "STATEMNGR.X68"
+            INCLUDE "GAMEMNGR.X68"
             INCLUDE "MENU.X68"
 
 ; --- INITIALIZE --------------------------------------------------------------
 
 START       JSR     SYSINIT
-            JSR     STATEINIT
-*            MOVE.B  #1,CURRLVL
-*            JSR     MAPINIT
+            JSR     GAMEINIT
 
 ; --- UPDATE ------------------------------------------------------------------
 
 .LOOP       TRAP    #KBDTRAP                ; READ KEYBOARD
-            JSR     STATEUPD
+            JSR     GAMEUPD
 
 ; --- WAIT SYNCH --------------------------------------------------------------
 
@@ -37,7 +35,7 @@ START       JSR     SYSINIT
 
 ; --- PLOT --------------------------------------------------------------------
 
-            JSR     STATEPLOT
+            JSR     GAMEPLOT
             TRAP    #SCRTRAP                ; SHOW GRAPHICS
             BRA     .LOOP
             SIMHALT
@@ -48,6 +46,7 @@ START       JSR     SYSINIT
             INCLUDE "VAR.X68"
             INCLUDE "MAPINFO.X68"
             END    START
+
 
 
 
