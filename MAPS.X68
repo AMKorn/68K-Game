@@ -65,12 +65,12 @@ MAPUPD
             CLR.L   D1
             
             MOVE.B  KBDEDGE,D0
-            BTST.L  #KBDBITF1,D0
-            BEQ     .CONT
-            ADD.L   #XGRIDS*YGRIDS,A0
-            MOVE.L  (A0),D1
-            JSR     PLRINIT
-            BRA     .END
+*            BTST.L  #KBDBITF1,D0
+*            BEQ     .CONT
+*            ADD.L   #XGRIDS*YGRIDS,A0
+*            MOVE.L  (A0),D1
+*            JSR     PLRINIT
+*            BRA     .END
             
 .CONT       BTST.L  #KBDBITDN,D0
             BEQ     .END
@@ -332,6 +332,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

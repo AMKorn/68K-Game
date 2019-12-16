@@ -60,14 +60,23 @@ PLRUPD
             MOVE.B  D1,-(A7)
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .NOPLATREG
-            CMP.B   #2,D1
-            BEQ     .NOPLATREG
+            CMP.B   #0,D1
+            BNE    .NOPLATREG
             MOVE.B  #3,D1
             JSR     SETGRIDVAL
-.NOPLATREG                                  ; No platform placed but registers
-            MOVE.B  (A7)+,D1                ; must be restored.
+            SUB.W   #GRIDHGT,D3
+            
+            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            JSR     GETGRIDVAL
+            CMP.B   #0,D1
+            BEQ     .NOPLATREG
+            MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1
+            JSR     PLRINIT
+            MOVE.W  PLRPOSX,D2
+            MOVE.W  PLRPOSY,D3
+            
+.NOPLATREG  ; No platform placed but registers must be restored
+            MOVE.B  (A7)+,D1
             MOVE.W  (A7)+,D0
 
 .NOPLAT
@@ -206,7 +215,6 @@ PLRUPD
             
             GETCELL 2,0,3,0,0
             JSR     GETGRIDVAL
-*            CMPMU.B D1,1,3,NE,.LRCORNER
             CMP.B   #1,D1                   ; If lower left cell is ground
             BEQ     .CONTLL
             CMP.B   #3,D1
@@ -223,7 +231,6 @@ PLRUPD
             
 .LRCORNER   GETCELL 2,PLRDIM,3,0,0
             JSR     GETGRIDVAL
-*            CMPMU.B D1,1,3,NE,.ULCORNER
             CMP.B   #1,D1
             BEQ     .CONTLR
             CMP.B   #3,D1
@@ -341,6 +348,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 

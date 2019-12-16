@@ -66,6 +66,7 @@ MAPINFO2    DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
 START2      DC.W    1*GRIDWTH,1*GRIDHGT+PLRDIM 
 
 
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~
