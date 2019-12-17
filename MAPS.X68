@@ -317,7 +317,7 @@ SETGRIDVAL
 ;           - D1.B : The value of the cell
 ;           - A0.L : The pointer to the matrix with the level info
 ; Output    - None
-; Modifies  - The value of the cell specified in D0.W
+; Modifies  - The value of the cell specified in D0.W, but no registers
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D2/A0,-(A7)
             
@@ -332,6 +332,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

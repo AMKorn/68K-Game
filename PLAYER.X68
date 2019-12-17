@@ -34,7 +34,8 @@ PLRUPD
             MULU    #4,D1
             LEA.L   LEVEL0,A0
             ADD.L   D1,A0
-            MOVE.L  (A0),A0
+            MOVE.L  (A0),A0                 ; A0 now has the address of the
+                                            ; matrix of the level.
             
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
@@ -42,36 +43,44 @@ PLRUPD
             
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
-            CMP.B   #4,D1
+            CMP.B   #4,D1                   ; If player is on the goal
             BNE     .PLAT
             MOVE.B  CURRLVL,D1
-            ADD.B   #1,D1
+            ADD.B   #1,D1                   ; We add one to the current level
             MOVE.B  D1,CURRLVL
-            BRA     .END
+            BRA     .END                    ; And go directly to the end
             
             ; --- Platform placement ------------------------------------------
 .PLAT       
             MOVE.B  KBDVAL,D0
             MOVE.B  KBDEDGE,D1
             
-            BTST.L  #KBDBITF1,D1
+            BTST.L  #KBDBITF1,D1            ; Checks if space has been pressed
             BEQ     .NOPLAT
             MOVE.W  D0,-(A7)
             MOVE.B  D1,-(A7)
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
-            CMP.B   #0,D1
-            BNE    .NOPLATREG
+            CMP.B   #0,D1                   ; Checks if the player is on air
+            BNE    .NOPLATREG               ; and if he is, places platform
             MOVE.B  #3,D1
             JSR     SETGRIDVAL
-            SUB.W   #GRIDHGT,D3
+            SUBQ.B  #1,D0
+            CLR.L   D3
+            MOVE.B  D0,D3
+            MULU    #GRIDHGT,D3
+            ADD.W   #PLRDIM,D3
+            LSR     #8,D0
+            CLR.L   D2
+            MOVE.B  D0,D2
+            MULU    #GRIDWTH,D2
             
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
-            CMP.B   #0,D1
-            BEQ     .NOPLATREG
-            MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1
-            JSR     PLRINIT
+            CMP.B   #0,D1                   ; If after the placement, the
+            BEQ     .NOPLATREG              ; character is not on the air, 
+            MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1 ; the player is moved to the 
+            JSR     PLRINIT                 ; starting point of the level.
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             
@@ -348,6 +357,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
