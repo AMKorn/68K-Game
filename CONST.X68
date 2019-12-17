@@ -48,10 +48,11 @@ RIGHT       EQU     $FF
             ; with displacement register addressing.
 ENMY_XOF    EQU     0
 ENMY_YOF    EQU     2
-ISFACING    EQU     4
-
+ENMY_YSPD   EQU     4
+ISFACING    EQU     6
 
 ; -----------------------------------------------------------------------------
+
 
 
 

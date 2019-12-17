@@ -4,6 +4,7 @@
 ; ENMY_XOF(A0).L : The position of the enemy in pixels in format XXXX YYYY
 ; ENMY_XOF(A0).W : The X position of the enemy in pixels.
 ; ENMY_YOF(A0).W : The Y position of the enemy in pixels.
+; ENMY_YSPD(A0).W : The vertical speed of the enemy.
 ; ISFACING(A0).B : The direction the enemy is looking. (LEFT or RIGHT)
 ; =============================================================================
 
@@ -25,6 +26,7 @@ ENMYINIT
             MOVE.B  D1,D2
             MULU    #GRIDWTH,D2
             MOVE.W  D2,ENMY_XOF(A0)
+            CLR.W   ENMY_YSPD(A0)
             MOVE.B  #LEFT,ISFACING(A0)
             MOVE.L  (A7)+,D2
             RTS
@@ -36,7 +38,16 @@ ENMYUPD
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
+            CMP.B   #LEFT,ISFACING(A0)
+            BEQ     .MOVELFT
+            ADD.W   #PLRSPDX/2,ENMY_XOF(A0)
+            BRA     .HORCOLL
             
+.MOVELFT    SUB.W   #PLRSPDX/2,ENMY_XOF(A0)
+
+.HORCOLL    MOVE.L  A0,-(A7)
+            JSR     HORCOLL
+            MOVE.L  (A7)+,A0
             RTS
             
 ; -----------------------------------------------------------------------------         

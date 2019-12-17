@@ -83,11 +83,20 @@ HORCOLL
 ; player-, be it either with in-game walls or the side of the window.
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
-;           - A0.L : The pointer to the matrix with the level's information.
 ; Output    - D2.W : The corrected X coordinate of the entity's position.
+;           - D4.B : Set to 1 if correction was made. (Useless for player,
+;                    but needed for changing direction of enemies).
 ; Modifies  - Nothing, except the output.
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D1/A0,-(A7)
+            
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0                 ; A0 now has the address of the
+                                            ; matrix of the level.
             
             ; -- Left Collisions (entityX) --
             
@@ -109,6 +118,7 @@ HORCOLL
             ADDQ.W  #1,D0                   ; we move to the right cell 
             MULU.W  #GRIDWTH,D0
             MOVE    D0,D2
+            MOVE.B  #1,D4
             BRA     .X_OOB
             
             ; -- Right Collisions (entityX+plrDim) --
@@ -131,16 +141,19 @@ HORCOLL
             SUBQ.W  #1,D0                   ; we move to the left cell
             MULU    #GRIDWTH,D0
             MOVE    D0,D2
+            MOVE.B  #1,D4
             
             ; -- Horizontal Out-Of-Bounds --
             
 .X_OOB      CMP.W   #0,D2                   ; Checks if OOB (Out-of-Bounds)
             BGT     .NOTOOB1                ; on the X-axis
             MOVE.W  #0,D2
+            MOVE.B  #1,D4
             BRA     .END
 .NOTOOB1    CMP.W   #(SCRWIDTH-PLRDIM),D2
             BLT     .END
             MOVE.W  #(SCRWIDTH-PLRDIM),D2
+            MOVE.B  #1,D4
             
 .END        MOVEM.L (A7)+,D0-D1/A0
             RTS
@@ -151,12 +164,22 @@ VERCOLL
 ; player-, be it either with in-game walls or the side of the window.
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
+;           - D4.W : The entity's vertical speed.
 ;           - A0.L : The pointer to the matrix with the level's information.
 ; Output    - D3.W : The corrected Y coordinate of the entity's position.
+;           - D4.W : Cleared if the entity is on the ground (used for Y speed)
 ; Modifies  - None, except the output.
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D1/A0,-(A7)
             
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0                 ; A0 now has the address of the
+                                            ; matrix of the level.
+                                            
             * I know this is awful, but just in case it stays like this in the
             * final version, I tried replicating the same as what I did with the
             * horizontal collisions and it went terribly wrong. I'll try to fix
@@ -236,6 +259,8 @@ VERCOLL
 
 .END        MOVEM.L (A7)+,D0-D1/A0
             RTS
+
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

@@ -129,7 +129,7 @@ MAPPLOT
             MOVE.W  #SCRHEIGH,D4
             TRAP    #15
             
-            ; - Paint the platforms -------------------------------------------
+            ; - Paint the map -------------------------------------------------
             
             MOVE.W  #0,D5                   ; D5 = Y index of grid
 .YLOOP
@@ -210,7 +210,7 @@ MAPPLOT
                         
             SETFILL PINK
             
-            ; Paint the portal
+            ; Paint the entrance portal
             
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1
@@ -235,6 +235,8 @@ MAPPLOT
             BNE     .NEXT4
             
             SETFILL AQUA
+            
+            ; Paint the goal portal
             
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1

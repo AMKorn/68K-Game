@@ -37,7 +37,6 @@ PLRUPD
             
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
-            MOVE.W  PLRSPDY,D4
             
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
@@ -104,9 +103,8 @@ PLRUPD
 
             ; --- Vertical movement -------------------------------------------
 
-            MOVE.B  KBDVAL,D0
-            MOVE.B  KBDEDGE,D1
-
+            MOVE.W  PLRSPDY,D4
+            
             BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
 
