@@ -11,13 +11,13 @@
             INCLUDE "UTILS.X68"             ; UTILITIES
             INCLUDE "SYSCONST.X68"          ; SYSTEM CONSTANTS
             INCLUDE "SYSTEM.X68"            ; SYSTEM CODE
-            INCLUDE "CONST.X68"             ; GAME CONSTANTS
+            INCLUDE "CONST.X68"             ; GAME CONSTANTS            
+            INCLUDE "GAME.X68"              ; THE GAME BASE CODE
             INCLUDE "PLAYER.X68"            ; PLAYER CODE
             INCLUDE "MAPS.X68"              ; MAPS SUBROUTINES
-            INCLUDE "GAMEMNGR.X68"
-            INCLUDE "MENU.X68"
-            INCLUDE "AGENTLST.X68"
-            INCLUDE "ENEMY.X68"
+            INCLUDE "MENU.X68"              ; MENU CODE
+            INCLUDE "AGENTLST.X68"          ; AGENT LIST CODE
+            INCLUDE "ENEMY.X68"             ; ENEMY CODE
 
 ; --- INITIALIZE --------------------------------------------------------------
 
@@ -44,22 +44,11 @@ START       JSR     SYSINIT
 
 ; --- VARIABLES ---------------------------------------------------------------
 
-            INCLUDE "SYSVAR.X68"
-            INCLUDE "VAR.X68"
-            INCLUDE "MAPINFO.X68"
+            INCLUDE "SYSVAR.X68"            ; SYSTEM VARIABLES
+            INCLUDE "VAR.X68"               ; GAME VARIABLES
+            INCLUDE "MAPINFO.X68"           ; MAP MATRIXES
             END    START
-
-
-
-
-
-
-
-
-
-
-
-
+            
 
 *~Font name~Courier New~
 *~Font size~10~

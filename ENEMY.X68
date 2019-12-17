@@ -1,9 +1,9 @@
 ; =============================================================================
 ; ENEMIES
 ; Is an agent, so all of their parameters are as an index from (A0).
-; ENMYXOF(A0).L : The position of the enemy in pixels in format XXXX YYYY
-; ENMYXOF(A0).W : The X position of the enemy in pixels.
-; ENMYYOF(A0).W : The Y position of the enemy in pixels.
+; ENMY_XOF(A0).L : The position of the enemy in pixels in format XXXX YYYY
+; ENMY_XOF(A0).W : The X position of the enemy in pixels.
+; ENMY_YOF(A0).W : The Y position of the enemy in pixels.
 ; ISFACING(A0).B : The direction the enemy is looking. (LEFT or RIGHT)
 ; =============================================================================
 
@@ -19,12 +19,13 @@ ENMYINIT
             CLR.L   D2
             MOVE.B  D1,D2
             MULU    #GRIDHGT,D2
-            MOVE.W  D2,ENMYYOF(A0)
+            MOVE.W  D2,ENMY_YOF(A0)
             LSR     #8,D1
             CLR.L   D2
             MOVE.B  D1,D2
             MULU    #GRIDWTH,D2
-            MOVE.W  D2,ENMYXOF(A0)
+            MOVE.W  D2,ENMY_XOF(A0)
+            MOVE.B  #LEFT,ISFACING(A0)
             MOVE.L  (A7)+,D2
             RTS
             
@@ -35,6 +36,7 @@ ENMYUPD
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
+            
             RTS
             
 ; -----------------------------------------------------------------------------         
@@ -47,12 +49,12 @@ ENMYPLOT
             MOVEM.L D0-D4,-(A7)
             SETPEN  BLACK
             SETFILL RED
-            MOVE.W  ENMYXOF(A0),D1
-            MOVE.W  ENMYYOF(A0),D2
+            MOVE.W  ENMY_XOF(A0),D1
+            MOVE.W  ENMY_YOF(A0),D2
             MOVE.W  D1,D3
-            ADD.W   #ENMYDIM,D3
+            ADD.W   #PLRDIM,D3
             MOVE.W  D2,D4
-            ADD.W   #ENMYDIM,D4
+            ADD.W   #PLRDIM,D4
             MOVE.B  #87,D0
             TRAP    #15
             MOVEM.L (A7)+,D0-D4

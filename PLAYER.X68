@@ -99,67 +99,12 @@ PLRUPD
             BEQ     .H_COLL
             ADD.W   #PLRSPDX,D2
             MOVE.B  #RIGHT,DIR
-            
-            ; --- Horizontal collisions ---------------------------------------
-            
-.H_COLL     
-            
-            ; -- Left Collisions (posX) --
-            
-            GETCELL 2,0,3,0,0               ; get the cell of lower left corner
-            JSR     GETGRIDVAL              ; from the character
-            CMP.B   #1,D1
-            BEQ     .L_COLL
-            CMP.B   #3,D1
-            BEQ     .L_COLL
-            
-            GETCELL 2,0,3,-PLRDIM,0         ; get the cell of upper left corner
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .L_COLL
-            CMP.B   #3,D1
-            BNE     .RGTCOLL
-            
-.L_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
-            ADDQ.W  #1,D0                   ; we move to the right cell 
-            MULU.W  #GRIDWTH,D0
-            MOVE    D0,D2
-            BRA     .X_OOB
-            
-            ; -- Right Collisions (posX+plrDim) --
-            
-.RGTCOLL    GETCELL 2,PLRDIM,3,0,0
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .R_COLL
-            CMP.B   #3,D1
-            BEQ     .R_COLL
-            
-            GETCELL 2,PLRDIM,3,-PLRDIM,0
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .R_COLL
-            CMP.B   #3,D1
-            BNE     .X_OOB
-            
-.R_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
-            SUBQ.W  #1,D0                   ; we move to the left cell
-            MULU    #GRIDWTH,D0
-            MOVE    D0,D2
-            
-            ; -- Horizontal Out-Of-Bounds --
-            
-.X_OOB      CMP.W   #0,D2                   ; Checks if OOB (Out-of-Bounds)
-            BGT     .NOTOOB1                ; on the X-axis
-            MOVE.W  #0,D2
-            BRA     .VERT
-.NOTOOB1    CMP.W   #(SCRWIDTH-PLRDIM),D2
-            BLT     .VERT
-            MOVE.W  #(SCRWIDTH-PLRDIM),D2
+                        
+.H_COLL     JSR     HORCOLL                 ; Horizontal collisions
 
             ; --- Vertical movement -------------------------------------------
 
-.VERT       MOVE.B  KBDVAL,D0
+            MOVE.B  KBDVAL,D0
             MOVE.B  KBDEDGE,D1
 
             BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
@@ -211,84 +156,7 @@ PLRUPD
             
 .NOGRAV     ADD.W   D4,D3                   ; Fall (PLRPOSY+PLRSPDY)
 
-            ; --- Collisions --------------------------------------------------
-            
-            * I know this is awful, but just in case it stays like this in the
-            * final version, I tried replicating the same as what I did with the
-            * horizontal collisions and it went terribly wrong. I'll try to fix
-            * it if I can but it is not a priority.
-            
-            ; -- Lower Left Corner (posX,posY) --
-            
-            GETCELL 2,0,3,0,0
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1                   ; If lower left cell is ground
-            BEQ     .CONTLL
-            CMP.B   #3,D1
-            BNE     .LRCORNER
-.CONTLL     CLR.W   D3
-            MOVE.B  D0,D3
-            SUBQ.B  #1,D3
-            MULU.W  #GRIDHGT,D3
-            ADD.W   #PLRDIM,D3
-            CLR.W   D4
-            BRA     .ULCORNER
-            
-            ; -- Lower Rigth Corner (posX+plrDim,posY) --
-            
-.LRCORNER   GETCELL 2,PLRDIM,3,0,0
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .CONTLR
-            CMP.B   #3,D1
-            BNE     .ULCORNER
-.CONTLR     CLR.W   D3
-            MOVE.B  D0,D3
-            SUBQ.W  #1,D3
-            MULU.W  #GRIDHGT,D3
-            ADD.W   #PLRDIM,D3
-            CLR.W   D4
-            
-            ; -- Upper Left Corner (posX,posY-plrDim) --
-            
-.ULCORNER   GETCELL 2,0,3,-PLRDIM,0
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .CONTUL
-            CMP.B   #3,D1
-            BNE     .URCORNER
-.CONTUL     CLR.W   D3
-            MOVE.B  D0,D3
-            ADDQ.W  #1,D3
-            MULU    #GRIDHGT,D3
-            ADD.W   #PLRDIM,D3
-            CLR.W   D4
-            BRA     .Y_OOB
-            
-            ; -- Upper Right Corner (posX+plrDim,posY-plrDim) --
-            
-.URCORNER   GETCELL 2,PLRDIM,3,-PLRDIM,0
-            JSR     GETGRIDVAL
-            CMP.B   #1,D1
-            BEQ     .CONTUR
-            CMP.B   #3,D1
-            BNE     .Y_OOB
-.CONTUR     CLR.W   D3
-            MOVE.B  D0,D3
-            ADDQ.W  #1,D3
-            MULU    #GRIDHGT,D3
-            ADD.W   #PLRDIM,D3
-            CLR.W   D4
-
-            ; -- Vertical Out-Of-Bounds --
-            
-.Y_OOB      CMP.W   #PLRDIM,D3              ; Checks if OOB on Y-axis
-            BGT     .NOTOOB2
-            MOVE.W  #PLRDIM,D3
-            BRA     .END
-.NOTOOB2    CMP.W   #SCRHEIGH,D3
-            BLT     .END
-            MOVE.W  #SCRHEIGH,D3
+            JSR     VERCOLL                 ; Vertical Collisions
             
 .END        MOVE.W  D2,PLRPOSX
             MOVE.W  D3,PLRPOSY
@@ -349,6 +217,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
