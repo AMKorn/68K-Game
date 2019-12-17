@@ -16,6 +16,8 @@
             INCLUDE "MAPS.X68"              ; MAPS SUBROUTINES
             INCLUDE "GAMEMNGR.X68"
             INCLUDE "MENU.X68"
+            INCLUDE "AGENTLST.X68"
+            INCLUDE "ENEMY.X68"
 
 ; --- INITIALIZE --------------------------------------------------------------
 
@@ -46,6 +48,8 @@ START       JSR     SYSINIT
             INCLUDE "VAR.X68"
             INCLUDE "MAPINFO.X68"
             END    START
+
+
 
 
 

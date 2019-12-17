@@ -42,7 +42,18 @@ MAXSPD      EQU     GRIDHGT
 LEFT        EQU     $00
 RIGHT       EQU     $FF
 
+; - Enemy constants and indexing ---------------------------------------------
+
+ENMYDIM     EQU     PLRDIM
+            ; Due to enemies being agents, these constants are for ease of use
+            ; with displacement register addressing.
+ENMYXOF     EQU     0
+ENMYYOF     EQU     2
+ISFACING    EQU     4
+
+
 ; -----------------------------------------------------------------------------
+
 
 
 

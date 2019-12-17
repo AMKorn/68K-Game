@@ -16,6 +16,7 @@
 ;                 when initialized, insted this value is only used during the
 ;                 update.
 ;           - 4 : End of level.
+;           - 5 : Enemy
 ; Each level must also be accompanied with its correspondant level information,
 ; which for now consists of only the player location start (marked with STARTn)
 ; For ease of understanding, it is specified as 
@@ -45,7 +46,7 @@ MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,0,0,2,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
+            DC.B    1,0,5,0,0,0,0,0,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DS.W    0                          ; Better safe than sorry
 START1      DC.W    7*GRIDWTH,8*GRIDHGT+PLRDIM 
@@ -64,6 +65,7 @@ MAPINFO2    DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DS.W    0                          
 START2      DC.W    1*GRIDWTH,1*GRIDHGT+PLRDIM 
+
 
 
 

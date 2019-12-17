@@ -8,14 +8,12 @@ PLRINIT
 ; INPUT     - D1.L: The player position, with 2 most significant Bytes being
 ;             on X axis and least significant in Y axis
 ; OUTPUT    - None
-; MODIFIES  - D1.L
+; MODIFIES  - None
 ; -----------------------------------------------------------------------------
-            ;MOVE.L  D1,-(A7)
             MOVE.W  D1,PLRPOSY
-            LSR.L   #8,D1
-            LSR.L   #8,D1
+            SWAP    D1
             MOVE.W  D1,PLRPOSX
-            ;MOVE.L  (A7)+,D1
+            SWAP    D1                      ; Just to reset it.
             
             RTS
             
@@ -303,12 +301,8 @@ PLRPLOT
 ; Plots the player
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D4,-(A7)
-            MOVE.L  #BLACK,D1
-            MOVE.B  #80,D0
-            TRAP    #15                     ; Set pen color black
-            MOVE.L  #GREEN,D1
-            MOVE.B  #81,D0                  ; Set color green
-            TRAP    #15
+            SETPEN  BLACK                   ; Set pen color black
+            SETFILL GREEN                   ; Set color green
             MOVE.B  #87,D0
             MOVE.W  PLRPOSX,D1              ; Left X is the player posX
             MOVE.W  PLRPOSY,D2
@@ -319,9 +313,7 @@ PLRPLOT
             TRAP    #15
             
             ; Draw the eyes
-            MOVE.L  #BLACK,D1
-            MOVE.B  #81,D0
-            TRAP    #15
+            SETFILL BLACK
             
             MOVE.B  DIR,D0
             CMP.B   #LEFT,D0
@@ -357,6 +349,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 

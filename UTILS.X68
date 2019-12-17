@@ -25,6 +25,30 @@ GETCELL     MACRO
             MOVEM.L (A7)+,D\1/D\3
             ENDM
             
+; -----------------------------------------------------------------------------
+SETPEN      MACRO
+; Sets the pen to the specified color.
+; Input     - #\1 : The color to set the pen to.
+; Output    - None
+; Modifies  - D0.B and D1.L
+; -----------------------------------------------------------------------------
+            MOVE.B  #80,D0
+            MOVE.L  #\1,D1
+            TRAP    #15
+            ENDM
+            
+; -----------------------------------------------------------------------------
+SETFILL     MACRO
+; Sets the fill to the specified color.
+; Input     - #\1 : The color to set the fill to.
+; Outpu     - None
+; Modifies  - D0.B and D1.L
+; -----------------------------------------------------------------------------
+            MOVE.B  #81,D0
+            MOVE.L  #\1,D1
+            TRAP    #15
+            ENDM
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

@@ -47,6 +47,7 @@ GAMEUPD
             ; Current State: Playing
 .PLAYING    JSR     PLRUPD
             JSR     MAPUPD
+            JSR     AGLUPD
             
 .END
             RTS
@@ -66,8 +67,10 @@ GAMEPLOT
             
 .PLAYING    JSR     MAPPLOT
             JSR     PLRPLOT
+            JSR     AGLPLOT
             
 .END        RTS
+
 
 
 

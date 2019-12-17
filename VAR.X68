@@ -16,7 +16,7 @@ STRSTART    DC.B    'START',0
 STRMUTE     DC.B    'MUTE',0
 STRQUIT     DC.B    'QUIT',0
 ASTERISK    DC.B    '*',0
-CREDITS     DC.B    'Program Skeleton:',10,13
+CREDITS     DC.B    'Program Skeleton & Agent List:',10,13
             DC.B    'Antoni Burguera',10,13,10,13
             DC.B    'Coding and Game Design:',10,13
             DC.B    'Andreas Manuel Korn',10,13
@@ -40,6 +40,7 @@ SONG        DS.B    1
 MUSMENU     DC.B    'Music\MainMenu.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

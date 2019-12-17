@@ -13,22 +13,32 @@ MAPINIT
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D3/A0,-(A7)
             
+            ; Moves the current level's matrix pointer to A0
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
             LEA.L   LEVEL0,A0
-            ADD.L   D1,A0
-            MOVE.L  (A0),A0
+            MOVE.L  (A0,D1.W),A0
             
             CLR.L   D1
             CLR.L   D0
-            MOVE.W  #0,D2
+            MOVE.W  #0,D2                   ; D2.B is YY
 .YLOOP
-            MOVE.W  #0,D3
+            MOVE.W  #0,D3                   ; D3.B is XX
 .XLOOP      
             ; For the moment this for-loop is completely useless (apart from
             ; moving A0 to the STARTN location) but it will have its uses when
             ; more things (such as enemies) are introduced.
+            CMP.B   #5,(A0)
+            BNE     .NEXT
+            MOVE.B  D3,D1                   ; D1.W is 00XX
+            LSL     #8,D1
+            MOVE.B  D2,D1                   ; D1.W is XXYY
+            MOVE.B  #5,D0
+            LEA.L   ENMYINIT,A1
+            LEA.L   ENMYUPD,A2
+            LEA.L   ENMYPLOT,A3
+            JSR     AGLADD                  ; Adds an enemy to the agent list.
 
 .NEXT       
             ADDQ.L  #1,A0
@@ -65,12 +75,6 @@ MAPUPD
             CLR.L   D1
             
             MOVE.B  KBDEDGE,D0
-*            BTST.L  #KBDBITF1,D0
-*            BEQ     .CONT
-*            ADD.L   #XGRIDS*YGRIDS,A0
-*            MOVE.L  (A0),D1
-*            JSR     PLRINIT
-*            BRA     .END
             
 .CONT       BTST.L  #KBDBITDN,D0
             BEQ     .END
@@ -117,10 +121,7 @@ MAPPLOT
             
             ; - Paint the whole screen white first ----------------------------
             
-            MOVE.B  #81,D0
-            MOVE.L  #WHITE,D1
-            TRAP    #15
-
+            SETFILL WHITE
             MOVE.B  #87,D0
             MOVE.W  #0,D1
             MOVE.W  #0,D2
@@ -137,11 +138,8 @@ MAPPLOT
             CMP.B   #1,(A0)                 ; There is ground
             
             BNE     .NEXT1
-            MOVE.B  #81,D0
-            MOVE.L  #BLACK,D1
-            TRAP    #15
-            MOVE.B  #80,D0
-            TRAP    #15
+            SETFILL BLACK
+            SETPEN  BLACK
             
             ; Paint the black squares
             MOVE.W  D6,D1
@@ -159,9 +157,7 @@ MAPPLOT
 .NEXT1      CMP.B   #3,(A0)
             BNE     .NEXT2
             
-            MOVE.B  #81,D0
-            MOVE.L  #L_GREEN,D1
-            TRAP    #15
+            SETFILL L_GREEN
            
             ; Paint the green squares
             MOVE.W  D6,D1
@@ -177,9 +173,7 @@ MAPPLOT
             TRAP    #15
             
             ; Draw the eyes
-            MOVE.L  #BLACK,D1
-            MOVE.B  #81,D0
-            TRAP    #15
+            SETFILL BLACK
             
             MOVE.B  #84,D0
             MOVE.W  D6,D1
@@ -191,9 +185,6 @@ MAPPLOT
             MOVE.W  D2,D4
             ADD.W   #16,D4
             TRAP    #15
-*            ADDQ.W  #1,D1
-*            ADDQ.W  #1,D3
-*            TRAP    #15
                         
             SWAP    D2
             MOVE.W  D4,D2
@@ -201,16 +192,10 @@ MAPPLOT
             MOVE.W  D2,D4
             SWAP    D2
             TRAP    #15
-*            ADDQ.W  #1,D1
-*            ADDQ.W  #1,D3
-*            TRAP    #15
             
             ADD.W   #14,D1
             ADD.W   #14,D3
             TRAP    #15
-*            ADDQ.W  #1,D1
-*            ADDQ.W  #1,D3
-*            TRAP    #15
             
             SWAP    D2
             MOVE.W  D4,D2
@@ -218,17 +203,12 @@ MAPPLOT
             MOVE.W  D2,D4
             SWAP    D2
             TRAP    #15
-*            ADDQ.W  #1,D1
-*            ADDQ.W  #1,D3
-*            TRAP    #15
 
 .NEXT2            
             CMP.B   #2,(A0)
             BNE     .NEXT3
                         
-            MOVE.B  #81,D0
-            MOVE.L  #PINK,D1
-            TRAP    #15
+            SETFILL PINK
             
             ; Paint the portal
             
@@ -254,9 +234,7 @@ MAPPLOT
 .NEXT3      CMP.B   #4,(A0)
             BNE     .NEXT4
             
-            MOVE.B  #81,D0
-            MOVE.L  #AQUA,D1
-            TRAP    #15
+            SETFILL AQUA
             
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1
@@ -332,6 +310,8 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
+
 
 
 
