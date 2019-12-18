@@ -47,8 +47,10 @@ PLRUPD
             ADD.B   #1,D1                   ; We add one to the current level
             MOVE.B  D1,CURRLVL
             JSR     KILLALL
-            BRA     .END                    ; And go directly to the end
-            
+            JSR     MAPINIT
+            MOVEM.L (A7)+,D0-D4/A0
+            RTS                             ; And we don't check nor modify
+                                            ; anything else
             ; --- Platform placement ------------------------------------------
 .PLAT       
             MOVE.B  KBDVAL,D0
