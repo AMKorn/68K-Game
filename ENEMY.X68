@@ -75,7 +75,43 @@ ENMYPLOT
             ADD.W   #PLRDIM,D4
             MOVE.B  #87,D0
             TRAP    #15
-            MOVEM.L (A7)+,D0-D4
+            
+            ; Draw the eyes
+            SETFILL BLACK
+            
+            MOVE.B  ISFACING(A0),D0
+            CMP.B   #LEFT,D0
+            BEQ     .LOOK_LEFT
+            
+            MOVE.B  #88,D0
+            MOVE.W  ENMY_XOF(A0),D1
+            ADD.W   #15,D1
+            MOVE.W  D1,D3
+            ADD.W   #11,D3
+            ADDQ.W  #5,D2
+            MOVE.W  D2,D4
+            ADD.W   #16,D4
+            TRAP    #15
+            
+            ADD.W   #14,D1
+            ADD.W   #14,D3
+            TRAP    #15
+            BRA     .END
+            
+.LOOK_LEFT  MOVE.B  #88,D0
+            SUB.W   #15,D3
+            MOVE.W  D3,D1
+            SUB.W   #11,D1
+            ADDQ.W  #5,D2
+            MOVE.W  D2,D4
+            ADD.W   #16,D4
+            TRAP    #15
+            
+            SUB.W   #14,D1
+            SUB.W   #14,D3
+            TRAP    #15
+            
+.END        MOVEM.L (A7)+,D0-D4
             RTS
 
 *~Font name~Courier New~
