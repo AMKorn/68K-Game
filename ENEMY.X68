@@ -39,6 +39,7 @@ ENMYUPD
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D2-D4,-(A7)
+            
             CMP.B   #LEFT,ISFACING(A0)
             BEQ     .MOVELFT
             ADD.W   #PLRSPDX/2,ENMY_XOF(A0)
@@ -49,10 +50,18 @@ ENMYUPD
 .HORCOLL    MOVE.W  ENMY_XOF(A0),D2
             MOVE.W  ENMY_YOF(A0),D3
             JSR     HORCOLL
-            MOVE.W  D2,ENMY_XOF(A0)
             CMP.B   #1,D4
-            BNE     .END
+            BNE     .VERT
             NOT.B   ISFACING(A0)
+            
+.VERT       MOVE.B  ENMY_YSPD(A0),D4
+            ADD.W   #5*GRAVITY,D4
+.NOGRAV     ADD.W   D4,D3
+            JSR     VERCOLL
+            
+            MOVE.W  D2,ENMY_XOF(A0)
+            MOVE.W  D3,ENMY_YOF(A0)
+            MOVE.W  D4,ENMY_YSPD(A0)
             
 .END        MOVEM.L (A7)+,D2-D4
             RTS
@@ -72,7 +81,7 @@ ENMYPLOT
             MOVE.W  D1,D3
             ADD.W   #PLRDIM,D3
             MOVE.W  D2,D4
-            ADD.W   #PLRDIM,D4
+            SUB.W   #PLRDIM,D2
             MOVE.B  #87,D0
             TRAP    #15
             
@@ -114,6 +123,26 @@ ENMYPLOT
 .END        MOVEM.L (A7)+,D0-D4
             RTS
 
+; -----------------------------------------------------------------------------
+KILLALL
+; Kills all enemies
+; Input     - None
+; Output    - None
+; Modifes   - None
+; -----------------------------------------------------------------------------
+            MOVE.L  A0,-(A7)
+.CONT       JSR     DMMFIRST
+            CMP.L   #0,A0
+            BEQ     .END
+.ISENMY     CMP.W   #5,-(A0)
+            BEQ     .DELETE
+            JSR     DMMNEXTO
+            BRA     .ISENMY
+.DELETE     JSR     DMMFREE
+            BRA     .CONT
+
+.END        MOVE.L  (A7)+,A0
+            RTS
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

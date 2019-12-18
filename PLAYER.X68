@@ -14,6 +14,7 @@ PLRINIT
             SWAP    D1
             MOVE.W  D1,PLRPOSX
             SWAP    D1                      ; Just to reset it.
+            MOVE.B  #3,PLRLVS
             
             RTS
             
@@ -45,6 +46,7 @@ PLRUPD
             MOVE.B  CURRLVL,D1
             ADD.B   #1,D1                   ; We add one to the current level
             MOVE.B  D1,CURRLVL
+            JSR     KILLALL
             BRA     .END                    ; And go directly to the end
             
             ; --- Platform placement ------------------------------------------
@@ -215,6 +217,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 
