@@ -38,6 +38,7 @@ ENMYUPD
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
+            MOVEM.L D2-D4,-(A7)
             CMP.B   #LEFT,ISFACING(A0)
             BEQ     .MOVELFT
             ADD.W   #PLRSPDX/2,ENMY_XOF(A0)
@@ -45,9 +46,15 @@ ENMYUPD
             
 .MOVELFT    SUB.W   #PLRSPDX/2,ENMY_XOF(A0)
 
-.HORCOLL    MOVE.L  A0,-(A7)
+.HORCOLL    MOVE.W  ENMY_XOF(A0),D2
+            MOVE.W  ENMY_YOF(A0),D3
             JSR     HORCOLL
-            MOVE.L  (A7)+,A0
+            MOVE.W  D2,ENMY_XOF(A0)
+            CMP.B   #1,D4
+            BNE     .END
+            NOT.B   ISFACING(A0)
+            
+.END        MOVEM.L (A7)+,D2-D4
             RTS
             
 ; -----------------------------------------------------------------------------         

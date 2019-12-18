@@ -83,6 +83,7 @@ HORCOLL
 ; player-, be it either with in-game walls or the side of the window.
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
+;           - Reads CURRLVL
 ; Output    - D2.W : The corrected X coordinate of the entity's position.
 ;           - D4.B : Set to 1 if correction was made. (Useless for player,
 ;                    but needed for changing direction of enemies).
@@ -97,6 +98,7 @@ HORCOLL
             ADD.L   D1,A0
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
+
             
             ; -- Left Collisions (entityX) --
             
@@ -165,7 +167,7 @@ VERCOLL
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
 ;           - D4.W : The entity's vertical speed.
-;           - A0.L : The pointer to the matrix with the level's information.
+;           - Reads CURRLVL
 ; Output    - D3.W : The corrected Y coordinate of the entity's position.
 ;           - D4.W : Cleared if the entity is on the ground (used for Y speed)
 ; Modifies  - None, except the output.
@@ -179,7 +181,8 @@ VERCOLL
             ADD.L   D1,A0
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
-                                            
+
+            
             * I know this is awful, but just in case it stays like this in the
             * final version, I tried replicating the same as what I did with the
             * horizontal collisions and it went terribly wrong. I'll try to fix
