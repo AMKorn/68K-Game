@@ -26,15 +26,23 @@ MAPINIT
 .YLOOP
             MOVE.W  #0,D3                   ; D3.B is XX
 .XLOOP      
-            ; For the moment this for-loop is completely useless (apart from
-            ; moving A0 to the STARTN location) but it will have its uses when
-            ; more things (such as enemies) are introduced.
-            CMP.B   #5,(A0)
+            CMP.B   #ENTRANCE,(A0)
+            BNE     .ENEMY
+            MOVE.B  D3,D1
+            MULU    #GRIDWTH,D1
+            SWAP    D1
+            MOVE.B  D2,D0
+            MULU    #GRIDHGT,D0
+            MOVE.W  D0,D1
+            JSR     PLRINIT
+            BRA     .NEXT
+            
+.ENEMY      CMP.B   #ENEMY,(A0)
             BNE     .NEXT
             MOVE.B  D3,D1                   ; D1.W is 00XX
             LSL     #8,D1
             MOVE.B  D2,D1                   ; D1.W is XXYY
-            MOVE.B  #5,D0
+            MOVE.W  #5,D0
             LEA.L   ENMYINIT,A1
             LEA.L   ENMYUPD,A2
             LEA.L   ENMYPLOT,A3
@@ -50,8 +58,8 @@ MAPINIT
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
             
-            MOVE.L  (A0),D1
-            JSR     PLRINIT
+*            MOVE.L  (A0),D1
+*            JSR     PLRINIT
             
             MOVEM.L (A7)+,D0-D3/A0
             RTS
@@ -59,7 +67,8 @@ MAPINIT
 ; -----------------------------------------------------------------------------
 MAPUPD
 ; Updates the map.
-; Input     - None, reads CURRLVL and KBDEDGE
+; Input     - D0.W: Set to RESET if map has to be resetted.
+;           - Otherwise reads CURRLVL and KBDEDGE
 ; Output    - None
 ; Modifies  - The information in the level matrix.
 ; -----------------------------------------------------------------------------
@@ -74,11 +83,14 @@ MAPUPD
             
             CLR.L   D1
             
+            CMP.W   #RESET,D0               ; If D0 = RESET, we skip the check
+            BEQ     .RESET                  ; of KBDBITDN and reset regardless.
+            
             MOVE.B  KBDEDGE,D0
             
-.CONT       BTST.L  #KBDBITDN,D0
+            BTST.L  #KBDBITDN,D0
             BEQ     .END
-            
+.RESET            
             MOVE.W  #0,D2
 .YLOOP
             MOVE.W  #0,D3
@@ -312,6 +324,8 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
+
 
 
 

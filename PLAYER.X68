@@ -6,7 +6,7 @@
 PLRINIT
 ; INITIALIZES THE PLAYER
 ; INPUT     - D1.L: The player position, with 2 most significant Bytes being
-;             on X axis and least significant in Y axis
+;             on X axis and least significant on Y axis
 ; OUTPUT    - None
 ; MODIFIES  - None
 ; -----------------------------------------------------------------------------
@@ -14,7 +14,7 @@ PLRINIT
             SWAP    D1
             MOVE.W  D1,PLRPOSX
             SWAP    D1                      ; Just to reset it.
-            MOVE.B  #3,PLRLVS
+            MOVE.B  #STRTLIVES,PLRLVS
             
             RTS
             
@@ -36,21 +36,14 @@ PLRUPD
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
             
-            MOVE.W  PLRPOSX,D2
-            MOVE.W  PLRPOSY,D3
+            MOVE.B  PLRLVS,D1
+            CMP.B   #0,D1
+            BNE     .NOTDEAD
+            JSR     DIE
             
-            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
-            JSR     GETGRIDVAL
-            CMP.B   #4,D1                   ; If player is on the goal
-            BNE     .PLAT
-            MOVE.B  CURRLVL,D1
-            ADD.B   #1,D1                   ; We add one to the current level
-            MOVE.B  D1,CURRLVL
-            JSR     KILLALL
-            JSR     MAPINIT
-            MOVEM.L (A7)+,D0-D4/A0
-            RTS                             ; And we don't check nor modify
-                                            ; anything else
+.NOTDEAD    MOVE.W  PLRPOSX,D2
+            MOVE.W  PLRPOSY,D3
+
             ; --- Platform placement ------------------------------------------
 .PLAT       
             MOVE.B  KBDVAL,D0
@@ -170,10 +163,10 @@ PLRUPD
 PLRPLOT
 ; Plots the player
 ; -----------------------------------------------------------------------------
-            MOVEM.L D0-D4,-(A7)
+            MOVEM.L D0-D5,-(A7)
             SETPEN  BLACK                   ; Set pen color black
             SETFILL GREEN                   ; Set color green
-            MOVE.B  #87,D0
+            MOVE.W  #87,D0
             MOVE.W  PLRPOSX,D1              ; Left X is the player posX
             MOVE.W  PLRPOSY,D2
             SUB.W   #PLRDIM,D2              ; Upper Y is posY-dimensions
@@ -202,7 +195,7 @@ PLRPLOT
             ADD.W   #14,D1
             ADD.W   #14,D3
             TRAP    #15
-            BRA     .END
+            BRA     .LIVES
             
 .LOOK_LEFT  MOVE.B  #88,D0
             SUB.W   #15,D3
@@ -216,10 +209,49 @@ PLRPLOT
             SUB.W   #14,D1
             SUB.W   #14,D3
             TRAP    #15
+            
+            ; -- Draw the lives --
+            
+.LIVES      SETFILL GREEN
+
+            MOVE.W  #10,D1                  ; Starting points
+            MOVE.W  #10,D2
+            MOVE.W  #20,D3
+            MOVE.W  #20,D4
+            MOVE.W  #88,D0
+            
+            CLR     D5
+            MOVE.B  PLRLVS,D5            
+            BEQ     .END
+            SUBQ.W  #1,D5
+            
+.LOOP       TRAP    #15
+            ADD.W   #15,D1
+            ADD.W   #15,D3
+            DBRA    D5,.LOOP
+            
 .END
-            MOVEM.L (A7)+,D0-D4
+            MOVEM.L (A7)+,D0-D5
             RTS
 
+; -----------------------------------------------------------------------------
+DIE
+; Reinitializes the player, resets the level, kills and replaces all enemies
+; and resets the player lives to STRTLIVES
+; Input     - A0.L: The current level matrix pointer.
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVE.W  D0,-(A7)
+            MOVE.W  #RESET,D0               ; Resets the level, this
+            JSR     MAPUPD                  ; reinitializes player
+                                            ; and destroys player-placed
+                                            ; platforms.
+            JSR     KILLALL                 ; Kills all enemies
+            JSR     MAPINIT
+            MOVE.B  #STRTLIVES,PLRLVS
+            MOVE.W  (A7)+,D0
+            RTS
 
 
 

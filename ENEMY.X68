@@ -137,6 +137,8 @@ KILLALL
 .ISENMY     CMP.W   #5,-(A0)
             BEQ     .DELETE
             JSR     DMMNEXTO
+            CMP.L   #0,A0
+            BEQ     .END
             BRA     .ISENMY
 .DELETE     JSR     DMMFREE
             BRA     .CONT

@@ -45,7 +45,19 @@ GAMEUPD
             BRA     .END
             
             ; Current State: Playing
-.PLAYING    JSR     PLRUPD
+.PLAYING    
+            ; ------- TEMPORARY CODE --------
+            MOVE.B  KBDEDGE,D1
+            BTST.L  #KBDBITPS,D1
+            BEQ     .CONT
+            MOVE.B  PLRLVS,D1
+            SUBQ.B  #1,D1
+            MOVE.B  D1,PLRLVS
+.CONT       
+            ; ------- END TEMPORARY CODE ----
+
+            JSR     LVLCHANGE
+            JSR     PLRUPD
             JSR     MAPUPD
             JSR     AGLUPD
             
@@ -76,6 +88,35 @@ GAMEPLOT
 ; Subroutines which are used in two or more occasions which do not fit in any
 ; other file.
 ; =============================================================================
+
+; -----------------------------------------------------------------------------
+LVLCHANGE
+; Checks if the player is on the CURRLVL's endgoal and changes level if it is.
+; Input     - None
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            CLR.L   D1
+            MOVE.B  CURRLVL,D1
+            MULU    #4,D1
+            LEA.L   LEVEL0,A0
+            ADD.L   D1,A0
+            MOVE.L  (A0),A0                 ; A0 now has the address of the
+                                            ; matrix of the level.
+            
+            MOVE.W  PLRPOSX,D2
+            MOVE.W  PLRPOSY,D3
+            
+            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            JSR     GETGRIDVAL
+            CMP.B   #LVLGOAL,D1             ; If player is on the goal
+            BNE     .END
+            MOVE.B  CURRLVL,D1
+            ADD.B   #1,D1                   ; We add one to the current level
+            MOVE.B  D1,CURRLVL
+            JSR     KILLALL
+            JSR     MAPINIT
+.END        RTS
 
 ; -----------------------------------------------------------------------------
 HORCOLL
@@ -262,6 +303,8 @@ VERCOLL
 
 .END        MOVEM.L (A7)+,D0-D1/A0
             RTS
+
+
 
 
 

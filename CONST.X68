@@ -8,8 +8,9 @@ MAINMENU    EQU     0
 PLAYING     EQU     1
 PAUSED      EQU     2
 WINSTATE    EQU     3
-FAILSTATE   EQU     4                       ; Might not be needed depending
+DEAD        EQU     4                       ; Might not be needed depending
                                             ; on how I implement failure
+RESET       EQU     -1
 
 ; - Menu constants ------------------------------------------------------------
 
@@ -22,6 +23,7 @@ MENUQUIT    EQU     2
 
 GRAVITY     EQU     5                       ; Gravity pushes down when >0
 IMPULSE     EQU     -6*GRAVITY
+STRTLIVES   EQU     3                       ; Number of starting lives
 
 ; - Maps related constants ----------------------------------------------------
 
@@ -29,6 +31,12 @@ XGRIDS      EQU     16
 YGRIDS      EQU     12
 GRIDWTH     EQU     SCRWIDTH/XGRIDS
 GRIDHGT     EQU     SCRHEIGH/YGRIDS
+AIR         EQU     0
+GROUND      EQU     1
+ENTRANCE    EQU     2
+CLONE       EQU     3
+LVLGOAL     EQU     4
+ENEMY       EQU     5
 
 ; - Player related constants --------------------------------------------------
 
@@ -52,6 +60,8 @@ ENMY_YSPD   EQU     4
 ISFACING    EQU     6
 
 ; -----------------------------------------------------------------------------
+
+
 
 
 

@@ -25,11 +25,12 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Added levels base so adding further levels is easier.
 * Level progression
 * Added song by HeatleyBros (https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA)
+* Enemies
+* Lives system
 
 ## TO-DO
-* Enemies
+* Getting hurt.
 * Bombs or, maybe, crushing platforms to deal with enemies.
-* Lives system
 * Pause, game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
