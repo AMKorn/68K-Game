@@ -248,10 +248,11 @@ DIE
                                             ; and destroys player-placed
                                             ; platforms.
             JSR     KILLALL                 ; Kills all enemies
-            JSR     MAPINIT
+            MOVE.B  #MAINMENU,CURRSTA
             MOVE.B  #STRTLIVES,PLRLVS
             MOVE.W  (A7)+,D0
             RTS
+
 
 
 

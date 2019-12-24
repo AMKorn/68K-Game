@@ -26,27 +26,31 @@ MAPINIT
 .YLOOP
             MOVE.W  #0,D3                   ; D3.B is XX
 .XLOOP      
-            CMP.B   #ENTRANCE,(A0)
-            BNE     .ENEMY
-            MOVE.B  D3,D1
-            MULU    #GRIDWTH,D1
-            SWAP    D1
-            MOVE.B  D2,D0
-            MULU    #GRIDHGT,D0
-            MOVE.W  D0,D1
-            JSR     PLRINIT
-            BRA     .NEXT
+*            CMP.B   #ENTRANCE,(A0)
+*            BNE     .ENEMY
+*            MOVE.B  D3,D1
+*            MULU    #GRIDWTH,D1
+*            SWAP    D1
+*            MOVE.B  D2,D0
+*            MULU    #GRIDHGT,D0
+*            MOVE.W  D0,D1
+*            JSR     PLRINIT
+*            BRA     .NEXT
             
 .ENEMY      CMP.B   #ENEMY,(A0)
-            BNE     .NEXT
+            BNE     .CLONE
             MOVE.B  D3,D1                   ; D1.W is 00XX
             LSL     #8,D1
             MOVE.B  D2,D1                   ; D1.W is XXYY
-            MOVE.W  #5,D0
+            MOVE.W  #ENEMY,D0
             LEA.L   ENMYINIT,A1
             LEA.L   ENMYUPD,A2
             LEA.L   ENMYPLOT,A3
             JSR     AGLADD                  ; Adds an enemy to the agent list.
+
+.CLONE      CMP.B   #CLONE,(A0)
+            BNE     .NEXT
+            MOVE.B  #AIR,(A0)               ; Destroys "clone" platforms
 
 .NEXT       
             ADDQ.L  #1,A0
@@ -58,8 +62,8 @@ MAPINIT
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
             
-*            MOVE.L  (A0),D1
-*            JSR     PLRINIT
+            MOVE.L  (A0),D1
+            JSR     PLRINIT
             
             MOVEM.L (A7)+,D0-D3/A0
             RTS
@@ -95,9 +99,9 @@ MAPUPD
 .YLOOP
             MOVE.W  #0,D3
 .XLOOP      
-            CMP.B   #3,(A0)
+            CMP.B   #CLONE,(A0)
             BNE     .NEXT
-            MOVE.B  #0,(A0)
+            MOVE.B  #AIR,(A0)
 
 .NEXT       
             ADDQ.L  #1,A0
@@ -147,7 +151,7 @@ MAPPLOT
 .YLOOP
             MOVE.W  #0,D6                   ; D6 = X index of grid
 .XLOOP            
-            CMP.B   #1,(A0)                 ; There is ground
+            CMP.B   #GROUND,(A0)            ; There is ground
             
             BNE     .NEXT1
             SETFILL BLACK
@@ -166,7 +170,7 @@ MAPPLOT
             MOVE.B  #87,D0
             TRAP    #15
             
-.NEXT1      CMP.B   #3,(A0)
+.NEXT1      CMP.B   #CLONE,(A0)
             BNE     .NEXT2
             
             SETFILL L_GREEN
@@ -217,7 +221,7 @@ MAPPLOT
             TRAP    #15
 
 .NEXT2            
-            CMP.B   #2,(A0)
+            CMP.B   #ENTRANCE,(A0)
             BNE     .NEXT3
                         
             SETFILL PINK
@@ -243,7 +247,7 @@ MAPPLOT
             TRAP    #15
 
             
-.NEXT3      CMP.B   #4,(A0)
+.NEXT3      CMP.B   #LVLGOAL,(A0)
             BNE     .NEXT4
             
             SETFILL AQUA
@@ -324,6 +328,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

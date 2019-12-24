@@ -124,6 +124,16 @@ ENMYPLOT
             RTS
 
 ; -----------------------------------------------------------------------------
+PLAYERCONTACT
+; Checks if the enemy and the player are in contact, and substracts one life if
+; true.
+; Input     - A0.L : The enemy data block.
+; Output    - None
+; Modifies  - No registers, only PLRLVS
+; -----------------------------------------------------------------------------
+
+
+; -----------------------------------------------------------------------------
 KILLALL
 ; Kills all enemies
 ; Input     - None
@@ -145,6 +155,7 @@ KILLALL
 
 .END        MOVE.L  (A7)+,A0
             RTS
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

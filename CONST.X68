@@ -31,6 +31,7 @@ XGRIDS      EQU     16
 YGRIDS      EQU     12
 GRIDWTH     EQU     SCRWIDTH/XGRIDS
 GRIDHGT     EQU     SCRHEIGH/YGRIDS
+
 AIR         EQU     0
 GROUND      EQU     1
 ENTRANCE    EQU     2
@@ -60,6 +61,7 @@ ENMY_YSPD   EQU     4
 ISFACING    EQU     6
 
 ; -----------------------------------------------------------------------------
+
 
 
 
