@@ -37,7 +37,9 @@ PAUSEUPD
             
 .RESET      CMP.W   #PSERESET,D1
             BNE     .MUTE
-            ; TO-DO
+            JSR     KILLALL
+            JSR     MAPINIT
+            MOVE.B  #PLAYING,CURRSTA
             BRA     .END
 .MUTE       CMP.W   #PSEMUTE,D1
             BNE     .QUIT

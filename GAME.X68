@@ -52,7 +52,7 @@ GAMEUPD
             BTST.L  #KBDBITPS,D1            ; If PAUSE was pressed
             BEQ     .CONT
             MOVE.B  #PAUSED,CURRSTA         ; we pause the game
-            BRA     .START
+            BRA     .END
             
 .CONT       JSR     LVLCHANGE
             JSR     PLRUPD
