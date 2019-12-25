@@ -42,6 +42,8 @@ GAMEUPD
             BEQ     .PLAYING
             CMP.B   #PAUSED,D1
             BEQ     .PAUSED
+            CMP.B   #DEAD,D1
+            BEQ     .DEAD
             
             ; Current State: Menu
 .MENU       JSR     MENUUPD
@@ -61,7 +63,11 @@ GAMEUPD
             BRA     .END
             
 .PAUSED     JSR     PAUSEUPD
+            BRA     .END
 
+.DEAD       JSR     MAPUPD
+            JSR     AGLUPD
+            JSR     DEADUPD
 
 .END
             RTS
@@ -78,6 +84,8 @@ GAMEPLOT
             BEQ     .PLAYING
             CMP.B   #PAUSED,D1
             BEQ     .PAUSED
+            CMP.B   #DEAD,D1
+            BEQ     .DEAD
 
 .MENU       JSR     MENUPLOT
             BRA     .END
@@ -91,7 +99,11 @@ GAMEPLOT
             JSR     PLRPLOT
             JSR     AGLPLOT
             JSR     PAUSEPLOT
+            BRA     .END
             
+.DEAD       JSR     MAPPLOT
+            JSR     AGLPLOT
+            JSR     DEADPLOT
             
 .END        RTS
 
@@ -351,6 +363,7 @@ CHECKCOL
             RTS
             
             
+
 
 
 *~Font name~Courier New~

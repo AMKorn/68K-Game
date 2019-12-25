@@ -38,7 +38,9 @@ PLRUPD
             MOVE.B  PLRLVS,D1
             CMP.B   #0,D1
             BNE     .NOTDEAD
-            JSR     DIE
+            MOVE.B  #DEAD,CURRSTA
+            BRA     .END
+            ;JSR     DIE
             
 .NOTDEAD    MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
@@ -252,39 +254,8 @@ DIE
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
-            MOVE.W  D0,-(A7)
-            MOVE.W  #RESET,D0               ; Resets the level, this
-            JSR     MAPUPD                  ; reinitializes player
-                                            ; and destroys player-placed
-                                            ; platforms.
-            JSR     KILLALL                 ; Kills all enemies
-            MOVE.B  #MAINMENU,CURRSTA
-            MOVE.B  #STRTLIVES,PLRLVS
-            MOVE.W  (A7)+,D0
+            MOVE.B  #DEAD,PLRLVS
             RTS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

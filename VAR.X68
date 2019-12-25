@@ -19,6 +19,8 @@ STRRESET    DC.B    'RESET LEVEL',0
 STRMUTE     DC.B    'MUTE',0
 STRQUIT     DC.B    'QUIT GAME',0
 STRMAIN     DC.B    'MAIN MENU',0
+STRRETRY    DC.B    'RETRY',0
+STRDEAD     DC.B    'TOO BAD, YOU DIED',0
 ASTERISK    DC.B    '*',0
 CREDITS     DC.B    'Program Skeleton & Agent List:',10,13
             DC.B    'Antoni Burguera',10,13,10,13
@@ -46,6 +48,7 @@ SONG        DS.B    1
 MUSMENU     DC.B    'Music\MainMenu.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

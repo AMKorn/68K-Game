@@ -71,8 +71,7 @@ MAPINIT
 ; -----------------------------------------------------------------------------
 MAPUPD
 ; Updates the map.
-; Input     - D0.W: Set to RESET if map has to be resetted.
-;           - Otherwise reads CURRLVL and KBDEDGE
+; Input     - None
 ; Output    - None
 ; Modifies  - The information in the level matrix.
 ; -----------------------------------------------------------------------------
@@ -86,9 +85,6 @@ MAPUPD
             MOVE.L  (A0),A0
             
             CLR.L   D1
-            
-            CMP.W   #RESET,D0               ; If D0 = RESET, we skip the check
-            BEQ     .RESET                  ; of KBDBITDN and reset regardless.
             
             MOVE.B  KBDEDGE,D0
             
@@ -328,6 +324,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

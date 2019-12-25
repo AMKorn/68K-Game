@@ -29,6 +29,13 @@ PSERESET    EQU     1
 PSEMUTE     EQU     2
 PSEQUIT     EQU     3
 
+; - Death constants -----------------------------------------------------------
+
+DEADOPTS    EQU     2
+
+DEADTRY     EQU     0
+DEADQUIT    EQU     1
+
 ; - Game constants ------------------------------------------------------------
 
 GRAVITY     EQU     5                       ; Gravity pushes down when >0
@@ -72,6 +79,7 @@ ENMY_YSPD   EQU     4
 ISFACING    EQU     6
 
 ; -----------------------------------------------------------------------------
+
 
 
 
