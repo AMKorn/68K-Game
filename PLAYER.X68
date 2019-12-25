@@ -153,6 +153,9 @@ PLRUPD
 .NOGRAV     ADD.W   D4,D3                   ; Fall (PLRPOSY+PLRSPDY)
 
             JSR     VERCOLL                 ; Vertical Collisions
+            CMP.W   #$FFFF,D3
+            BNE     .END
+            MOVE.B  #DEAD,CURRSTA
             
 .END        MOVE.W  D2,PLRPOSX
             MOVE.W  D3,PLRPOSY
@@ -255,6 +258,7 @@ DIE
 ; -----------------------------------------------------------------------------
             MOVE.B  #DEAD,PLRLVS
             RTS
+
 
 
 

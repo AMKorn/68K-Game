@@ -248,8 +248,8 @@ VERCOLL
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
 ;           - D4.W : The entity's vertical speed.
-;           - Reads CURRLVL
-; Output    - D3.W : The corrected Y coordinate of the entity's position.
+; Output    - D3.W : The corrected Y coordinate of the entity's position, or
+;                    set to $FFFF if the entity fell off the map.
 ;           - D4.W : Cleared if the entity is on the ground (used for Y speed)
 ; Modifies  - None, except the output.
 ; -----------------------------------------------------------------------------
@@ -337,10 +337,10 @@ VERCOLL
             BGT     .NOTOOB2
             MOVE.W  #PLRDIM,D3
             BRA     .END
-.NOTOOB2    CMP.W   #SCRHEIGH,D3
+.NOTOOB2    CMP.W   #SCRHEIGH+PLRDIM,D3
             BLT     .END
-            MOVE.W  #SCRHEIGH,D3
-
+            MOVE.W  #$FFFF,D3
+            
 .END        MOVEM.L (A7)+,D0-D1/A0
             RTS
 
@@ -379,6 +379,7 @@ CHECKCOL
             RTS
             
             
+
 
 
 
