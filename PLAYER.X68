@@ -165,8 +165,18 @@ PLRPLOT
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D5,-(A7)
             SETPEN  BLACK                   ; Set pen color black
-            SETFILL GREEN                   ; Set color green
-            MOVE.W  #87,D0
+            
+            MOVE.L  #8,D0
+            TRAP    #15                     ; D1.L has current time
+            MOVE.L  INVFRAMES,D0
+            SUB.L   D0,D1
+            CMP.L   #INVTIME,D1
+            BHI     .NOINV
+            SETFILL L_GREEN
+            BRA     .CONT
+            
+.NOINV      SETFILL GREEN                   ; Set color green
+.CONT       MOVE.W  #87,D0
             MOVE.W  PLRPOSX,D1              ; Left X is the player posX
             MOVE.W  PLRPOSY,D2
             SUB.W   #PLRDIM,D2              ; Upper Y is posY-dimensions
@@ -252,6 +262,7 @@ DIE
             MOVE.B  #STRTLIVES,PLRLVS
             MOVE.W  (A7)+,D0
             RTS
+
 
 
 

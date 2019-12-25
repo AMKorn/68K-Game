@@ -29,7 +29,6 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Lives system
 
 ## TO-DO
-* Getting hurt.
 * Bombs or, maybe, crushing platforms to deal with enemies.
 * Pause, game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)

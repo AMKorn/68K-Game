@@ -304,10 +304,41 @@ VERCOLL
 .END        MOVEM.L (A7)+,D0-D1/A0
             RTS
 
-
-
-
-
+; -----------------------------------------------------------------------------
+CHECKCOL
+; Checks the collisions between two elements. Code extracted from
+; https://github.com/aburguera/YAP/blob/master/UTIL.X68 - line 54
+; Input     - D0.W : X coordinate of first element
+;           - D1.W : Y coordinate of first element
+;           - D2.W : X coordinate of second element
+;           - D3.W : Y coordinate of second element
+;           - D4.W : Width of first element
+;           - D5.W : Width of second element
+;           - D6.W : Height of first element
+;           - D7.W : Width of second element
+; Output    - D0.B : Set to FF if there is collision, otherwise cleared
+; Modifies  - None but the output
+; -----------------------------------------------------------------------------
+            MOVEM.W D4-D7,-(A7)
+            ADD.W   D0,D4
+            CMP.W   D2,D4
+            BLE     .NOCOL
+            ADD.W   D2,D5
+            CMP.W   D0,D5
+            BLE     .NOCOL
+            ADD.W   D1,D6
+            CMP.W   D3,D6
+            BLE     .NOCOL
+            ADD.W   D3,D7
+            CMP.W   D1,D7
+            BLE     .NOCOL
+            MOVE.B  #$FF,D0
+            BRA     .END
+.NOCOL      CLR.B   D0
+.END        MOVEM.W (A7)+,D4-D7
+            RTS
+            
+            
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

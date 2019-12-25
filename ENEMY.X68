@@ -40,6 +40,8 @@ ENMYUPD
 ; -----------------------------------------------------------------------------
             MOVEM.L D2-D4,-(A7)
             
+            JSR     PLAYERCONTACT
+            
             CMP.B   #LEFT,ISFACING(A0)
             BEQ     .MOVELFT
             ADD.W   #PLRSPDX/2,ENMY_XOF(A0)
@@ -131,7 +133,37 @@ PLAYERCONTACT
 ; Output    - None
 ; Modifies  - No registers, only PLRLVS
 ; -----------------------------------------------------------------------------
-
+            MOVEM.L D0-D7,-(A7)
+            
+            MOVE.L  #8,D0
+            TRAP    #15                     ; D1.L has current time
+            MOVE.L  INVFRAMES,D0
+            SUB.L   D0,D1
+            CMP.L   #INVTIME,D1
+            BLT     .NOCOL
+            
+            MOVE.W  PLRPOSX,D0
+            MOVE.W  PLRPOSY,D1
+            MOVE.W  ENMY_XOF(A0),D2
+            MOVE.W  ENMY_YOF(A0),D3
+            MOVE.W  #PLRDIM,D4
+            MOVE.W  D4,D5
+            MOVE.W  D5,D6
+            MOVE.W  D6,D7
+            JSR     CHECKCOL
+            CMP.B   #0,D0
+            BEQ     .NOCOL
+            
+            MOVE.B  PLRLVS,D0
+            SUBQ.B  #1,D0
+            MOVE.B  D0,PLRLVS
+            
+            MOVE.L  #8,D0
+            TRAP    #15
+            MOVE.L  D1,INVFRAMES
+            
+.NOCOL      MOVEM.L (A7)+,D0-D7
+            RTS
 
 ; -----------------------------------------------------------------------------
 KILLALL
@@ -155,6 +187,7 @@ KILLALL
 
 .END        MOVE.L  (A7)+,A0
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~10~

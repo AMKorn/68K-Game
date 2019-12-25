@@ -30,6 +30,8 @@ CREDITS     DC.B    'Program Skeleton & Agent List:',10,13
 PLRPOSX     DS.W    1
 PLRPOSY     DS.W    1
 PLRSPDY     DC.W    0
+INVFRAMES   DS.L    1                       ; The start of the invincibility
+                                            ; frames
 PLRLVS      DS.B    1
 DIR         DS.B    1
             DS.W    0
@@ -40,6 +42,7 @@ SONG        DS.B    1
 MUSMENU     DC.B    'Music\MainMenu.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

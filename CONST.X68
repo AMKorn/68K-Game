@@ -48,6 +48,7 @@ PLRDIM      EQU     GRIDWTH-1               ; Due to the collisions
                                             ; behaviour.
 PLRSPDX     EQU     10
 MAXSPD      EQU     GRIDHGT
+INVTIME     EQU     100                     ; 1 second of invincibility
 LEFT        EQU     $00
 RIGHT       EQU     $FF
 
@@ -61,6 +62,7 @@ ENMY_YSPD   EQU     4
 ISFACING    EQU     6
 
 ; -----------------------------------------------------------------------------
+
 
 
 
