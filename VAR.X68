@@ -4,7 +4,8 @@
 
 ; - General variables ---------------------------------------------------------
 
-CURRLVL     DS.B    1
+CURRLVL     DS.B    1                       ; This variable is always one less
+                                            ; than the REAL current level.
 CURRSTA     DS.B    1
             DS.W    0
 
@@ -21,14 +22,15 @@ STRQUIT     DC.B    'QUIT GAME',0
 STRMAIN     DC.B    'MAIN MENU',0
 STRRETRY    DC.B    'RETRY',0
 STRDEAD     DC.B    'TOO BAD, YOU DIED',0
+STRRSTR     DC.B    'Press SPACE to go back to the main menu',0
 ASTERISK    DC.B    '*',0
-CREDITS     DC.B    'Program Skeleton & Agent List:',10,13
-            DC.B    'Antoni Burguera',10,13,10,13
-            DC.B    'Coding and Game Design:',10,13
-            DC.B    'Andreas Manuel Korn',10,13
-            DC.B    'Sergio Vega García',10,13,10,13
-            DC.B    'Music:',10,13
-            DC.B    'HeatleyBros',0
+CREDITS0    DC.B    'Program Skeleton & Agent List:',0
+CREDITS1    DC.B    ' Antoni Burguera',0
+CREDITS2    DC.B    'Coding and Game Design:',0
+CREDITS3    DC.B    ' Andreas Manuel Korn',0
+CREDITS4    DC.B    ' Sergio Vega García',0
+CREDITS5    DC.B    'Music:',0
+CREDITS6    DC.B    ' HeatleyBros',0
             DS.W    0
             
 ; - Player related vars -------------------------------------------------------
@@ -48,6 +50,7 @@ SONG        DS.B    1
 MUSMENU     DC.B    'Music\MainMenu.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

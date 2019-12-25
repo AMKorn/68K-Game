@@ -30,7 +30,7 @@ PLRUPD
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             ADD.L   D1,A0
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
@@ -40,7 +40,6 @@ PLRUPD
             BNE     .NOTDEAD
             MOVE.B  #DEAD,CURRSTA
             BRA     .END
-            ;JSR     DIE
             
 .NOTDEAD    MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
@@ -256,6 +255,9 @@ DIE
 ; -----------------------------------------------------------------------------
             MOVE.B  #DEAD,PLRLVS
             RTS
+
+
+
 
 
 

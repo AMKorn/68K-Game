@@ -17,7 +17,7 @@ MAPINIT
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             MOVE.L  (A0,D1.W),A0
             
             CLR.L   D1
@@ -26,22 +26,12 @@ MAPINIT
 .YLOOP
             MOVE.W  #0,D3                   ; D3.B is XX
 .XLOOP      
-*            CMP.B   #ENTRANCE,(A0)
-*            BNE     .ENEMY
-*            MOVE.B  D3,D1
-*            MULU    #GRIDWTH,D1
-*            SWAP    D1
-*            MOVE.B  D2,D0
-*            MULU    #GRIDHGT,D0
-*            MOVE.W  D0,D1
-*            JSR     PLRINIT
-*            BRA     .NEXT
-            
-.ENEMY      CMP.B   #ENEMY,(A0)
+            CMP.B   #ENEMY,(A0)
             BNE     .CLONE
             MOVE.B  D3,D1                   ; D1.W is 00XX
             LSL     #8,D1
             MOVE.B  D2,D1                   ; D1.W is XXYY
+            ADD.B   #1,D1
             MOVE.W  #ENEMY,D0
             LEA.L   ENMYINIT,A1
             LEA.L   ENMYUPD,A2
@@ -80,7 +70,7 @@ MAPUPD
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             ADD.L   D1,A0
             MOVE.L  (A0),A0
             
@@ -127,7 +117,7 @@ MAPPLOT
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             ADD.L   D1,A0
             MOVE.L  (A0),A0
             
@@ -324,6 +314,10 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
+
+
+
 
 
 

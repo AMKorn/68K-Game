@@ -31,8 +31,8 @@ NLVLS       EQU     2                       ; Number of levels. Should only
                                             ; I decided to declare it here and
                                             ; not with the other constants.
 
-LEVEL0      DC.L    0                       ; Just so I don't have to start
-                                            ; counting the levels on 0. 
+*LEVEL0      DC.L    0                       ; Just so I don't have to start
+*                                            ; counting the levels on 0. 
 LEVEL1      DC.L    MAPINFO1
 LEVEL2      DC.L    MAPINFO2
 
@@ -64,10 +64,12 @@ MAPINFO2    DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
             DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,5,0,1
+            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,5,4,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DS.W    0                          
 START2      DC.W    1*GRIDWTH,4*GRIDHGT+PLRDIM 
+
+
 
 
 

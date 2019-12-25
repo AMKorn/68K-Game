@@ -28,11 +28,10 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Enemies
 * Lives system
 * Pause menu
-* Dead state
+* Dead and win states
 
 ## TO-DO
 * Bombs or, maybe, crushing platforms to deal with enemies.
-* Win screen
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
 ## Descripción básica:

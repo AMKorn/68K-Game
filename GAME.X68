@@ -44,6 +44,8 @@ GAMEUPD
             BEQ     .PAUSED
             CMP.B   #DEAD,D1
             BEQ     .DEAD
+            CMP.B   #WINSTATE,D1
+            BEQ     .WIN
             
             ; Current State: Menu
 .MENU       JSR     MENUUPD
@@ -56,7 +58,7 @@ GAMEUPD
             MOVE.B  #PAUSED,CURRSTA         ; we pause the game
             BRA     .END
             
-.CONT       JSR     LVLCHANGE
+.CONT       JSR     CHKLVLCHANGE
             JSR     PLRUPD
             JSR     MAPUPD
             JSR     AGLUPD
@@ -65,9 +67,11 @@ GAMEUPD
 .PAUSED     JSR     PAUSEUPD
             BRA     .END
 
-.DEAD       JSR     MAPUPD
-            JSR     AGLUPD
+.DEAD       JSR     AGLUPD                  ; Not necessary, but cool
             JSR     DEADUPD
+            BRA     .END
+
+.WIN        JSR     WINUPD
 
 .END
             RTS
@@ -86,6 +90,8 @@ GAMEPLOT
             BEQ     .PAUSED
             CMP.B   #DEAD,D1
             BEQ     .DEAD
+            CMP.B   #WINSTATE,D1
+            BEQ     .WIN
 
 .MENU       JSR     MENUPLOT
             BRA     .END
@@ -104,7 +110,11 @@ GAMEPLOT
 .DEAD       JSR     MAPPLOT
             JSR     AGLPLOT
             JSR     DEADPLOT
+            BRA     .END
             
+.WIN        JSR     WINPLOT
+
+
 .END        RTS
 
 ; =============================================================================
@@ -114,7 +124,7 @@ GAMEPLOT
 ; =============================================================================
 
 ; -----------------------------------------------------------------------------
-LVLCHANGE
+CHKLVLCHANGE
 ; Checks if the player is on the CURRLVL's endgoal and changes level if it is.
 ; Input     - None
 ; Output    - None
@@ -123,7 +133,7 @@ LVLCHANGE
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             ADD.L   D1,A0
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
@@ -137,7 +147,13 @@ LVLCHANGE
             BNE     .END
             MOVE.B  CURRLVL,D1
             ADD.B   #1,D1                   ; We add one to the current level
-            MOVE.B  D1,CURRLVL
+            CMP.B   #NLVLS,D1               ; If the level was the last
+            BNE     .NEXTLVL                
+            MOVE.B  #WINSTATE,CURRSTA       ; we change the state to WINSTATE
+            JSR     KILLALL
+            BRA     .END
+            
+.NEXTLVL    MOVE.B  D1,CURRLVL
             JSR     KILLALL
             JSR     MAPINIT
 .END        RTS
@@ -159,7 +175,7 @@ HORCOLL
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             ADD.L   D1,A0
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
@@ -242,7 +258,7 @@ VERCOLL
             CLR.L   D1
             MOVE.B  CURRLVL,D1
             MULU    #4,D1
-            LEA.L   LEVEL0,A0
+            LEA.L   LEVEL1,A0
             ADD.L   D1,A0
             MOVE.L  (A0),A0                 ; A0 now has the address of the
                                             ; matrix of the level.
@@ -363,6 +379,12 @@ CHECKCOL
             RTS
             
             
+
+
+
+
+
+
 
 
 

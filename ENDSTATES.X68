@@ -3,6 +3,74 @@
 ; =============================================================================
 
 ; -----------------------------------------------------------------------------
+WINUPD
+; Screen with an option to go back to the main menu.
+; Input     - None
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVE.B  D0,-(A7)
+            MOVE.B  KBDEDGE,D0
+            BTST.L  #KBDBITF1,D0
+            BEQ     .END
+            MOVE.W  #0,SELECT
+            MOVE.B  #MAINMENU,CURRSTA
+.END        MOVE.B  (A7)+,D0
+            RTS
+            
+; -----------------------------------------------------------------------------
+WINPLOT
+; Prints the credits of the game on the screen.
+; Input     - None
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVEM.L D0-D2/A1,-(A7)
+            
+            SETFILL BLACK
+            MOVE.L  #WHITE,D1
+            CLR.L   D2
+            MOVE.W  #21,D0
+            TRAP    #15
+            
+            MOVE.W  #95,D0
+            MOVE.W  #100,D1
+            MOVE.W  #100,D2
+            LEA.L   CREDITS0,A1
+            TRAP    #15
+            
+            ADD.W   #20,D2
+            LEA.L   CREDITS1,A1
+            TRAP    #15
+            
+            ADD.W   #40,D2
+            LEA.L   CREDITS2,A1
+            TRAP    #15
+            
+            ADD.W   #20,D2
+            LEA.L   CREDITS3,A1
+            TRAP    #15
+            
+            ADD.W   #20,D2
+            LEA.L   CREDITS4,A1
+            TRAP    #15
+            
+            ADD.W   #40,D2
+            LEA.L   CREDITS5,A1
+            TRAP    #15
+            
+            ADD.W   #20,D2
+            LEA.L   CREDITS6,A1
+            TRAP    #15
+            
+            ADD.W   #40,D2
+            LEA.L   STRRSTR,A1
+            TRAP    #15
+            
+            MOVEM.L (A7)+,D0-D2/A1
+            RTS
+
+; -----------------------------------------------------------------------------
 DEADUPD
 ; Small menu with two options: retry level or quit game
 ; Input     - None
@@ -96,6 +164,7 @@ DEADPLOT
             
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 *~Font name~Courier New~
 *~Font size~10~
