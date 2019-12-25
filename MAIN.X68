@@ -20,6 +20,7 @@
             INCLUDE "ENEMY.X68"             ; ENEMY CODE
             INCLUDE "PAUSESCR.X68"          ; PAUSE CODE
             INCLUDE "ENDSTATES.X68"
+            INCLUDE "CRUSHERS.X68"
 
 ; --- INITIALIZE --------------------------------------------------------------
 
@@ -51,6 +52,7 @@ START       JSR     SYSINIT
             INCLUDE "MAPINFO.X68"           ; MAP MATRIXES
             END    START
             
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

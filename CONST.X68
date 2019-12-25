@@ -78,7 +78,15 @@ ENMY_YOF    EQU     2
 ENMY_YSPD   EQU     4
 ISFACING    EQU     6
 
+; - Crusher constants and indexing --------------------------------------------
+
+            ; Same as enemies, these constants are for ease of use.
+CRUSHX      EQU     0
+CRUSHY      EQU     2
+CRUSH_YSPD  EQU     4
+
 ; -----------------------------------------------------------------------------
+
 
 
 

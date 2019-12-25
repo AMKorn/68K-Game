@@ -75,7 +75,7 @@ PLRUPD
             BEQ     .NOPLATREG              ; character is not on the air, 
             MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1 ; the player is moved to the 
             JSR     PLRINIT                 ; starting point of the level.
-            SUBLIFE
+            SUBLIFE                         ; and a life is lost
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             
@@ -84,9 +84,12 @@ PLRUPD
             MOVE.W  (A7)+,D0
 
 .NOPLAT
+            BTST.L  #KBDBITF3,D1            ; Checks if shift has been pressed
+            BEQ     .MOVE
+            JSR     ADDCRSHR
             
             ; --- Horizontal movement -----------------------------------------
-            
+.MOVE            
             BTST.L  #KBDBITLF,D0
             BEQ     .NOLF
             SUB.W   #PLRSPDX,D2
@@ -258,6 +261,7 @@ DIE
 ; -----------------------------------------------------------------------------
             MOVE.B  #DEAD,PLRLVS
             RTS
+
 
 
 

@@ -1,6 +1,7 @@
 ; =============================================================================
 ; ENEMIES
 ; Is an agent, so all of their parameters are as an index from (A0).
+; It uses ENEMY as agent ID.
 ; ENMY_XOF(A0).L : The position of the enemy in pixels in format XXXX YYYY
 ; ENMY_XOF(A0).W : The X position of the enemy in pixels.
 ; ENMY_YOF(A0).W : The Y position of the enemy in pixels.
@@ -58,14 +59,17 @@ ENMYUPD
             
 .VERT       MOVE.B  ENMY_YSPD(A0),D4
             ADD.W   #5*GRAVITY,D4
-.NOGRAV     ADD.W   D4,D3
+            ADD.W   D4,D3
             JSR     VERCOLL
+            CMP.W   #$FFFF,D3
+            BNE     .END
+            JSR     AGLKILL
             
-            MOVE.W  D2,ENMY_XOF(A0)
+.END        MOVE.W  D2,ENMY_XOF(A0)
             MOVE.W  D3,ENMY_YOF(A0)
             MOVE.W  D4,ENMY_YSPD(A0)
             
-.END        MOVEM.L (A7)+,D2-D4
+            MOVEM.L (A7)+,D2-D4
             RTS
             
 ; -----------------------------------------------------------------------------         
@@ -174,17 +178,14 @@ KILLALL
 .CONT       JSR     DMMFIRST
             CMP.L   #0,A0
             BEQ     .END
-.ISENMY     CMP.W   #5,-(A0)
-            BEQ     .DELETE
-            JSR     DMMNEXTO
-            CMP.L   #0,A0
-            BEQ     .END
-            BRA     .ISENMY
-.DELETE     JSR     DMMFREE
+            JSR     DMMFREE
             BRA     .CONT
 
 .END        MOVE.L  (A7)+,A0
             RTS
+
+
+
 
 
 

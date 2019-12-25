@@ -14,7 +14,7 @@ Furthermore, enemies and mechanics to deal with them can be added.
 *	↑		Jump
 *	↓ 		Delete the placed platforms / reset the level in case of error.
 *	[Spacebar] 	Place copy/platform
-*	[Shift] 	Place "bomb"
+*	[Shift] 	Place crushers
 *	P / [Esc] 	Pause the level
 
 ## Implemented:
@@ -29,9 +29,9 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Lives system
 * Pause menu
 * Dead and win states
+* Added crushers, platforms that fall and can crush enemies.
 
 ## TO-DO
-* Bombs or, maybe, crushing platforms to deal with enemies.
 * Add more sounds
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
