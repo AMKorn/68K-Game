@@ -18,6 +18,7 @@
             INCLUDE "MENU.X68"              ; MENU CODE
             INCLUDE "AGENTLST.X68"          ; AGENT LIST CODE
             INCLUDE "ENEMY.X68"             ; ENEMY CODE
+            INCLUDE "PAUSESCR.X68"          ; PAUSE CODE
 
 ; --- INITIALIZE --------------------------------------------------------------
 
@@ -49,6 +50,7 @@ START       JSR     SYSINIT
             INCLUDE "MAPINFO.X68"           ; MAP MATRIXES
             END    START
             
+
 
 *~Font name~Courier New~
 *~Font size~10~

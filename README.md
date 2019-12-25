@@ -27,10 +27,11 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Added song by HeatleyBros (https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA)
 * Enemies
 * Lives system
+* Pause menu
 
 ## TO-DO
 * Bombs or, maybe, crushing platforms to deal with enemies.
-* Pause, game over and win screens
+* Game over and win screens
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
 ## Descripción básica:

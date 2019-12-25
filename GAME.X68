@@ -22,8 +22,9 @@ GAMEINIT
             MOVE.L  #1,D2                  
             TRAP    #15
             
+            MOVE.B  #STRTLIVES,PLRLVS
             MOVE.B  #MAINMENU,CURRSTA       ; State = Main Menu
-            MOVE.B  #MENUPLAY,SELECT        ; Locates the selection on
+            MOVE.B  #1,SELECT               ; Locates the selection on
                                             ; the Start option
             RTS
             
@@ -35,32 +36,33 @@ GAMEUPD
 ; Output    - None.
 ; Modifies  - CURRSTA and whichever registry it needs.
 ; -----------------------------------------------------------------------------
-            CLR.L   D1
+.START      CLR.L   D1
             MOVE.B  CURRSTA,D1
-            CMP.B   #MAINMENU,D1 
-            BNE     .PLAYING
+            CMP.B   #PLAYING,D1
+            BEQ     .PLAYING
+            CMP.B   #PAUSED,D1
+            BEQ     .PAUSED
             
             ; Current State: Menu
-            JSR     MENUUPD
+.MENU       JSR     MENUUPD
             BRA     .END
             
             ; Current State: Playing
-.PLAYING    
-            ; ------- TEMPORARY CODE --------
-            MOVE.B  KBDEDGE,D1
-            BTST.L  #KBDBITPS,D1
+.PLAYING    MOVE.B  KBDEDGE,D1
+            BTST.L  #KBDBITPS,D1            ; If PAUSE was pressed
             BEQ     .CONT
-            MOVE.B  PLRLVS,D1
-            SUBQ.B  #1,D1
-            MOVE.B  D1,PLRLVS
-.CONT       
-            ; ------- END TEMPORARY CODE ----
-
-            JSR     LVLCHANGE
+            MOVE.B  #PAUSED,CURRSTA         ; we pause the game
+            BRA     .START
+            
+.CONT       JSR     LVLCHANGE
             JSR     PLRUPD
             JSR     MAPUPD
             JSR     AGLUPD
+            BRA     .END
             
+.PAUSED     JSR     PAUSEUPD
+
+
 .END
             RTS
             
@@ -72,14 +74,24 @@ GAMEPLOT
 ; -----------------------------------------------------------------------------
             CLR.L   D1
             MOVE.B  CURRSTA,D1
-            CMP.B   #MAINMENU,D1
-            BNE     .PLAYING
-            JSR     MENUPLOT
+            CMP.B   #PLAYING,D1
+            BEQ     .PLAYING
+            CMP.B   #PAUSED,D1
+            BEQ     .PAUSED
+
+.MENU       JSR     MENUPLOT
             BRA     .END
             
 .PLAYING    JSR     MAPPLOT
             JSR     PLRPLOT
             JSR     AGLPLOT
+            BRA     .END
+
+.PAUSED     JSR     MAPPLOT
+            JSR     PLRPLOT
+            JSR     AGLPLOT
+            JSR     PAUSEPLOT
+            
             
 .END        RTS
 
@@ -339,6 +351,8 @@ CHECKCOL
             RTS
             
             
+
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

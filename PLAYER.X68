@@ -14,7 +14,6 @@ PLRINIT
             SWAP    D1
             MOVE.W  D1,PLRPOSX
             SWAP    D1                      ; Just to reset it.
-            MOVE.B  #STRTLIVES,PLRLVS
             
             RTS
             
@@ -75,6 +74,7 @@ PLRUPD
             BEQ     .NOPLATREG              ; character is not on the air, 
             MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1 ; the player is moved to the 
             JSR     PLRINIT                 ; starting point of the level.
+            SUBLIFE
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             
@@ -262,6 +262,7 @@ DIE
             MOVE.B  #STRTLIVES,PLRLVS
             MOVE.W  (A7)+,D0
             RTS
+
 
 
 

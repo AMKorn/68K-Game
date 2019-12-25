@@ -154,9 +154,7 @@ PLAYERCONTACT
             CMP.B   #0,D0
             BEQ     .NOCOL
             
-            MOVE.B  PLRLVS,D0
-            SUBQ.B  #1,D0
-            MOVE.B  D0,PLRLVS
+            SUBLIFE
             
             MOVE.L  #8,D0
             TRAP    #15
@@ -187,6 +185,7 @@ KILLALL
 
 .END        MOVE.L  (A7)+,A0
             RTS
+
 
 
 *~Font name~Courier New~

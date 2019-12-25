@@ -8,13 +8,17 @@ CURRLVL     DS.B    1
 CURRSTA     DS.B    1
             DS.W    0
 
-; - Menu vars -----------------------------------------------------------------
+; - Menu & pause vars ---------------------------------------------------------
 
-SELECT      DC.B    1
-            DS.W    0
+SELECT      DC.W    1                       ; It is a word because when using
+                                            ; .B it has issues when calculating
+                                            ; the module.
 STRSTART    DC.B    'START',0
+STRCONT     DC.B    'CONTINUE',0
+STRRESET    DC.B    'RESET LEVEL',0
 STRMUTE     DC.B    'MUTE',0
-STRQUIT     DC.B    'QUIT',0
+STRQUIT     DC.B    'QUIT GAME',0
+STRMAIN     DC.B    'MAIN MENU',0
 ASTERISK    DC.B    '*',0
 CREDITS     DC.B    'Program Skeleton & Agent List:',10,13
             DC.B    'Antoni Burguera',10,13,10,13
@@ -42,6 +46,8 @@ SONG        DS.B    1
 MUSMENU     DC.B    'Music\MainMenu.wav',0
             
 ; -----------------------------------------------------------------------------
+
+
 
 
 

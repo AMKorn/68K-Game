@@ -41,13 +41,28 @@ SETPEN      MACRO
 SETFILL     MACRO
 ; Sets the fill to the specified color.
 ; Input     - #\1 : The color to set the fill to.
-; Outpu     - None
+; Output    - None
 ; Modifies  - D0.B and D1.L
 ; -----------------------------------------------------------------------------
             MOVE.B  #81,D0
             MOVE.L  #\1,D1
             TRAP    #15
             ENDM
+
+; -----------------------------------------------------------------------------
+SUBLIFE     MACRO
+; Substracts one from the player lives
+; Input     - None
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVE.B  D0,-(A7)
+            MOVE.B  PLRLVS,D0
+            SUBQ.B  #1,D0
+            MOVE.B  D0,PLRLVS
+            MOVE.B  (A7)+,D0
+            ENDM
+
 
 *~Font name~Courier New~
 *~Font size~10~

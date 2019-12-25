@@ -14,10 +14,20 @@ RESET       EQU     -1
 
 ; - Menu constants ------------------------------------------------------------
 
+MENUOPTIONS EQU     3                       ; Number of options
 ; The three options in the main menu
 MENUPLAY    EQU     0
 MENUMUTE    EQU     1
 MENUQUIT    EQU     2
+
+; - Pause constants -----------------------------------------------------------
+
+PSEOPTIONS  EQU     4
+
+PSEPLAY     EQU     0
+PSERESET    EQU     1
+PSEMUTE     EQU     2
+PSEQUIT     EQU     3
 
 ; - Game constants ------------------------------------------------------------
 
@@ -62,6 +72,8 @@ ENMY_YSPD   EQU     4
 ISFACING    EQU     6
 
 ; -----------------------------------------------------------------------------
+
+
 
 
 
