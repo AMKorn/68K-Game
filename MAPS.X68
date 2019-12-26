@@ -132,6 +132,7 @@ MAPPLOT
             TRAP    #15
             
             ; - Paint the map -------------------------------------------------
+            SETPEN  BLACK
             
             MOVE.W  #0,D5                   ; D5 = Y index of grid
 .YLOOP
@@ -141,7 +142,6 @@ MAPPLOT
             
             BNE     .NEXT1
             SETFILL BLACK
-            SETPEN  BLACK
             
             ; Paint the black squares
             MOVE.W  D6,D1
@@ -258,7 +258,63 @@ MAPPLOT
             SUB.W   #5,D4
             TRAP    #15
             
-.NEXT4            
+.NEXT4      CMP.B   #ENEMY,(A0)
+            BNE     .NEXT5
+            
+            SETFILL D_RED
+            
+            ; Paint the enemy portals
+            
+            MOVE.W  D6,D1
+            MULS.W  #GRIDWTH,D1
+            MOVE.W  D1,D3
+            ADD.W   #GRIDWTH,D3
+            
+            MOVE.W  D5,D2
+            MULS.W  #GRIDHGT,D2
+            MOVE.W  D2,D4
+            ADD.W   #GRIDHGT,D4
+            MOVE.B  #88,D0
+            TRAP    #15
+            
+            ADD.W   #5,D1
+            SUB.W   #5,D3
+            ADD.W   #5,D2
+            SUB.W   #5,D4
+            TRAP    #15
+
+.NEXT5      CMP.B   #SPIKE,(A0)
+            BNE     .NEXT6
+            
+            SETFILL RED
+
+            ; Paint the spikes
+            
+            MOVE.W  D6,D1
+            MULS.W  #GRIDWTH,D1
+            MOVE.W  D5,D2
+            MULS.W  #GRIDHGT,D2
+            MOVE.W  D2,D4
+            ADD.W   #GRIDHGT+1,D2
+            MOVE.W  D1,D3
+            ADD.W   #GRIDWTH/2,D3
+            MOVE.B  #84,D0
+            TRAP    #15
+            
+            ADD.W   #GRIDWTH,D1
+            TRAP    #15
+            
+            MOVE.W  D2,D4
+            MOVE.W  D1,D3
+            SUB.W   #GRIDWTH,D3
+            TRAP    #15
+            
+            SUB.W   #GRIDWTH/2,D1
+            SUB.W   #GRIDWTH/2,D2
+            MOVE.B  #89,D0
+            TRAP    #15
+
+.NEXT6      
             ADDQ.L  #1,A0
             ADDQ.B  #1,D6
             CMP.B   #XGRIDS,D6
@@ -280,6 +336,7 @@ GETGRIDVAL
 ; -----------------------------------------------------------------------------
             MOVEM.L D0/A0,-(A7)
             
+            AND.L   #$FFFF,D0
             CLR.L   D1
             MOVE.B  D0,D1
             LSL     #4,D1
@@ -314,6 +371,8 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
+
 
 
 

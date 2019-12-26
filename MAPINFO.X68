@@ -6,7 +6,8 @@
 ; placement.
 ; Each map is formed by a 16x12 matrix with the corresponding values of each
 ; cell it represents.
-; Values:   - 1 : Ground cell
+; Values:   - 0 : Air
+;           - 1 : Ground cell
 ;           - 2 : Portal location. Note that this is where the player should
 ;                 start, but the player location is stored in another variable.
 ;                 This is because this cell is protected and should not be
@@ -17,6 +18,7 @@
 ;                 update.
 ;           - 4 : End of level.
 ;           - 5 : Enemy
+;           - 6 : Spike that hurts you.
 ; Each level must also be accompanied with its correspondant level information,
 ; which for now consists of only the player location start (marked with STARTn)
 ; For ease of understanding, it is specified as 
@@ -39,16 +41,16 @@ LEVEL2      DC.L    MAPINFO2
 
             ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
 MAPINFO1    DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; 0
-            DC.B    1,4,0,0,0,0,0,0,0,0,0,5,0,0,0,1 ; 1
+            DC.B    1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 1
             DC.B    1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 2
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 3
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 4
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 5
             DC.B    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 6
-            DC.B    1,0,5,0,0,0,0,0,0,0,0,0,0,0,0,1 ; 7
+            DC.B    1,0,5,0,1,0,0,0,0,0,0,0,0,0,0,1 ; 7
             DC.B    1,1,1,1,1,0,0,2,0,0,0,0,0,0,0,1 ; 8
             DC.B    1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1 ; 9
-            DC.B    1,0,0,0,0,0,0,0,0,0,0,0,5,0,0,1 ; A
+            DC.B    1,0,0,0,0,0,0,0,0,6,0,0,0,0,0,1 ; A
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
             DS.W    0                          ; Better safe than sorry
 START1      DC.W    7*GRIDWTH,8*GRIDHGT+PLRDIM 
@@ -67,6 +69,8 @@ MAPINFO2    DC.B    1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
             DS.W    0                          
 START2      DC.W    1*GRIDWTH,4*GRIDHGT+PLRDIM 
+
+
 
 
 

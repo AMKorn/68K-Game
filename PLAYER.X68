@@ -44,8 +44,30 @@ PLRUPD
 .NOTDEAD    MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
 
+            ; --- Collision with spike ----------------------------------------
+            
+            MOVE.L  #8,D0
+            TRAP    #15                     ; D1.L has current time
+            MOVE.L  INVFRAMES,D0
+            SUB.L   D0,D1
+            CMP.L   #INVTIME,D1
+            BLT     .PLAT
+            
+            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            JSR     GETGRIDVAL
+            CMP.B   #SPIKE,D1
+            BNE     .PLAT
+            SUBLIFE
+            PLAYSND HRTFX
+            
+            MOVE.L  #8,D0
+            TRAP    #15
+            MOVE.L  D1,INVFRAMES
+            
             ; --- Platform placement ------------------------------------------
-.PLAT       
+            
+.PLAT       CLR.L   D0
+            CLR.L   D1
             MOVE.B  KBDVAL,D0
             MOVE.B  KBDEDGE,D1
             
@@ -68,7 +90,7 @@ PLRUPD
             CLR.L   D2
             MOVE.B  D0,D2
             MULU    #GRIDWTH,D2
-            PLAYSND CRSHFX
+            PLAYSND PLATFX
             
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
@@ -254,16 +276,8 @@ PLRPLOT
             MOVEM.L (A7)+,D0-D5
             RTS
 
-; -----------------------------------------------------------------------------
-DIE
-; Reinitializes the player, resets the level, kills and replaces all enemies
-; and resets the player lives to STRTLIVES
-; Input     - A0.L: The current level matrix pointer.
-; Output    - None
-; Modifies  - None
-; -----------------------------------------------------------------------------
-            MOVE.B  #DEAD,PLRLVS
-            RTS
+
+
 
 
 

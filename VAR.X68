@@ -40,7 +40,7 @@ CREDITS6    DC.B    ' HeatleyBros',0
 PLRPOSX     DS.W    1
 PLRPOSY     DS.W    1
 PLRSPDY     DC.W    0
-INVFRAMES   DS.L    1                       ; The start of the invincibility
+INVFRAMES   DC.L    0                       ; The start of the invincibility
                                             ; frames
 PLRLVS      DS.B    1
 DIR         DS.B    1
@@ -52,11 +52,15 @@ MUSMENU     DC.B    'SoundFX\MainMenu.wav',0
 MUSGAME     DC.B    'SoundFX\LevelMusic.wav',0
 MUSWIN      DC.B    'SoundFX\WinMusic.wav',0
 MUSFAIL     DC.B    'SoundFX\DontLoseHope.wav',0
-CRSHFXDIR   DC.B    'SoundFX\Impact.wav',0
+PLATFXDIR   DC.B    'SoundFX\Impact.wav',0
 JMPFXDIR    DC.B    'SoundFX\Jump.wav',0
 HURTFXDIR   DC.B    'SoundFX\Hurt.wav',0
             
 ; -----------------------------------------------------------------------------
+
+
+
+
 
 
 

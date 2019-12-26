@@ -55,6 +55,7 @@ ENTRANCE    EQU     2
 CLONE       EQU     3
 LVLGOAL     EQU     4
 ENEMY       EQU     5
+SPIKE       EQU     6
 
 ; - Player related constants --------------------------------------------------
 
@@ -85,14 +86,31 @@ CRUSHX      EQU     0
 CRUSHY      EQU     2
 CRUSH_YSPD  EQU     4
 
+; --- COLORS ------------------------------------------------------------------
+
+; Colors are of format $00BBGGRR
+BLACK       EQU     $00000000
+WHITE       EQU     $00FFFFFF
+L_GREEN     EQU     $0088FF88
+PINK        EQU     $00FF85F5
+GREEN       EQU     $0000FF00
+AQUA        EQU     $00FFFF00
+RED         EQU     $000000FF
+D_RED       EQU     $000000AD
+
 ; - Sound constants -----------------------------------------------------------
 
 MUSIC       EQU     0
-CRSHFX      EQU     1
+PLATFX      EQU     1
 JMPFX       EQU     2
 HURTFX      EQU     3
+HRTFX       EQU     HURTFX
 
 ; -----------------------------------------------------------------------------
+
+
+
+
 
 
 

@@ -17,9 +17,9 @@ SOUNDINIT
             MOVE.B  #MUSIC,D1
             TRAP    #15
             
-            LEA.L   CRSHFXDIR,A1
+            LEA.L   PLATFXDIR,A1
             MOVE.B  #74,D0
-            MOVE.B  #CRSHFX,D1
+            MOVE.B  #PLATFX,D1
             TRAP    #15
             
             LEA.L   JMPFXDIR,A1
@@ -40,6 +40,7 @@ SOUNDINIT
             MOVEM.L (A7)+,D0-D2/A1
             RTS
             
+
 
 
 

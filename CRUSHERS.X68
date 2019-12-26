@@ -53,7 +53,24 @@ CRSHUPD
             
             
 .NOGRAV     ADD.W   D4,D3
-            JSR     VERCOLL
+            
+            GETCELL 2,PLRDIM/4,3,0,0
+            JSR     GETGRIDVAL
+            CMP.B   #SPIKE,D1
+            BEQ     .SPIKE
+            GETCELL 2,3*PLRDIM/4,3,0,0
+            JSR     GETGRIDVAL
+            CMP.B   #SPIKE,D1
+            BNE     .COLL
+.SPIKE      GETCELL 2,PLRDIM/2,3,-3*PLRDIM/2,0
+            JSR     GETGRIDVAL
+            CMP.B   #0,D1                   ; Checks if its not on a protected
+            BNE     .KILL                   ; cell and places platform.
+            MOVE.B  #3,D1
+            JSR     SETGRIDVAL
+            BRA     .KILL
+
+.COLL       JSR     VERCOLL
             CMP.W   #0,D4                   ; If the crusher fell,
             BNE     .NOPLAT
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
@@ -64,7 +81,7 @@ CRSHUPD
             JSR     SETGRIDVAL
 .KILL       MOVE.L  A1,A0
             JSR     AGLKILL
-            PLAYSND CRSHFX
+            PLAYSND PLATFX
             
 .NOPLAT     MOVE.L  A1,A0
             MOVE.W  D3,CRUSHY(A0)
@@ -184,6 +201,9 @@ ENEMYCONTACT
             
             
             
+
+
+
 
 
 
