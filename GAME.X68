@@ -15,7 +15,6 @@ GAMEINIT
 ; -----------------------------------------------------------------------------
             JSR     SOUNDINIT
             
-            MOVE.B  #STRTLIVES,PLRLVS
             MOVE.B  #MAINMENU,CURRSTA       ; State = Main Menu
             MOVE.B  #1,SELECT               ; Locates the selection on
                                             ; the Start option
@@ -416,6 +415,7 @@ CHECKCOL
             RTS
             
             
+
 
 
 

@@ -4,6 +4,7 @@
 ; CREATION : 
 ; =============================================================================
 
+            OPT     MEX
             ORG     $1000
 
 ; --- CODE INCLUDES -----------------------------------------------------------
@@ -53,6 +54,7 @@ START       JSR     SYSINIT
             INCLUDE "MAPINFO.X68"           ; MAP MATRIXES
             END    START
             
+
 
 
 *~Font name~Courier New~

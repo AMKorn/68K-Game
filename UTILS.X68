@@ -90,8 +90,7 @@ PLAYSNG     MACRO
             CMP.B   #0,MUTED
             BNE     .MUTED\1
             
-            
-.MUTED\1    MOVE.B  #77,D0
+            MOVE.B  #77,D0
             MOVE.B  #MUSIC,D1
             MOVE.L  #3,D2
             TRAP    #15
@@ -104,8 +103,7 @@ PLAYSNG     MACRO
             MOVE.L  #1,D2
             TRAP    #15
             
-            BRA     .END
-
+.MUTED\1
             ENDM
 
 *~Font name~Courier New~
