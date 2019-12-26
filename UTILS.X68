@@ -63,6 +63,22 @@ SUBLIFE     MACRO
             MOVE.B  (A7)+,D0
             ENDM
 
+; -----------------------------------------------------------------------------
+PLAYSND     MACRO
+; If game is not muted, plays a specified sound once using DirectX player.
+; Input     - #\1 : The reference number of the sound to play.
+; Output    - None
+; Modifies  - None
+; -----------------------------------------------------------------------------
+            MOVEM.L D0-D1,-(A7)
+            CMP.B   #0,MUTED
+            BNE     .MUTED
+            MOVE.B  #\1,D1
+            MOVE.B  #75,D0
+            TRAP    #15
+.MUTED      MOVEM.L (A7)+,D0-D1
+            ENDM
+
 
 
 *~Font name~Courier New~

@@ -64,6 +64,7 @@ CRSHUPD
             JSR     SETGRIDVAL
 .KILL       MOVE.L  A1,A0
             JSR     AGLKILL
+            PLAYSND CRSHFX
             
 .NOPLAT     MOVE.L  A1,A0
             MOVE.W  D3,CRUSHY(A0)
@@ -182,6 +183,7 @@ ENEMYCONTACT
             
             
             
+
 
 *~Font name~Courier New~
 *~Font size~10~

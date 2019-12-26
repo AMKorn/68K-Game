@@ -68,6 +68,7 @@ PLRUPD
             CLR.L   D2
             MOVE.B  D0,D2
             MULU    #GRIDWTH,D2
+            PLAYSND CRSHFX
             
             GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
             JSR     GETGRIDVAL
@@ -261,6 +262,7 @@ DIE
 ; -----------------------------------------------------------------------------
             MOVE.B  #DEAD,PLRLVS
             RTS
+
 
 
 

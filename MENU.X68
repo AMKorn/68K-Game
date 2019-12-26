@@ -40,9 +40,9 @@ MENUUPD
             JSR     MUTEUNMUTE
 .QUIT       CMP.B   #MENUQUIT,D1
             BNE     .END
-            MOVE.B  #76,D0
-            MOVE.B  SONG,D1
-            MOVE.L  #2,D2
+            MOVE.B  #MUSIC,D1
+            MOVE.B  #77,D0
+            MOVE.L  #3,D2
             TRAP    #15
             SIMHALT
             
@@ -99,30 +99,33 @@ MUTEUNMUTE
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D2,-(A7)
             
-            CMP.B   #0,.MUTED
+            CMP.B   #0,MUTED
             BNE     .UNMUTE
-            MOVE.B  #76,D0
-            MOVE.B  SONG,D1
-            MOVE.L  #2,D2
+            MOVE.B  #MUSIC,D1
+            MOVE.B  #77,D0
+            MOVE.L  #3,D2
             TRAP    #15
-            NOT.B   .MUTED
+            NOT.B   MUTED
             BRA     .END
             
 .UNMUTE     ;LEA.L   MUSMENU,A1
             ;MOVE.B  #71,D0
             ;TRAP    #15
             ;MOVE.B  D1,SONG
-            MOVE.B  SONG,D1
-            MOVE.B  #76,D0
+            MOVE.B  #MUSIC,D1
+            MOVE.B  #77,D0
             MOVE.L  #1,D2
             TRAP    #15
-            NOT     .MUTED
+            NOT.B   MUTED
 .END            
             MOVEM.L (A7)+,D0-D2
             RTS
             
 .MUTED      DC.B    0
             DS.W    0
+
+
+
 
 
 

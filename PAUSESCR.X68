@@ -44,6 +44,7 @@ PAUSEUPD
 .MUTE       CMP.W   #PSEMUTE,D1
             BNE     .QUIT
             JSR     MUTEUNMUTE
+            BRA     .END
 .QUIT       JSR     KILLALL
             MOVE.W  #0,SELECT
             MOVE.B  #MAINMENU,CURRSTA
@@ -109,6 +110,7 @@ PAUSEPLOT
             
             
             
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

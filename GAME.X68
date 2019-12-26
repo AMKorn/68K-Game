@@ -13,14 +13,7 @@ GAMEINIT
 ; Output    - None
 ; Modifies  - SONG, CURRSTA and whichever registry it needs.
 ; -----------------------------------------------------------------------------
-            ; Song management
-            LEA.L   MUSMENU,A1              ; Loads the directory of the song
-            MOVE.B  #71,D0                  ; into A1
-            TRAP    #15
-            MOVE.B  D1,SONG
-            MOVE.B  #76,D0                  ; Plays the song in a loop
-            MOVE.L  #1,D2                  
-            TRAP    #15
+            JSR     SOUNDINIT
             
             MOVE.B  #STRTLIVES,PLRLVS
             MOVE.B  #MAINMENU,CURRSTA       ; State = Main Menu
@@ -379,6 +372,7 @@ CHECKCOL
             RTS
             
             
+
 
 
 

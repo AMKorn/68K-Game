@@ -7,6 +7,7 @@
 CURRLVL     DS.B    1                       ; This variable is always one less
                                             ; than the REAL current level.
 CURRSTA     DS.B    1
+MUTED       DC.B    0                       ; 0 = unmuted, FF = muted
             DS.W    0
 
 ; - Menu & pause vars ---------------------------------------------------------
@@ -46,10 +47,12 @@ DIR         DS.B    1
             
 ; - Music and Sound -----------------------------------------------------------
 
-SONG        DS.B    1
-MUSMENU     DC.B    'Music\MainMenu.wav',0
+MUSMENU     DC.B    'SoundFX\MainMenu.wav',0
+CRSHFXDIR   DC.B    'SoundFX\impactPlank_medium_000.wav',0
             
 ; -----------------------------------------------------------------------------
+
+
 
 
 
