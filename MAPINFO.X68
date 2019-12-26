@@ -75,6 +75,8 @@ MAPINFO1    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1 ; A
             DC.B    1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1 ; B
 START1      DC.W    1*GRIDWTH,9*GRIDHGT+PLRDIM
+MESSAGE1    DC.B    'Use the arrows to move, up to jump',0
+            DS.W    0
 
 MAPINFO2    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; 0
@@ -90,6 +92,7 @@ MAPINFO2    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    0,2,0,0,0,0,0,0,0,0,0,0,0,1,1,1 ; A
             DC.B    1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1 ; B
 START2      DC.W    1*GRIDWTH,10*GRIDHGT+PLRDIM
+MESSAGE2    DC.W    0                       ; No message
 
 MAPINFO3    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; 0
@@ -105,6 +108,8 @@ MAPINFO3    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    0,2,0,0,0,0,0,0,0,0,1,1,1,1,1,1 ; A
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
 START3      DC.W    1*GRIDWTH,10*GRIDHGT+PLRDIM
+MESSAGE3    DC.B    'Press Space to place a platform',0
+            DS.W    0
 
 MAPINFO4    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; 0
@@ -120,6 +125,8 @@ MAPINFO4    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    2,0,1,1,1,1,1,6,6,6,6,6,6,1,1,1 ; A
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
 START4      DC.W    0*GRIDWTH,10*GRIDHGT+PLRDIM
+MESSAGE4    DC.B    'Avoid the bad guys, and spikes!',0
+            DS.W    0
 
 MAPINFO5    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; 0
@@ -135,6 +142,8 @@ MAPINFO5    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    1,1,0,0,1,0,0,0,0,0,0,0,0,4,0,0 ; A
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
 START5      DC.W    12*GRIDWTH,2*GRIDHGT+PLRDIM
+MESSAGE5    DC.B    'Press SHIFT to place a falling, enemy-crushing platform',0
+            DS.W    0
 
 
 

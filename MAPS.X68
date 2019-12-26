@@ -323,6 +323,21 @@ MAPPLOT
             ADDQ.B  #1,D5
             CMP.B   #YGRIDS,D5
             BNE     .YLOOP
+            
+            SETFILL WHITE
+            
+            MOVE.B  #21,D0
+            MOVE.L  #BLACK,D1
+            CLR.L   D2
+            TRAP    #15
+            
+            ADD.L   #4,A0
+            MOVE.W  #40,D1
+            MOVE.W  #40,D2
+            MOVE.L   A0,A1
+            MOVE.B  #95,D0
+            TRAP    #15
+            
             MOVEM.L (A7)+,D0-D6/A0
             RTS
             
@@ -371,6 +386,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 
