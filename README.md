@@ -24,7 +24,7 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Push down to place a platform on your location and space to destroy all the placed platforms.
 * Added levels base so adding further levels is easier.
 * Level progression
-* Added song by HeatleyBros (https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA)
+* Added songs by HeatleyBros (https://www.youtube.com/channel/UCsLlqLIE-TqDq3lh5kU2PeA) and soundFX
 * Enemies
 * Lives system
 * Pause menu
@@ -32,7 +32,6 @@ Furthermore, enemies and mechanics to deal with them can be added.
 * Added crushers, platforms that fall and can crush enemies.
 
 ## TO-DO
-* Add more sounds
 * Re-implement vertical collisions the same way I did horizontal collisions (for the moment, not a priority)
 
 ## Descripción básica:
