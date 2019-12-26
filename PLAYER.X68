@@ -77,6 +77,7 @@ PLRUPD
             MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1 ; the player is moved to the 
             JSR     PLRINIT                 ; starting point of the level.
             SUBLIFE                         ; and a life is lost
+            PLAYSND HURTFX
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             
@@ -263,6 +264,7 @@ DIE
 ; -----------------------------------------------------------------------------
             MOVE.B  #DEAD,PLRLVS
             RTS
+
 
 
 

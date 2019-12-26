@@ -90,8 +90,10 @@ CRUSH_YSPD  EQU     4
 MUSIC       EQU     0
 CRSHFX      EQU     1
 JMPFX       EQU     2
+HURTFX      EQU     3
 
 ; -----------------------------------------------------------------------------
+
 
 
 

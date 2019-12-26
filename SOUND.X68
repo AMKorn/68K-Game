@@ -27,6 +27,11 @@ SOUNDINIT
             MOVE.B  #JMPFX,D1
             TRAP    #15
             
+            LEA.L   HURTFXDIR,A1
+            MOVE.B  #74,D0
+            MOVE.B  #HURTFX,D1
+            TRAP    #15
+            
             MOVE.B  #77,D0                  ; Plays the song in a loop
             MOVE.B  #MUSIC,D1
             MOVE.L  #1,D2
@@ -35,6 +40,7 @@ SOUNDINIT
             MOVEM.L (A7)+,D0-D2/A1
             RTS
             
+
 
 
 *~Font name~Courier New~

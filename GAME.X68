@@ -125,46 +125,38 @@ CHKSTACHANGE
 ; Modifies  - Whichever registry it requires
 ; -----------------------------------------------------------------------------
             MOVE.B  CURRSTA,D0
-            MOVE.B  NEXSTA,D3
-            CMP.B   D0,D3
+            MOVE.B  NEXSTA,D1
+            CMP.B   D0,D1
             BEQ     .END
-            CMP.B   #MAINMENU,D3
-            BEQ     .MENU
-            CMP.B   #PLAYING,D3
-            BEQ     .PLAYING
-            MOVE.B  D3,CURRSTA
-            BRA     .END
-            
-.MENU       MOVE.B  #77,D0
-            MOVE.B  #MUSIC,D1
-            MOVE.B  #3,D2
-            TRAP    #15
-            
-            MOVE.B  #74,D0
-            LEA.L   MUSMENU,A1
-            TRAP    #15
-            
-            MOVE.B  #77,D0
-            MOVE.B  #1,D2
-            TRAP    #15
-            
             MOVE.B  D1,CURRSTA
+            
+            ; -- Song management ----------------------------------------------
+            
+            CMP.B   #PAUSED,D0              ; If current state = pause and we
+            BNE     .CONT                   ; change to playing we don't have
+            CMP.B   #PLAYING,D1             ; to reset the music so we skip it.
+            BEQ     .END
+            
+.CONT       CMP.B   #MAINMENU,D1
+            BEQ     .MENU
+            CMP.B   #PLAYING,D1
+            BEQ     .PLAYING
+            CMP.B   #WINSTATE,D1
+            BEQ     .WIN
+            CMP.B   #DEAD,D1
+            BEQ     .DEAD
             BRA     .END
             
-.PLAYING    MOVE.B  #77,D0
-            MOVE.B  #MUSIC,D1
-            MOVE.B  #3,D2
-            TRAP    #15
+.DEAD       PLAYSNG MUSFAIL
+            BRA     .END
+
+.WIN        PLAYSNG MUSWIN
+            BRA     .END
+
+.MENU       PLAYSNG MUSMENU
+            BRA     .END
             
-            MOVE.B  #74,D0
-            LEA.L   MUSGAME,A1
-            TRAP    #15
-            
-            MOVE.B  #77,D0
-            MOVE.B  #1,D2
-            TRAP    #15
-            
-            MOVE.B  D3,CURRSTA
+.PLAYING    PLAYSNG MUSGAME
             
 .END        RTS
             

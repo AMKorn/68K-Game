@@ -140,12 +140,13 @@ DEADPLOT
             
             MOVE.W  #SCRWIDTH/4,D1
             MOVE.W  #SCRHEIGH/4,D2
-            ADD.W   #80,D1
+            ADD.W   #40,D1
             ADD.W   #80,D2
             LEA.L   STRDEAD,A1
             MOVE.B  #95,D0
             TRAP    #15
             
+            ADD.W   #40,D1
             ADD.W   #40,D2
             LEA.L   STRRESET,A1
             TRAP    #15
@@ -164,6 +165,7 @@ DEADPLOT
             
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 

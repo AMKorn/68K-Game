@@ -79,7 +79,34 @@ PLAYSND     MACRO
 .MUTED\1    MOVEM.L (A7)+,D0-D1
             ENDM
 
+; -----------------------------------------------------------------------------
+PLAYSNG     MACRO
+; If game is not muted, stops the previous song and plays a specified song 
+; on loop using DirectX player.
+; Input     - \1 : The null terminated path address of the song.
+; Output    - None
+; Modifies  - Whatever registry it requires
+; -----------------------------------------------------------------------------
+            CMP.B   #0,MUTED
+            BNE     .MUTED\1
+            
+            
+.MUTED\1    MOVE.B  #77,D0
+            MOVE.B  #MUSIC,D1
+            MOVE.L  #3,D2
+            TRAP    #15
+            
+            MOVE.B  #74,D0
+            LEA.L   \1,A1
+            TRAP    #15
+            
+            MOVE.B  #77,D0
+            MOVE.L  #1,D2
+            TRAP    #15
+            
+            BRA     .END
 
+            ENDM
 
 *~Font name~Courier New~
 *~Font size~10~

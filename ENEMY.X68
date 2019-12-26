@@ -159,6 +159,7 @@ PLAYERCONTACT
             BEQ     .NOCOL
             
             SUBLIFE
+            PLAYSND HURTFX
             
             MOVE.L  #8,D0
             TRAP    #15
@@ -183,6 +184,7 @@ KILLALL
 
 .END        MOVE.L  (A7)+,A0
             RTS
+
 
 
 

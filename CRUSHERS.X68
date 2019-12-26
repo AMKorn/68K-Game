@@ -49,7 +49,7 @@ CRSHUPD
             
             CMP.W   #MAXSPD,D4
             BEQ     .NOGRAV     
-            ADD.W   #GRAVITY,D4
+            ADD.W   #2*GRAVITY,D4
             
             
 .NOGRAV     ADD.W   D4,D3
@@ -169,6 +169,7 @@ ENEMYCONTACT
             CMP.B   #0,D0
             BEQ     .CHCKNXT
             JSR     AGLKILL
+            PLAYSND HURTFX
             BRA     .END
             
 .CHCKNXT    MOVE.W  #ENEMY,D0
@@ -183,6 +184,7 @@ ENEMYCONTACT
             
             
             
+
 
 
 *~Font name~Courier New~

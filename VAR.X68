@@ -23,7 +23,7 @@ STRMUTE     DC.B    'MUTE',0
 STRQUIT     DC.B    'QUIT GAME',0
 STRMAIN     DC.B    'MAIN MENU',0
 STRRETRY    DC.B    'RETRY',0
-STRDEAD     DC.B    'TOO BAD, YOU DIED',0
+STRDEAD     DC.B    'YOU DIED, BUT DO NOT LOSE HOPE',0
 STRRSTR     DC.B    'Press SPACE to go back to the main menu',0
 ASTERISK    DC.B    '*',0
 CREDITS0    DC.B    'Program Skeleton & Agent List:',0
@@ -50,8 +50,11 @@ DIR         DS.B    1
 
 MUSMENU     DC.B    'SoundFX\MainMenu.wav',0
 MUSGAME     DC.B    'SoundFX\LevelMusic.wav',0
+MUSWIN      DC.B    'SoundFX\WinMusic.wav',0
+MUSFAIL     DC.B    'SoundFX\DontLoseHope.wav',0
 CRSHFXDIR   DC.B    'SoundFX\Impact.wav',0
 JMPFXDIR    DC.B    'SoundFX\Jump.wav',0
+HURTFXDIR   DC.B    'SoundFX\Hurt.wav',0
             
 ; -----------------------------------------------------------------------------
 
