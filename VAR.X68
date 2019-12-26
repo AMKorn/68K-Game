@@ -6,7 +6,8 @@
 
 CURRLVL     DS.B    1                       ; This variable is always one less
                                             ; than the REAL current level.
-CURRSTA     DS.B    1
+NEXSTA      DC.B    0                       ; These are different variables
+CURRSTA     DS.B    1                       ; to simplify changing the music.
 MUTED       DC.B    0                       ; 0 = unmuted, FF = muted
             DS.W    0
 
@@ -48,9 +49,15 @@ DIR         DS.B    1
 ; - Music and Sound -----------------------------------------------------------
 
 MUSMENU     DC.B    'SoundFX\MainMenu.wav',0
-CRSHFXDIR   DC.B    'SoundFX\impactPlank_medium_000.wav',0
+MUSGAME     DC.B    'SoundFX\LevelMusic.wav',0
+CRSHFXDIR   DC.B    'SoundFX\Impact.wav',0
+JMPFXDIR    DC.B    'SoundFX\Jump.wav',0
             
 ; -----------------------------------------------------------------------------
+
+
+
+
 
 
 

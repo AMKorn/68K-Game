@@ -38,7 +38,7 @@ PLRUPD
             MOVE.B  PLRLVS,D1
             CMP.B   #0,D1
             BNE     .NOTDEAD
-            MOVE.B  #DEAD,CURRSTA
+            MOVE.B  #DEAD,NEXSTA
             BRA     .END
             
 .NOTDEAD    MOVE.W  PLRPOSX,D2
@@ -146,6 +146,7 @@ PLRUPD
             CMP.B   #3,D1
             BNE     .NOEDGE
 .JUMP       MOVE.W  #IMPULSE,D4
+            PLAYSND JMPFX
             BRA     .NOGRAV
             
 .NOEDGE     ;BTST.L  #KBDBITUP,D0           **   Uncomment this section   **
@@ -159,7 +160,7 @@ PLRUPD
             JSR     VERCOLL                 ; Vertical Collisions
             CMP.W   #$FFFF,D3
             BNE     .END
-            MOVE.B  #DEAD,CURRSTA
+            MOVE.B  #DEAD,NEXSTA
             
 .END        MOVE.W  D2,PLRPOSX
             MOVE.W  D3,PLRPOSY
@@ -262,6 +263,8 @@ DIE
 ; -----------------------------------------------------------------------------
             MOVE.B  #DEAD,PLRLVS
             RTS
+
+
 
 
 

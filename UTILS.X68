@@ -72,11 +72,11 @@ PLAYSND     MACRO
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D1,-(A7)
             CMP.B   #0,MUTED
-            BNE     .MUTED
+            BNE     .MUTED\1
             MOVE.B  #\1,D1
             MOVE.B  #75,D0
             TRAP    #15
-.MUTED      MOVEM.L (A7)+,D0-D1
+.MUTED\1    MOVEM.L (A7)+,D0-D1
             ENDM
 
 

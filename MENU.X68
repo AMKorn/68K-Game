@@ -32,7 +32,7 @@ MENUUPD
 .ACTIVATE   CMP.W   #MENUPLAY,D1
             BNE     .MUTE
             MOVE.B  #0,CURRLVL
-            MOVE.B  #PLAYING,CURRSTA
+            MOVE.B  #PLAYING,NEXSTA
             JSR     MAPINIT
             BRA     .END
 .MUTE       CMP.W   #MENUMUTE,D1
@@ -123,6 +123,7 @@ MUTEUNMUTE
             
 .MUTED      DC.B    0
             DS.W    0
+
 
 
 

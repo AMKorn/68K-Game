@@ -14,7 +14,7 @@ WINUPD
             BTST.L  #KBDBITF1,D0
             BEQ     .END
             MOVE.W  #0,SELECT
-            MOVE.B  #MAINMENU,CURRSTA
+            MOVE.B  #MAINMENU,NEXSTA
 .END        MOVE.B  (A7)+,D0
             RTS
             
@@ -102,14 +102,14 @@ DEADUPD
             JSR     KILLALL                 ; Kills all enemies
             JSR     MAPINIT                 ; Restarts the level
             MOVE.B  #STRTLIVES,PLRLVS
-            MOVE.B  #PLAYING,CURRSTA
+            MOVE.B  #PLAYING,NEXSTA
             BRA     .END
             
 .QUIT       CMP.W   #DEADQUIT,D1            
             MOVE.B  #STRTLIVES,PLRLVS
             JSR     KILLALL
             MOVE.W  #0,SELECT
-            MOVE.B  #MAINMENU,CURRSTA
+            MOVE.B  #MAINMENU,NEXSTA
             
 .END        MOVEM.L (A7)+,D0-D1
             RTS
@@ -164,6 +164,7 @@ DEADPLOT
             
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 *~Font name~Courier New~

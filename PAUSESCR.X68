@@ -32,14 +32,14 @@ PAUSEUPD
             
 .ACTIVATE   CMP.W   #PSEPLAY,D1
             BNE     .RESET
-            MOVE.B  #PLAYING,CURRSTA
+            MOVE.B  #PLAYING,NEXSTA
             BRA     .END
             
 .RESET      CMP.W   #PSERESET,D1
             BNE     .MUTE
             JSR     KILLALL
             JSR     MAPINIT
-            MOVE.B  #PLAYING,CURRSTA
+            MOVE.B  #PLAYING,NEXSTA
             BRA     .END
 .MUTE       CMP.W   #PSEMUTE,D1
             BNE     .QUIT
@@ -47,7 +47,7 @@ PAUSEUPD
             BRA     .END
 .QUIT       JSR     KILLALL
             MOVE.W  #0,SELECT
-            MOVE.B  #MAINMENU,CURRSTA
+            MOVE.B  #MAINMENU,NEXSTA
             
 .END        MOVEM.L (A7)+,D0-D1
             RTS
@@ -110,6 +110,7 @@ PAUSEPLOT
             
             
             
+
 
 *~Font name~Courier New~
 *~Font size~10~

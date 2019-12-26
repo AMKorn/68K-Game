@@ -48,7 +48,7 @@ GAMEUPD
 .PLAYING    MOVE.B  KBDEDGE,D1
             BTST.L  #KBDBITPS,D1            ; If PAUSE was pressed
             BEQ     .CONT
-            MOVE.B  #PAUSED,CURRSTA         ; we pause the game
+            MOVE.B  #PAUSED,NEXSTA         ; we pause the game
             BRA     .END
             
 .CONT       JSR     CHKLVLCHANGE
@@ -66,7 +66,7 @@ GAMEUPD
 
 .WIN        JSR     WINUPD
 
-.END
+.END        JSR     CHKSTACHANGE
             RTS
             
 ; -----------------------------------------------------------------------------
@@ -117,6 +117,58 @@ GAMEPLOT
 ; =============================================================================
 
 ; -----------------------------------------------------------------------------
+CHKSTACHANGE
+; Checks if it must change the current state of the game, and chnges the music
+; accordingly.
+; Input     - None
+; Output    - None
+; Modifies  - Whichever registry it requires
+; -----------------------------------------------------------------------------
+            MOVE.B  CURRSTA,D0
+            MOVE.B  NEXSTA,D3
+            CMP.B   D0,D3
+            BEQ     .END
+            CMP.B   #MAINMENU,D3
+            BEQ     .MENU
+            CMP.B   #PLAYING,D3
+            BEQ     .PLAYING
+            MOVE.B  D3,CURRSTA
+            BRA     .END
+            
+.MENU       MOVE.B  #77,D0
+            MOVE.B  #MUSIC,D1
+            MOVE.B  #3,D2
+            TRAP    #15
+            
+            MOVE.B  #74,D0
+            LEA.L   MUSMENU,A1
+            TRAP    #15
+            
+            MOVE.B  #77,D0
+            MOVE.B  #1,D2
+            TRAP    #15
+            
+            MOVE.B  D1,CURRSTA
+            BRA     .END
+            
+.PLAYING    MOVE.B  #77,D0
+            MOVE.B  #MUSIC,D1
+            MOVE.B  #3,D2
+            TRAP    #15
+            
+            MOVE.B  #74,D0
+            LEA.L   MUSGAME,A1
+            TRAP    #15
+            
+            MOVE.B  #77,D0
+            MOVE.B  #1,D2
+            TRAP    #15
+            
+            MOVE.B  D3,CURRSTA
+            
+.END        RTS
+            
+; -----------------------------------------------------------------------------
 CHKLVLCHANGE
 ; Checks if the player is on the CURRLVL's endgoal and changes level if it is.
 ; Input     - None
@@ -142,7 +194,7 @@ CHKLVLCHANGE
             ADD.B   #1,D1                   ; We add one to the current level
             CMP.B   #NLVLS,D1               ; If the level was the last
             BNE     .NEXTLVL                
-            MOVE.B  #WINSTATE,CURRSTA       ; we change the state to WINSTATE
+            MOVE.B  #WINSTATE,NEXSTA       ; we change the state to WINSTATE
             JSR     KILLALL
             BRA     .END
             
@@ -372,6 +424,9 @@ CHECKCOL
             RTS
             
             
+
+
+
 
 
 
