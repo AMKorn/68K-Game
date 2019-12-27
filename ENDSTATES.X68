@@ -47,6 +47,10 @@ WINPLOT
             MOVE.W  #95,D0
             MOVE.W  #100,D1
             MOVE.W  CREDITPOS,D2
+            LEA.L   STRWIN,A1
+            TRAP    #15
+            
+            ADD.W   #60,D2
             LEA.L   CREDITS0,A1
             TRAP    #15
             

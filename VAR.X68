@@ -27,6 +27,7 @@ STRRETRY    DC.B    'RETRY',0
 STRDEAD     DC.B    'YOU DIED, BUT DO NOT LOSE HOPE',0
 STRRSTR     DC.B    'Press SPACE to go back to the main menu',0
 ASTERISK    DC.B    '*',0
+STRWIN      DC.B    'CONGRATS! YOU WON!',0
 CREDITS0    DC.B    'Program Skeleton & Agent List:',0
 CREDITS1    DC.B    ' Antoni Burguera',0
 CREDITS2    DC.B    'Coding and Game Design:',0
@@ -58,6 +59,7 @@ JMPFXDIR    DC.B    'SoundFX\Jump.wav',0
 HURTFXDIR   DC.B    'SoundFX\Hurt.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

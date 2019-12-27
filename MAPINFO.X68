@@ -173,6 +173,7 @@ MESSAGE6    DC.B    'If you get trapped, press down to delete your platforms',0
 
 
 
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~
