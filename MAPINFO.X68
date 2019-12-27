@@ -26,7 +26,7 @@
 ; This is easily utilized with the subroutine PLRINIT by MOVE.L STARTn,D1
 ; =============================================================================
 
-NLVLS       EQU     5                       ; Number of levels. Should only
+NLVLS       EQU     6                       ; Number of levels. Should only
                                             ; be modified when adding or
                                             ; deleting levels, as the game
                                             ; WILL break otherwise (Especially
@@ -39,6 +39,7 @@ LEVEL2      DC.L    MAPINFO2
 LEVEL3      DC.L    MAPINFO3
 LEVEL4      DC.L    MAPINFO4
 LEVEL5      DC.L    MAPINFO5
+LEVEL6      DC.L    MAPINFO6
 
 ; --- Level matrixes ----------------------------------------------------------
 
@@ -143,6 +144,23 @@ MAPINFO5    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
 START5      DC.W    12*GRIDWTH,2*GRIDHGT+PLRDIM
 MESSAGE5    DC.B    'Press SHIFT to place a falling, enemy-crushing platform',0
+            DS.W    0
+
+MAPINFO6    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
+            DC.B    0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1 ; 0
+            DC.B    0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1 ; 1
+            DC.B    0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1 ; 2
+            DC.B    0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1 ; 3
+            DC.B    0,2,0,0,0,1,1,1,1,1,1,1,1,1,1,1 ; 4
+            DC.B    1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1 ; 5
+            DC.B    1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1 ; 6
+            DC.B    1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0 ; 7
+            DC.B    1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0 ; 8
+            DC.B    1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0 ; 9
+            DC.B    1,1,1,1,0,5,0,1,0,0,0,0,0,4,0,0 ; A
+            DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
+START6      DC.W    1*GRIDWTH,4*GRIDHGT+PLRDIM
+MESSAGE6    DC.B    'If you get trapped, press down to delete your platforms',0
             DS.W    0
 
 

@@ -16,6 +16,7 @@ MUTED       DC.B    0                       ; 0 = unmuted, FF = muted
 SELECT      DC.W    1                       ; It is a word because when using
                                             ; .B it has issues when calculating
                                             ; the module.
+CREDITPOS   DC.W    SCRHEIGH
 STRSTART    DC.B    'START',0
 STRCONT     DC.B    'CONTINUE',0
 STRRESET    DC.B    'RESET LEVEL',0
@@ -57,6 +58,7 @@ JMPFXDIR    DC.B    'SoundFX\Jump.wav',0
 HURTFXDIR   DC.B    'SoundFX\Hurt.wav',0
             
 ; -----------------------------------------------------------------------------
+
 
 
 

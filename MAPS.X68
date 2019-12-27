@@ -99,8 +99,8 @@ MAPUPD
             CMP.B   #YGRIDS,D2
             BNE     .YLOOP
 
-            MOVE.L  (A0),D1
-            JSR     PLRINIT
+*            MOVE.L  (A0),D1
+*            JSR     PLRINIT
             
 .END        MOVEM.L (A7)+,D0-D3/A0
             RTS
@@ -386,6 +386,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

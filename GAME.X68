@@ -104,7 +104,10 @@ GAMEPLOT
             JSR     DEADPLOT
             BRA     .END
             
-.WIN        JSR     WINPLOT
+.WIN        ;JSR     MAPPLOT
+            JSR     PLRPLOT
+            JSR     AGLPLOT
+            JSR     WINPLOT
 
 
 .END        RTS
@@ -415,6 +418,8 @@ CHECKCOL
             RTS
             
             
+
+
 
 
 

@@ -9,13 +9,19 @@ WINUPD
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
-            MOVE.B  D0,-(A7)
+            MOVE.W  D0,-(A7)
+            MOVE.W  CREDITPOS,D0
+            CMP.W   #100,D0
+            BLS     .STAY
+            SUB.W   #GRAVITY/2,D0
+.STAY       MOVE.W  D0,CREDITPOS
             MOVE.B  KBDEDGE,D0
             BTST.L  #KBDBITF1,D0
             BEQ     .END
             MOVE.W  #0,SELECT
             MOVE.B  #MAINMENU,NEXSTA
-.END        MOVE.B  (A7)+,D0
+            MOVE.W  #SCRHEIGH,CREDITPOS
+.END        MOVE.W  (A7)+,D0
             RTS
             
 ; -----------------------------------------------------------------------------
@@ -28,6 +34,11 @@ WINPLOT
             MOVEM.L D0-D2/A1,-(A7)
             
             SETFILL BLACK
+            
+*            MOVE.B  #92,D0
+*            MOVE.B  #2,D1
+*            TRAP    #15
+            
             MOVE.L  #WHITE,D1
             CLR.L   D2
             MOVE.W  #21,D0
@@ -35,7 +46,7 @@ WINPLOT
             
             MOVE.W  #95,D0
             MOVE.W  #100,D1
-            MOVE.W  #100,D2
+            MOVE.W  CREDITPOS,D2
             LEA.L   CREDITS0,A1
             TRAP    #15
             
@@ -165,6 +176,7 @@ DEADPLOT
             
             MOVEM.L (A7)+,D0-D4
             RTS
+
 
 
 

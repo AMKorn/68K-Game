@@ -21,7 +21,11 @@ CRSHINIT
             MOVE.L  PLRPOSX,D0              ; PLRPOSX.L includes both X and Y
                                             ; indexes
             MOVE.L  D0,CRUSHX(A0)
-            MOVE.W  #0,CRUSH_YSPD(A0)
+            MOVE.W  PLRSPDY,D0
+            BPL     .POS
+            ADDQ.W  #1,D0
+            NOT.W   D0
+.POS        MOVE.W  D0,CRUSH_YSPD(A0)
             MOVE.L  (A7)+,D0
             RTS
             
@@ -48,7 +52,7 @@ CRSHUPD
             MOVE.L  (A0),A0
             
             CMP.W   #MAXSPD,D4
-            BEQ     .NOGRAV     
+            BHI     .NOGRAV     
             ADD.W   #2*GRAVITY,D4
             
             
@@ -84,10 +88,15 @@ CRSHUPD
             PLAYSND PLATFX
             
 .NOPLAT     MOVE.L  A1,A0
-            MOVE.W  D3,CRUSHY(A0)
+
+            CMP.W   #SCRHEIGH+PLRDIM,D3
+            BLS     .CONT
+            JSR     AGLKILL
+            BRA     .END
+.CONT       MOVE.W  D3,CRUSHY(A0)
             MOVE.W  D4,CRUSH_YSPD(A0)
             
-            MOVEM.L (A7)+,D2-D4
+.END        MOVEM.L (A7)+,D2-D4
             RTS
             
 ; -----------------------------------------------------------------------------
@@ -201,6 +210,7 @@ ENEMYCONTACT
             
             
             
+
 
 
 
