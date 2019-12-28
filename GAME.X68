@@ -11,24 +11,24 @@ GAMEINIT
 ; MAINMENU.
 ; Input     - None
 ; Output    - None
-; Modifies  - SONG, CURRSTA and whichever registry it needs.
+; Modifies  - Whichever registry it needs.
 ; -----------------------------------------------------------------------------
-            JSR     SOUNDINIT
+            JSR     SOUNDINIT               ; Initialize sounds
             
             MOVE.B  #MAINMENU,CURRSTA       ; State = Main Menu
-            MOVE.B  #1,SELECT               ; Locates the selection on
-                                            ; the Start option
+            
             RTS
             
 ; -----------------------------------------------------------------------------
 GAMEUPD
 ; Checks current the state of the game and calls the update subroutine
 ; according to each state.
-; Input     - None, reads KBDEDGE and CURRSTA
+; Input     - None
 ; Output    - None.
-; Modifies  - CURRSTA and whichever registry it needs.
+; Modifies  - Whichever registry it needs.
 ; -----------------------------------------------------------------------------
 .START      CLR.L   D1
+            ; Checks current state of the game and branches to its code.
             MOVE.B  CURRSTA,D1
             CMP.B   #PLAYING,D1
             BEQ     .PLAYING
@@ -37,8 +37,8 @@ GAMEUPD
             CMP.B   #DEAD,D1
             BEQ     .DEAD
             CMP.B   #WINSTATE,D1
-            BEQ     .WIN
-            
+            BEQ     .WIN                    ; If none is equal, default state
+                                            ; is main menu.
             ; Current State: Menu
 .MENU       JSR     MENUUPD
             BRA     .END
@@ -47,10 +47,10 @@ GAMEUPD
 .PLAYING    MOVE.B  KBDEDGE,D1
             BTST.L  #KBDBITPS,D1            ; If PAUSE was pressed
             BEQ     .CONT
-            MOVE.B  #PAUSED,NEXSTA         ; we pause the game
+            MOVE.B  #PAUSED,NEXSTA          ; we pause the game
             BRA     .END
             
-.CONT       JSR     CHKLVLCHANGE
+.CONT       JSR     CHKLVLCHANGE            ; Changes the level if needed
             JSR     PLRUPD
             JSR     MAPUPD
             JSR     AGLUPD
@@ -70,7 +70,7 @@ GAMEUPD
             
 ; -----------------------------------------------------------------------------
 GAMEPLOT
-; Input     - None, reads CURRSTA
+; Input     - None
 ; Output    - None
 ; Modifies  - Whichever registry it needs.
 ; -----------------------------------------------------------------------------
@@ -104,11 +104,8 @@ GAMEPLOT
             JSR     DEADPLOT
             BRA     .END
             
-.WIN        ;JSR     MAPPLOT
-            JSR     PLRPLOT
-            JSR     AGLPLOT
+.WIN        JSR     PLRPLOT
             JSR     WINPLOT
-
 
 .END        RTS
 
@@ -180,7 +177,7 @@ CHKLVLCHANGE
             MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
             
-            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
             CMP.B   #LVLGOAL,D1             ; If player is on the goal
             BNE     .END
@@ -188,7 +185,7 @@ CHKLVLCHANGE
             ADD.B   #1,D1                   ; We add one to the current level
             CMP.B   #NLVLS,D1               ; If the level was the last
             BNE     .NEXTLVL                
-            MOVE.B  #WINSTATE,NEXSTA       ; we change the state to WINSTATE
+            MOVE.B  #WINSTATE,NEXSTA        ; we change the state to WINSTATE
             JSR     KILLALL
             BRA     .END
             
@@ -203,7 +200,6 @@ HORCOLL
 ; player-, be it either with in-game walls or the side of the window.
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
-;           - Reads CURRLVL
 ; Output    - D2.W : The corrected X coordinate of the entity's position.
 ;           - D4.B : Set to 1 if correction was made. (Useless for player,
 ;                    but needed for changing direction of enemies).
@@ -222,18 +218,18 @@ HORCOLL
             
             ; -- Left Collisions (entityX) --
             
-            GETCELL 2,0,3,0,0               ; get the cell of lower left corner
+            GETCELL D2,0,D3,0,D0            ; get the cell of lower left corner
             JSR     GETGRIDVAL              ; from the character
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .L_COLL
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BEQ     .L_COLL
             
-            GETCELL 2,0,3,-PLRDIM,0         ; get the cell of upper left corner
+            GETCELL D2,0,D3,-PLRDIM,D0      ; get the cell of upper left corner
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .L_COLL
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BNE     .RGTCOLL
             
 .L_COLL     LSR.L   #8,D0                   ; if one of them is on a ground cell
@@ -245,14 +241,14 @@ HORCOLL
             
             ; -- Right Collisions (entityX+plrDim) --
             
-.RGTCOLL    GETCELL 2,PLRDIM,3,0,0
+.RGTCOLL    GETCELL D2,PLRDIM,D3,0,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .R_COLL
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BEQ     .R_COLL
             
-            GETCELL 2,PLRDIM,3,-PLRDIM,0
+            GETCELL D2,PLRDIM,D3,-PLRDIM,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
             BEQ     .R_COLL
@@ -286,7 +282,6 @@ VERCOLL
 ; player-, be it either with in-game walls or the side of the window.
 ; Input     - D2.W : The uncorrected X coordinate of the entity's position.
 ;           - D3.W : The uncorrected Y coordinate of the entity's position.
-;           - D4.W : The entity's vertical speed.
 ; Output    - D3.W : The corrected Y coordinate of the entity's position, or
 ;                    set to $FFFF if the entity fell off the map.
 ;           - D4.W : Cleared if the entity is on the ground (used for Y speed)
@@ -310,11 +305,11 @@ VERCOLL
             
             ; -- Lower Left Corner (posX,posY) --
             
-            GETCELL 2,0,3,0,0
+            GETCELL D2,0,D3,0,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1                   ; If lower left cell is ground
+            CMP.B   #GROUND,D1                   ; If lower left cell is ground
             BEQ     .CONTLL
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BNE     .LRCORNER
 .CONTLL     CLR.W   D3
             MOVE.B  D0,D3
@@ -326,11 +321,11 @@ VERCOLL
             
             ; -- Lower Rigth Corner (posX+plrDim,posY) --
             
-.LRCORNER   GETCELL 2,PLRDIM,3,0,0
+.LRCORNER   GETCELL D2,PLRDIM,D3,0,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .CONTLR
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BNE     .ULCORNER
 .CONTLR     CLR.W   D3
             MOVE.B  D0,D3
@@ -341,11 +336,11 @@ VERCOLL
 
             ; -- Upper Left Corner (posX,posY-plrDim) --
             
-.ULCORNER   GETCELL 2,0,3,-PLRDIM,0
+.ULCORNER   GETCELL D2,0,D3,-PLRDIM,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .CONTUL
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BNE     .URCORNER
 .CONTUL     CLR.W   D3
             MOVE.B  D0,D3
@@ -357,11 +352,11 @@ VERCOLL
             
             ; -- Upper Right Corner (posX+plrDim,posY-plrDim) --
             
-.URCORNER   GETCELL 2,PLRDIM,3,-PLRDIM,0
+.URCORNER   GETCELL D2,PLRDIM,D3,-PLRDIM,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .CONTUR
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BNE     .Y_OOB
 .CONTUR     CLR.W   D3
             MOVE.B  D0,D3
@@ -417,25 +412,6 @@ CHECKCOL
 .END        MOVEM.W (A7)+,D4-D7
             RTS
             
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

@@ -1,7 +1,7 @@
 ; =============================================================================
 ; TITLE    : EXAMPLE GAME
 ; AUTHOR   : Korn, Andreas Manuel & Vega García, Sergio
-; CREATION : 
+; CREATION : 12.11.2019 - 27.12.2019
 ; =============================================================================
 
             OPT     MEX
@@ -54,9 +54,6 @@ START       JSR     SYSINIT
             INCLUDE "MAPINFO.X68"           ; MAP MATRIXES
             END    START
             
-
-
-
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

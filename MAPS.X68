@@ -210,7 +210,7 @@ MAPPLOT
             CMP.B   #ENTRANCE,(A0)
             BNE     .NEXT3
                         
-            SETFILL PINK
+            SETFILL GRAY
             
             ; Paint the entrance portal
             
@@ -231,12 +231,20 @@ MAPPLOT
             ADD.W   #5,D2
             SUB.W   #5,D4
             TRAP    #15
-
+            
+            SETFILL PINK
+            
+            MOVE.B  #89,D0
+            MOVE.W  D3,D1
+            SUB.W   #15,D1
+            MOVE.W  D4,D2
+            SUB.W   #15,D2
+            TRAP    #15
             
 .NEXT3      CMP.B   #LVLGOAL,(A0)
             BNE     .NEXT4
             
-            SETFILL AQUA
+            SETFILL GRAY
             
             ; Paint the goal portal
             
@@ -258,10 +266,19 @@ MAPPLOT
             SUB.W   #5,D4
             TRAP    #15
             
+            SETFILL AQUA
+            
+            MOVE.B  #89,D0
+            MOVE.W  D3,D1
+            SUB.W   #15,D1
+            MOVE.W  D4,D2
+            SUB.W   #15,D2
+            TRAP    #15
+            
 .NEXT4      CMP.B   #ENEMY,(A0)
             BNE     .NEXT5
             
-            SETFILL D_RED
+            SETFILL GRAY
             
             ; Paint the enemy portals
             
@@ -281,6 +298,15 @@ MAPPLOT
             SUB.W   #5,D3
             ADD.W   #5,D2
             SUB.W   #5,D4
+            TRAP    #15
+            
+            SETFILL L_RED
+            
+            MOVE.B  #89,D0
+            MOVE.W  D3,D1
+            SUB.W   #15,D1
+            MOVE.W  D4,D2
+            SUB.W   #15,D2
             TRAP    #15
 
 .NEXT5      CMP.B   #SPIKE,(A0)
@@ -386,6 +412,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
+
 
 
 

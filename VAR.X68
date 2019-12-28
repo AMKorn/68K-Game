@@ -6,14 +6,14 @@
 
 CURRLVL     DS.B    1                       ; This variable is always one less
                                             ; than the REAL current level.
-NEXSTA      DC.B    0                       ; These are different variables
-CURRSTA     DS.B    1                       ; to simplify changing the music.
+CURRSTA     DS.B    1                       ; These are different variables
+NEXSTA      DC.B    MAINMENU                ; to simplify changing the music.
 MUTED       DC.B    0                       ; 0 = unmuted, FF = muted
             DS.W    0
 
-; - Menu & pause vars ---------------------------------------------------------
+; - Menu & similar vars -------------------------------------------------------
 
-SELECT      DC.W    1                       ; It is a word because when using
+SELECT      DC.W    MENUPLAY                ; It is a word because when using
                                             ; .B it has issues when calculating
                                             ; the module.
 CREDITPOS   DC.W    SCRHEIGH
@@ -59,31 +59,6 @@ JMPFXDIR    DC.B    'SoundFX\Jump.wav',0
 HURTFXDIR   DC.B    'SoundFX\Hurt.wav',0
             
 ; -----------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 *~Font name~Courier New~

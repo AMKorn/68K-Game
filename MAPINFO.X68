@@ -3,7 +3,7 @@
 ; This file includes all the information regarding each of the levels of the
 ; game. The first part of this file has the pointers of each of the matrixes.
 ; They are correlative, so the numeration is useless and what matters is the
-; placement.
+; placement, except for LEVEL1 which should always be placed first.
 ; Each map is formed by a 16x12 matrix with the corresponding values of each
 ; cell it represents.
 ; Values:   - 0 : Air
@@ -20,10 +20,14 @@
 ;           - 5 : Enemy
 ;           - 6 : Spike that hurts you.
 ; Each level must also be accompanied with its correspondant level information,
-; which for now consists of only the player location start (marked with STARTn)
-; For ease of understanding, it is specified as 
+; which consists of the player location start marked with STARTn and a message.
+; For ease of understanding, STARTn is specified as 
 ;           STARTn = (Xcell)*GRIDWTH,(Ycell)*GRIDHGT+PLRDIM
-; This is easily utilized with the subroutine PLRINIT by MOVE.L STARTn,D1
+; This is easily utilized with the subroutine PLRINIT by MOVE.L STARTn,D1.
+; Some levels also include a message that serves as a tutorial, which the 
+; subroutine MAPPLOT automatically writes on the upper left corner of the map.
+; These messages are usually meant to help the player understand basic 
+; mechanics.
 ; =============================================================================
 
 NLVLS       EQU     6                       ; Number of levels. Should only
@@ -59,6 +63,8 @@ LEVEL6      DC.L    MAPINFO6
 *            DC.B    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; A
 *            DC.B    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; B
 *STARTn      DC.W    X*GRIDWTH,Y*GRIDHGT+PLRDIM
+*MESSAGEn    DC.B    'Write message here',0   ||    || DC.W 0
+*            DS.W    0                        || OR || ; when no message
 *
 * =============================================================================
 
@@ -162,6 +168,7 @@ MAPINFO6    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
 START6      DC.W    1*GRIDWTH,4*GRIDHGT+PLRDIM
 MESSAGE6    DC.B    'If you get trapped, press down to delete your platforms',0
             DS.W    0
+
 
 
 

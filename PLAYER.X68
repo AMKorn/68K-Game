@@ -53,7 +53,7 @@ PLRUPD
             CMP.L   #INVTIME,D1
             BLT     .PLAT
             
-            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
             CMP.B   #SPIKE,D1
             BNE     .PLAT
@@ -75,7 +75,7 @@ PLRUPD
             BEQ     .NOPLAT
             MOVE.W  D0,-(A7)
             MOVE.B  D1,-(A7)
-            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
             CMP.B   #0,D1                   ; Checks if the player is on air
             BNE    .NOPLATREG               ; and if he is, places platform
@@ -92,7 +92,7 @@ PLRUPD
             MULU    #GRIDWTH,D2
             PLAYSND PLATFX
             
-            GETCELL 2,PLRDIM/2,3,-PLRDIM/2,0
+            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
             CMP.B   #0,D1                   ; If after the placement, the
             BEQ     .NOPLATREG              ; character is not on the air, 
@@ -135,7 +135,7 @@ PLRUPD
 
             ; -- Is there a block up? --
 
-            GETCELL 2,0,3,-PLRDIM,0
+            GETCELL D2,0,D3,-PLRDIM,D0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
@@ -143,7 +143,7 @@ PLRUPD
             CMP.B   #3,D1
             BEQ     .NOEDGE
             
-            GETCELL 2,PLRDIM,3,-PLRDIM,0
+            GETCELL D2,PLRDIM,D3,-PLRDIM,D0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
@@ -153,7 +153,7 @@ PLRUPD
             
             ; -- Is the player on ground? --
             
-            GETCELL 2,0,3,0,0
+            GETCELL D2,0,D3,0,D0
             ADDQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
@@ -161,7 +161,7 @@ PLRUPD
             CMP.B   #3,D1
             BEQ     .JUMP
             
-            GETCELL 2,PLRDIM,3,0,0
+            GETCELL D2,PLRDIM,D3,0,D0
             ADDQ.W  #1,D0
             JSR     GETGRIDVAL
             CMP.B   #1,D1
@@ -275,6 +275,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D5
             RTS
+
 
 
 
