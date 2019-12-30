@@ -44,9 +44,18 @@ PLRUPD
 .NOTDEAD    MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
 
+            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
+            JSR     GETGRIDVAL
+            CMP.B   #CLONE,D1
+            BNE     .SPIKE
+            MOVE.L  (XGRIDS)*(YGRIDS)(A0),D1 ; the player is moved to the 
+            JSR     PLRINIT                 ; starting point of the level.
+            MOVE.W  PLRPOSX,D2
+            MOVE.W  PLRPOSY,D3
+
             ; --- Collision with spike ----------------------------------------
             
-            MOVE.L  #8,D0
+.SPIKE      MOVE.L  #8,D0
             TRAP    #15                     ; D1.L has current time
             MOVE.L  INVFRAMES,D0
             SUB.L   D0,D1
@@ -275,6 +284,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D5
             RTS
+
 
 
 

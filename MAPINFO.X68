@@ -163,11 +163,12 @@ MAPINFO6    ; XGRID 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F / YGRID
             DC.B    1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0 ; 7
             DC.B    1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0 ; 8
             DC.B    1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0 ; 9
-            DC.B    1,1,1,1,0,5,0,1,0,0,0,0,0,4,0,0 ; A
+            DC.B    1,1,1,0,0,5,0,1,0,0,0,0,0,4,0,0 ; A
             DC.B    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 ; B
 START6      DC.W    1*GRIDWTH,4*GRIDHGT+PLRDIM
 MESSAGE6    DC.B    'If you get trapped, press down to delete your platforms',0
             DS.W    0
+
 
 
 
