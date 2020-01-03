@@ -4,16 +4,13 @@
 
 ; -----------------------------------------------------------------------------
 PLRINIT
-; INITIALIZES THE PLAYER
-; INPUT     - D1.L: The player position, with 2 most significant Bytes being
+; Initializes the player.
+; Input     - D1.L: The player position, with 2 most significant Bytes being
 ;             on X axis and least significant on Y axis
-; OUTPUT    - None
-; MODIFIES  - None
+; Output    - None
+; Modifies  - None
 ; -----------------------------------------------------------------------------
-            MOVE.W  D1,PLRPOSY
-            SWAP    D1
-            MOVE.W  D1,PLRPOSX
-            SWAP    D1                      ; Just to reset it.
+            MOVE.L  D1,PLRPOSX
             
             RTS
             
@@ -21,7 +18,7 @@ PLRINIT
 PLRUPD
 ; Updates the player location, calculates collisions and adds platforms if
 ; DOWN is pressed.
-; Input     - None, reads KBDVAL, KBDEDGE and CURRLVL
+; Input     - None
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
@@ -43,6 +40,8 @@ PLRUPD
             
 .NOTDEAD    MOVE.W  PLRPOSX,D2
             MOVE.W  PLRPOSY,D3
+            
+            ; --- Is the player on a clone? -----------------------------------
 
             GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
@@ -55,7 +54,7 @@ PLRUPD
 
             ; --- Collision with spike ----------------------------------------
             
-.SPIKE      MOVE.L  #8,D0
+.SPIKE      MOVE.L  #8,D0                   ; Get time
             TRAP    #15                     ; D1.L has current time
             MOVE.L  INVFRAMES,D0
             SUB.L   D0,D1
@@ -69,7 +68,7 @@ PLRUPD
             SUBLIFE
             PLAYSND HRTFX
             
-            MOVE.L  #8,D0
+            MOVE.L  #8,D0                   ; Get time
             TRAP    #15
             MOVE.L  D1,INVFRAMES
             
@@ -84,22 +83,22 @@ PLRUPD
             BEQ     .NOPLAT
             MOVE.W  D0,-(A7)
             MOVE.B  D1,-(A7)
-            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
+            GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0 ; Store the cell index in D0
             JSR     GETGRIDVAL
-            CMP.B   #0,D1                   ; Checks if the player is on air
+            CMP.B   #AIR,D1                 ; Checks if the player is on air
             BNE    .NOPLATREG               ; and if he is, places platform
-            MOVE.B  #3,D1
-            JSR     SETGRIDVAL
-            SUBQ.B  #1,D0
-            CLR.L   D3
+            MOVE.B  #CLONE,D1
+            JSR     SETGRIDVAL              ; sets the cell as CLONE
+            SUBQ.B  #1,D0                   ; D0 now has the upper cell
+            CLR.L   D3                      
             MOVE.B  D0,D3
             MULU    #GRIDHGT,D3
             ADD.W   #PLRDIM,D3
             LSR     #8,D0
             CLR.L   D2
             MOVE.B  D0,D2
-            MULU    #GRIDWTH,D2
-            PLAYSND PLATFX
+            MULU    #GRIDWTH,D2             ; and now player is located on it
+            PLAYSND PLATFX                  ; and we play the sound
             
             GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
@@ -147,17 +146,17 @@ PLRUPD
             GETCELL D2,0,D3,-PLRDIM,D0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .NOEDGE
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BEQ     .NOEDGE
             
             GETCELL D2,PLRDIM,D3,-PLRDIM,D0
             SUBQ.W  #1,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .NOEDGE
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BEQ     .NOEDGE
             
             ; -- Is the player on ground? --
@@ -165,17 +164,17 @@ PLRUPD
             GETCELL D2,0,D3,0,D0
             ADDQ.W  #1,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .JUMP
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BEQ     .JUMP
             
             GETCELL D2,PLRDIM,D3,0,D0
             ADDQ.W  #1,D0
             JSR     GETGRIDVAL
-            CMP.B   #1,D1
+            CMP.B   #GROUND,D1
             BEQ     .JUMP
-            CMP.B   #3,D1
+            CMP.B   #CLONE,D1
             BNE     .NOEDGE
 .JUMP       MOVE.W  #IMPULSE,D4
             PLAYSND JMPFX
@@ -203,11 +202,14 @@ PLRUPD
 ; -----------------------------------------------------------------------------
 PLRPLOT
 ; Plots the player
+; Input     - None
+; Output    - None
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D5,-(A7)
             SETPEN  BLACK                   ; Set pen color black
             
-            MOVE.L  #8,D0
+            MOVE.L  #8,D0                   ; Get time
             TRAP    #15                     ; D1.L has current time
             MOVE.L  INVFRAMES,D0
             SUB.L   D0,D1
@@ -217,7 +219,7 @@ PLRPLOT
             BRA     .CONT
             
 .NOINV      SETFILL GREEN                   ; Set color green
-.CONT       MOVE.W  #87,D0
+.CONT       MOVE.W  #87,D0                  ; Draw square
             MOVE.W  PLRPOSX,D1              ; Left X is the player posX
             MOVE.W  PLRPOSY,D2
             SUB.W   #PLRDIM,D2              ; Upper Y is posY-dimensions
@@ -233,7 +235,7 @@ PLRPLOT
             CMP.B   #LEFT,D0
             BEQ     .LOOK_LEFT
             
-            MOVE.B  #88,D0
+            MOVE.B  #88,D0                  ; Draw ellipse
             MOVE.W  PLRPOSX,D1
             ADD.W   #15,D1
             MOVE.W  D1,D3
@@ -248,7 +250,7 @@ PLRPLOT
             TRAP    #15
             BRA     .LIVES
             
-.LOOK_LEFT  MOVE.B  #88,D0
+.LOOK_LEFT  MOVE.B  #88,D0                  ; Draw ellipse
             SUB.W   #15,D3
             MOVE.W  D3,D1
             SUB.W   #11,D1
@@ -269,7 +271,7 @@ PLRPLOT
             MOVE.W  #10,D2
             MOVE.W  #20,D3
             MOVE.W  #20,D4
-            MOVE.W  #88,D0
+            MOVE.W  #88,D0                  ; Draw ellipse
             
             CLR     D5
             MOVE.B  PLRLVS,D5            
@@ -284,6 +286,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D5
             RTS
+
 
 
 

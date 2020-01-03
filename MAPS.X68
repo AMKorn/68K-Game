@@ -7,7 +7,7 @@
 ; -----------------------------------------------------------------------------
 MAPINIT
 ; Initializes the map, and places the player in it.
-; Input     - None, reads CURRLVL
+; Input     - None
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
@@ -32,9 +32,9 @@ MAPINIT
             LSL     #8,D1
             MOVE.B  D2,D1                   ; D1.W is XXYY
             ADD.B   #1,D1
-            MOVE.W  #ENEMY,D0
-            LEA.L   ENMYINIT,A1
-            LEA.L   ENMYUPD,A2
+            MOVE.W  #ENEMY,D0               ; Agent type is enemy
+            LEA.L   ENMYINIT,A1             ; Store the agent's subroutines
+            LEA.L   ENMYUPD,A2              ; to be initialized
             LEA.L   ENMYPLOT,A3
             JSR     AGLADD                  ; Adds an enemy to the agent list.
 
@@ -63,7 +63,7 @@ MAPUPD
 ; Updates the map.
 ; Input     - None
 ; Output    - None
-; Modifies  - The information in the level matrix.
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D3/A0,-(A7)
             
@@ -80,7 +80,7 @@ MAPUPD
             
             BTST.L  #KBDBITDN,D0
             BEQ     .END
-.RESET            
+      
             MOVE.W  #0,D2
 .YLOOP
             MOVE.W  #0,D3
@@ -108,7 +108,7 @@ MAPUPD
 ; -----------------------------------------------------------------------------     
 MAPPLOT
 ; Plots a map given its matrix of information.
-; Input     - None, reads CURRLVL
+; Input     - None
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
@@ -124,7 +124,7 @@ MAPPLOT
             ; - Paint the whole screen white first ----------------------------
             
             SETFILL WHITE
-            MOVE.B  #87,D0
+            MOVE.B  #87,D0                  ; Draw square
             MOVE.W  #0,D1
             MOVE.W  #0,D2
             MOVE.W  #SCRWIDTH,D3
@@ -139,11 +139,12 @@ MAPPLOT
             MOVE.W  #0,D6                   ; D6 = X index of grid
 .XLOOP            
             CMP.B   #GROUND,(A0)            ; There is ground
-            
             BNE     .NEXT1
+            
             SETFILL BLACK
             
             ; Paint the black squares
+            MOVE.B  #87,D0                  ; Draw square
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1
             MOVE.W  D1,D3
@@ -153,8 +154,8 @@ MAPPLOT
             MULS.W  #GRIDHGT,D2
             MOVE.W  D2,D4
             ADD.W   #GRIDHGT,D4
-            MOVE.B  #87,D0
             TRAP    #15
+            BRA     .NEXT6
             
 .NEXT1      CMP.B   #CLONE,(A0)
             BNE     .NEXT2
@@ -162,6 +163,7 @@ MAPPLOT
             SETFILL L_GREEN
            
             ; Paint the green squares
+            MOVE.B  #87,D0                  ; Draw square
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1
             MOVE.W  D1,D3
@@ -171,13 +173,11 @@ MAPPLOT
             MULS.W  #GRIDHGT,D2
             MOVE.W  D2,D4
             ADD.W   #GRIDHGT,D4
-            MOVE.B  #87,D0
             TRAP    #15
             
             ; Draw the eyes
-            SETFILL BLACK
             
-            MOVE.B  #84,D0
+            MOVE.B  #84,D0                  ; Draw line
             MOVE.W  D6,D1
             MULS.W  #GRIDWTH,D1
             ADD.W   #15,D1
@@ -205,6 +205,7 @@ MAPPLOT
             MOVE.W  D2,D4
             SWAP    D2
             TRAP    #15
+            BRA     .NEXT6
 
 .NEXT2            
             CMP.B   #ENTRANCE,(A0)
@@ -223,7 +224,7 @@ MAPPLOT
             MULS.W  #GRIDHGT,D2
             MOVE.W  D2,D4
             ADD.W   #GRIDHGT,D4
-            MOVE.B  #88,D0
+            MOVE.B  #88,D0                  ; Draw ellipse
             TRAP    #15
             
             ADD.W   #5,D1
@@ -234,12 +235,13 @@ MAPPLOT
             
             SETFILL PINK
             
-            MOVE.B  #89,D0
+            MOVE.B  #89,D0                  ; Flood fill
             MOVE.W  D3,D1
             SUB.W   #15,D1
             MOVE.W  D4,D2
             SUB.W   #15,D2
             TRAP    #15
+            BRA     .NEXT6
             
 .NEXT3      CMP.B   #LVLGOAL,(A0)
             BNE     .NEXT4
@@ -257,7 +259,7 @@ MAPPLOT
             MULS.W  #GRIDHGT,D2
             MOVE.W  D2,D4
             ADD.W   #GRIDHGT,D4
-            MOVE.B  #88,D0
+            MOVE.B  #88,D0                  ; Draw ellipse
             TRAP    #15
             
             ADD.W   #5,D1
@@ -268,12 +270,13 @@ MAPPLOT
             
             SETFILL AQUA
             
-            MOVE.B  #89,D0
+            MOVE.B  #89,D0                  ; Flood fill
             MOVE.W  D3,D1
             SUB.W   #15,D1
             MOVE.W  D4,D2
             SUB.W   #15,D2
             TRAP    #15
+            BRA     .NEXT6
             
 .NEXT4      CMP.B   #ENEMY,(A0)
             BNE     .NEXT5
@@ -291,7 +294,7 @@ MAPPLOT
             MULS.W  #GRIDHGT,D2
             MOVE.W  D2,D4
             ADD.W   #GRIDHGT,D4
-            MOVE.B  #88,D0
+            MOVE.B  #88,D0                  ; Draw ellipse
             TRAP    #15
             
             ADD.W   #5,D1
@@ -302,12 +305,13 @@ MAPPLOT
             
             SETFILL L_RED
             
-            MOVE.B  #89,D0
+            MOVE.B  #89,D0                  ; Flood fill
             MOVE.W  D3,D1
             SUB.W   #15,D1
             MOVE.W  D4,D2
             SUB.W   #15,D2
             TRAP    #15
+            BRA     .NEXT6
 
 .NEXT5      CMP.B   #SPIKE,(A0)
             BNE     .NEXT6
@@ -324,7 +328,7 @@ MAPPLOT
             ADD.W   #GRIDHGT+1,D2
             MOVE.W  D1,D3
             ADD.W   #GRIDWTH/2,D3
-            MOVE.B  #84,D0
+            MOVE.B  #84,D0                  ; Draw line
             TRAP    #15
             
             ADD.W   #GRIDWTH,D1
@@ -337,7 +341,7 @@ MAPPLOT
             
             SUB.W   #GRIDWTH/2,D1
             SUB.W   #GRIDWTH/2,D2
-            MOVE.B  #89,D0
+            MOVE.B  #89,D0                  ; Flood fill
             TRAP    #15
 
 .NEXT6      
@@ -352,7 +356,7 @@ MAPPLOT
             
             SETFILL WHITE
             
-            MOVE.B  #21,D0
+            MOVE.B  #21,D0                  ; Set font
             MOVE.L  #BLACK,D1
             CLR.L   D2
             TRAP    #15
@@ -361,7 +365,7 @@ MAPPLOT
             MOVE.W  #40,D1
             MOVE.W  #40,D2
             MOVE.L   A0,A1
-            MOVE.B  #95,D0
+            MOVE.B  #95,D0                  ; Draw message
             TRAP    #15
             
             MOVEM.L (A7)+,D0-D6/A0
@@ -377,11 +381,11 @@ GETGRIDVAL
 ; -----------------------------------------------------------------------------
             MOVEM.L D0/A0,-(A7)
             
-            AND.L   #$FFFF,D0
+            AND.L   #$FFFF,D0               ; We clear possible leftover info
             CLR.L   D1
             MOVE.B  D0,D1
-            LSL     #4,D1
-            ADDA.L  D1,A0
+            LSL     #4,D1                   ; Move 4 bytes to the left
+            ADDA.L  D1,A0                   ; is like multiplying by $10
             
             LSR     #8,D0
             ADDA.L  D0,A0
@@ -397,10 +401,11 @@ SETGRIDVAL
 ;           - D1.B : The value of the cell
 ;           - A0.L : The pointer to the matrix with the level info
 ; Output    - None
-; Modifies  - The value of the cell specified in D0.W, but no registers
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D2/A0,-(A7)
             
+            AND.L   #$FFFF,D0               ; We clear possible leftover info
             CLR.L   D2
             MOVE.B  D0,D2
             LSL     #4,D2
@@ -412,30 +417,7 @@ SETGRIDVAL
             MOVE.B  D1,(A0)
             MOVEM.L (A7)+,D0-D2/A0
             RTS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~
