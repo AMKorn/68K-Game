@@ -5,9 +5,9 @@
 ; -----------------------------------------------------------------------------
 GETCELL     MACRO
 ; Macro that calculates the cell number of a given pixel in the grid.
-; Input     - \1 : the X position of the pixel
+; Input     - \1.W : D register with the X position of the pixel
 ;           - #\2 : the offset of the x position
-;           - \3 : the Y position of the pixel
+;           - \3.W : D register with the Y position of the pixel
 ;           - #\4 : the offset of the y position
 ; Output:   - \5.W : The X and Y index of the cell in format XXYY
 ; Modifies  - Nothing, except the output
@@ -105,8 +105,7 @@ PLAYSNG     MACRO
             
 .MUTED\1
             ENDM
-
-
+            
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

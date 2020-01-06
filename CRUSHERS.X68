@@ -89,9 +89,9 @@ CRSHUPD
             
 .NOPLAT     MOVE.L  A1,A0
 
-            CMP.W   #SCRHEIGH+PLRDIM,D3
+            CMP.W   #SCRHEIGH+PLRDIM,D3     ; If its out of screen
             BLS     .CONT
-            JSR     AGLKILL
+            JSR     AGLKILL                 ; We kill it.
             BRA     .END
 .CONT       MOVE.W  D3,CRUSHY(A0)
             MOVE.W  D4,CRUSH_YSPD(A0)
@@ -205,21 +205,8 @@ ENEMYCONTACT
             BNE     .LOOP      
 
 .END        MOVEM.L (A7)+,D0-D7/A0
-            RTS     
+            RTS
             
-            
-            
-            
-            
-
-
-
-
-
-
-
-
-
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

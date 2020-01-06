@@ -1,4 +1,4 @@
-; =============================================================================
+            ; =============================================================================
 ; PAUSE SCREEN
 ; =============================================================================
 
@@ -6,9 +6,9 @@
 PAUSEUPD
 ; The pause menu, just like the menu, uses SELECT as a selector.
 ; Since it also has a menu of options, the code is similar to MENUUPD.
-; Input     - None, reads KBDEDGE and SELECT
+; Input     - None
 ; Output    - None
-; Modifies  - SELECT
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D1,-(A7)
             MOVE.B  KBDEDGE,D0
@@ -45,7 +45,9 @@ PAUSEUPD
             BNE     .QUIT
             JSR     MUTEUNMUTE
             BRA     .END
-.QUIT       JSR     KILLALL
+.QUIT       CMP.W   #PSEQUIT,D1
+            BNE     .END
+            JSR     KILLALL
             MOVE.W  #0,SELECT
             MOVE.B  #MAINMENU,NEXSTA
             
@@ -106,11 +108,6 @@ PAUSEPLOT
             
             MOVEM.L (A7)+,D0-D4
             RTS
-            
-            
-            
-            
-
 
 *~Font name~Courier New~
 *~Font size~10~

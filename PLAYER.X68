@@ -42,6 +42,8 @@ PLRUPD
             MOVE.W  PLRPOSY,D3
             
             ; --- Is the player on a clone? -----------------------------------
+            ; This is in case the player places a crusher and it transforms
+            ; into a platform with the player on the same cell.
 
             GETCELL D2,PLRDIM/2,D3,-PLRDIM/2,D0
             JSR     GETGRIDVAL
@@ -53,6 +55,7 @@ PLRUPD
             MOVE.W  PLRPOSY,D3
 
             ; --- Collision with spike ----------------------------------------
+            ; When the player touches a spike, they get hurt.
             
 .SPIKE      MOVE.L  #8,D0                   ; Get time
             TRAP    #15                     ; D1.L has current time
@@ -73,6 +76,7 @@ PLRUPD
             MOVE.L  D1,INVFRAMES
             
             ; --- Platform placement ------------------------------------------
+            ; Space means placing a platform.
             
 .PLAT       CLR.L   D0
             CLR.L   D1
@@ -118,7 +122,7 @@ PLRUPD
 .NOPLAT
             BTST.L  #KBDBITF3,D1            ; Checks if shift has been pressed
             BEQ     .MOVE
-            JSR     ADDCRSHR
+            JSR     ADDCRSHR                ; and adds a crusher if true
             
             ; --- Horizontal movement -----------------------------------------
 .MOVE            
@@ -141,7 +145,7 @@ PLRUPD
             BTST.L  #KBDBITUP,D1            ; Checks if UP was pressed on EDGE
             BEQ     .NOEDGE
 
-            ; -- Is there a block up? --
+            ; -- Is there a block up? If true, don't jump --
 
             GETCELL D2,0,D3,-PLRDIM,D0
             SUBQ.W  #1,D0
@@ -159,7 +163,7 @@ PLRUPD
             CMP.B   #CLONE,D1
             BEQ     .NOEDGE
             
-            ; -- Is the player on ground? --
+            ; -- Is the player on ground? If false, don't jump --
             
             GETCELL D2,0,D3,0,D0
             ADDQ.W  #1,D0
@@ -180,9 +184,7 @@ PLRUPD
             PLAYSND JMPFX
             BRA     .NOGRAV
             
-.NOEDGE     ;BTST.L  #KBDBITUP,D0           **   Uncomment this section   **
-            ;BNE     .NOGRAV                ** to have buggy gradual jump **
-            CMP.W   #MAXSPD,D4
+.NOEDGE     CMP.W   #MAXSPD,D4
             BEQ     .NOGRAV
             ADD.W   #GRAVITY,D4
             
@@ -286,6 +288,7 @@ PLRPLOT
 .END
             MOVEM.L (A7)+,D0-D5
             RTS
+
 
 
 

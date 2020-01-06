@@ -5,9 +5,9 @@
 ; -----------------------------------------------------------------------------
 MENUUPD
 ; The main menu utilizes SELECT as a selector for the different options.
-; Input     - None, reads KBDEDGE and SELECT
+; Input     - None
 ; Output    - None
-; Modifies  - SELECT
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D1,-(A7)
             MOVE.B  KBDEDGE,D0
@@ -53,7 +53,7 @@ MENUUPD
 ; -----------------------------------------------------------------------------
 MENUPLOT
 ; Plots the main menu.
-; Input     - None, reads SELECT
+; Input     - None
 ; Output    - None
 ; Modifies  - None
 ; -----------------------------------------------------------------------------
@@ -109,11 +109,7 @@ MUTEUNMUTE
             NOT.B   MUTED
             BRA     .END
             
-.UNMUTE     ;LEA.L   MUSMENU,A1
-            ;MOVE.B  #71,D0
-            ;TRAP    #15
-            ;MOVE.B  D1,SONG
-            MOVE.B  #MUSIC,D1
+.UNMUTE     MOVE.B  #MUSIC,D1
             MOVE.B  #77,D0
             MOVE.L  #1,D2
             TRAP    #15
@@ -122,20 +118,6 @@ MUTEUNMUTE
             MOVEM.L (A7)+,D0-D2
             RTS
             
-.MUTED      DC.B    0
-            DS.W    0
-
-
-
-
-
-
-
-
-
-
-
-
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

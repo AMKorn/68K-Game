@@ -4,7 +4,7 @@
 
 ; -----------------------------------------------------------------------------
 WINUPD
-; Screen with an option to go back to the main menu.
+; Screen with an option to go back to the main menu, and updates CREDITPOS.
 ; Input     - None
 ; Output    - None
 ; Modifies  - None
@@ -180,11 +180,7 @@ DEADPLOT
             
             MOVEM.L (A7)+,D0-D4
             RTS
-
-
-
-
-
+            
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

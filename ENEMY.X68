@@ -135,7 +135,7 @@ PLAYERCONTACT
 ; true.
 ; Input     - A0.L : The enemy data block.
 ; Output    - None
-; Modifies  - No registers, only PLRLVS
+; Modifies  - None
 ; -----------------------------------------------------------------------------
             MOVEM.L D0-D7,-(A7)
             
@@ -170,7 +170,7 @@ PLAYERCONTACT
 
 ; -----------------------------------------------------------------------------
 KILLALL
-; Kills all enemies
+; Kills all agents
 ; Input     - None
 ; Output    - None
 ; Modifes   - None
@@ -184,13 +184,7 @@ KILLALL
 
 .END        MOVE.L  (A7)+,A0
             RTS
-
-
-
-
-
-
-
+            
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~0~

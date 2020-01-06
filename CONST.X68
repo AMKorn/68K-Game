@@ -109,11 +109,16 @@ MUSIC       EQU     0
 PLATFX      EQU     1
 JMPFX       EQU     2
 HURTFX      EQU     3
-HRTFX       EQU     HURTFX                  ; Read the memory to know why we
-                                            ; had to do this.
+HRTFX       EQU     HURTFX                  ; We do this so we can use it with
+                                            ; the macro PLYSND, which uses
+                                            ; a sort of dynamic tagging by
+                                            ; copying the passed parameter to
+                                            ; a tag. Since this SFX is used
+                                            ; multiple times in a subroutine,
+                                            ; we need two names because of it.
+                                            ; (Check PLYSND in UTILS.X68)
 
 ; -----------------------------------------------------------------------------
-
 
 *~Font name~Courier New~
 *~Font size~10~
